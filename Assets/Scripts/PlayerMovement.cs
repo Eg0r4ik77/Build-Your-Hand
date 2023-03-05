@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour, IMovable
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
-
     }
 
     public void Move(Vector3 motion)
