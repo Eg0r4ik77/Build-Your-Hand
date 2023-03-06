@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Doors;
 using GameState;
 using PuzzleGames;
 using UnityEngine;
@@ -17,11 +18,13 @@ namespace PlayerInput
         private List<InputHandler> _inputHandlers;
         
         private InputHandler _currentInputHandler;
+        private List<HackableDoor> _hackableDoors;
 
         private void Awake()
         {
             _puzzleInputHandler = new PuzzleInputHandler();
             _inputHandlers = new List<InputHandler> { _actionInputHandler, _puzzleInputHandler };
+            _hackableDoors = FindObjectsOfType<HackableDoor>().ToList();
         }
 
         private void Start()
@@ -31,13 +34,21 @@ namespace PlayerInput
 
         private void OnEnable()
         {
-            _actionInputHandler.SwitchedToPuzzle += OnSwitchedToPuzzle;
+            foreach (HackableDoor hackableDoor in _hackableDoors)
+            {
+                hackableDoor.Hacked += SwitchToPuzzle;
+            }
+            
             _puzzleInputHandler.SwitchedToAction += _gameBehaviour.SwitchState<ActionState>;
         }
 
         private void OnDisable()
         {
-            _actionInputHandler.SwitchedToPuzzle -= OnSwitchedToPuzzle;
+            foreach (HackableDoor hackableDoor in _hackableDoors)
+            {
+                hackableDoor.Hacked -= SwitchToPuzzle;
+            }
+            
             _puzzleInputHandler.SwitchedToAction -= _gameBehaviour.SwitchState<ActionState>;
         }
 
@@ -53,7 +64,7 @@ namespace PlayerInput
             _currentInputHandler = handler;
         }
 
-        private void OnSwitchedToPuzzle(PuzzleGame game)
+        private void SwitchToPuzzle(PuzzleGame game)
         {
             _puzzleInputHandler.SetPuzzleGame(game);
             _gameBehaviour.SwitchState<PuzzleState>();

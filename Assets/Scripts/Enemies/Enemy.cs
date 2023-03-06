@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Skills;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 namespace Enemies
 {
     [RequireComponent(typeof(NavMeshAgent), typeof(MeshRenderer))]
-    public class Enemy : MonoBehaviour, IApplyableDamage
+    public class Enemy : MonoBehaviour, IApplyableDamage, IShootable
     {
         [SerializeField] protected float _speed = 3f;
         [SerializeField] protected float _damage = 10f;
@@ -92,6 +92,11 @@ namespace Enemies
             StartCoroutine(VictimHighlighter.Highlight(new List<Renderer>(){_meshRenderer}, _hitMaterial, _highlightTime));
             yield return new WaitForSeconds(_highlightTime);
             _isHighlighted = false;
+        }
+        
+        public void TryApplyShoot(float damage)
+        {
+            TryApplyDamage(damage);
         }
     }
 }

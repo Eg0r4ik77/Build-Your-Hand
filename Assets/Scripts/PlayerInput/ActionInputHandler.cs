@@ -17,37 +17,29 @@ namespace PlayerInput
     
         private float MouseHorizontalAxis => Input.GetAxis("Mouse X");
         private float MouseVerticalAxis => Input.GetAxis("Mouse Y");
-
-        public event Action<PuzzleGame> SwitchedToPuzzle;
         
         public override void Handle()
         {
             HandleMovementInput();
             HandleMouseLook();
-
-            Skill hacking = HandlingPlayer.TryGetSkill(Skill.Hacking);
             
-            if (Input.GetKeyDown(KeyCode.E) && hacking != Skill.Null)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                ISkillTarget target = HandlingPlayer.TryGetTarget<ISkillTarget>();
-
-                if (target is HackableDoor door && HandlingPlayer.TryUseSkill(target, hacking))
-                {
-                    PuzzleGame game = door.Game;
-                    SwitchedToPuzzle?.Invoke(game);
-                }
+                HandlingPlayer.TryUseSkill<IHackable, Hacking>();
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                IApplyableDamage target = HandlingPlayer.TryGetTarget<IApplyableDamage>();
-                if (target != null)
-                {
-                    HandlingPlayer.Attack(target);
-                }
+                // IApplyableDamage target = HandlingPlayer.TryGetTarget<IApplyableDamage>();
+                // if (target != null)
+                // {
+                //     HandlingPlayer.Attack(target);
+                // }
+                
+                HandlingPlayer.TryUseSkill<IShootable, Shooting>();
             }
         }
-    
+
         private void HandleMovementInput()
         {
             Transform playerTransform = HandlingPlayer.transform;

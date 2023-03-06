@@ -1,8 +1,7 @@
 ﻿namespace Skills
 {
-    public enum Skill
+    public abstract class Skill
     {
-        Null,
-        Hacking
+        public abstract bool TryActivate(ISkillTarget target);
     }
 }
