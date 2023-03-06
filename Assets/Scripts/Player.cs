@@ -19,26 +19,16 @@ public class Player : MonoBehaviour
     private float _maxHealth;
 
     public event Action<float> Damaged;
-
-
-    private CameraShaker cs;
+    
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
-        cs = FindObjectOfType<CameraShaker>();
     }
 
     private void Start()
     {
         _maxHealth = _health;
         _skills = new List<Skill> { new Hacking(), new Shooting(100f) };
-        cs.SetCamera(_camera.transform);
-    }
-
-    private void Update()
-    {
-        if(Input.GetKey(KeyCode.J))
-            cs.Shake();
     }
 
     public void Move(Vector3 motion)

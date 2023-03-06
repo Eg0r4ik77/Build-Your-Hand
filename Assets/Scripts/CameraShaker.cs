@@ -34,8 +34,8 @@ public class CameraShaker : MonoBehaviour
     private IEnumerator ShakeCoroutine(){
         for (float t = 0; t < _duration; t += Time.deltaTime)
         {
-            float y = _shakeCurve.Evaluate(t * _evaluateMultiplier);
-            _offsetVector = new Vector3(0.0f, y, 0.0f);
+            float curveMultiplier = _shakeCurve.Evaluate(t * _evaluateMultiplier);
+            _offsetVector = Vector3.up * curveMultiplier;
             
             yield return null;
         }
