@@ -45,7 +45,7 @@ namespace Enemies.CustomTasks
 
 		private void StopAgent()
 		{
-			OriginAgent.isStopped = true;
+			OriginAgent.SetDestination(OriginAgent.transform.position);
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace Enemies
     [RequireComponent(typeof(NavMeshAgent), typeof(MeshRenderer))]
     public class Enemy : MonoBehaviour, IApplyableDamage, IShootable
     {
-        [SerializeField] protected float _speed = 3f;
+        [SerializeField] protected float _speed = 2f;
         [SerializeField] protected float _damage = 10f;
         
         [SerializeField] private float _health = 10f;

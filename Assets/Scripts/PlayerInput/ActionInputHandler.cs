@@ -1,6 +1,4 @@
 using System;
-using Doors;
-using PuzzleGames;
 using Skills;
 using UnityEngine;
 
@@ -10,6 +8,7 @@ namespace PlayerInput
     public class ActionInputHandler : InputHandler
     {
         [SerializeField, Range(1, 10)] private float _horizontalLookSpeed = 2f;
+        
         [SerializeField] private FirstPersonCamera _camera;
 
         private float VerticalAxis => Input.GetAxis("Vertical");
@@ -28,15 +27,16 @@ namespace PlayerInput
                 HandlingPlayer.TryUseSkill<IHackable, Hacking>();
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                // IApplyableDamage target = HandlingPlayer.TryGetTarget<IApplyableDamage>();
-                // if (target != null)
-                // {
-                //     HandlingPlayer.Attack(target);
-                // }
-                
                 HandlingPlayer.TryUseSkill<IShootable, Shooting>();
+                _camera.Shake();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                HandlingPlayer.TryAttack();
+                _camera.Shake();
             }
         }
 
