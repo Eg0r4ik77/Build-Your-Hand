@@ -26,7 +26,6 @@ namespace PlayerInput
 
         private void Start()
         {
-
             SwitchInputHandling<ActionInputHandler>();
         }
 

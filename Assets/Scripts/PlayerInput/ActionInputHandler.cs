@@ -1,6 +1,7 @@
 using System;
 using Doors;
 using PuzzleGames;
+using Skills;
 using UnityEngine;
 
 namespace PlayerInput
@@ -28,12 +29,21 @@ namespace PlayerInput
             
             if (Input.GetKeyDown(KeyCode.E) && hacking != Skill.Null)
             {
-                ISkillTarget target = TryGetSkillTarget();
+                ISkillTarget target = HandlingPlayer.TryGetSkillTarget<ISkillTarget>();
 
                 if (target is HackableDoor door && HandlingPlayer.TryUseSkill(target, hacking))
                 {
                     PuzzleGame game = door.Game;
                     SwitchedToPuzzle?.Invoke(game);
+                }
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                IApplyableDamage target = HandlingPlayer.TryGetSkillTarget<IApplyableDamage>();
+                if (target != null)
+                {
+                    HandlingPlayer.Attack(target);
                 }
             }
         }
@@ -50,18 +60,6 @@ namespace PlayerInput
         {
             _camera.RotateVertically(MouseVerticalAxis);
             HandlingPlayer.transform.rotation *= Quaternion.Euler(0, MouseHorizontalAxis * _horizontalLookSpeed, 0);
-        }
-
-        private ISkillTarget TryGetSkillTarget()
-        {
-            ISkillTarget target = null;
-
-            if (Physics.Raycast(HandlingPlayer.transform.position, HandlingPlayer.transform.forward, out RaycastHit hit, 4f))
-            {
-                target = hit.transform.GetComponent<ISkillTarget>();
-            }
-            
-            return target;
         }
     }
 }
