@@ -9,45 +9,45 @@ namespace Doors
         [SerializeField] private GameBehaviour _gameBehaviour;
         [SerializeField] private PuzzleGame _puzzleGame;
 
-        private bool _hacked;
+        public PuzzleGame Game => _puzzleGame;
         
         private void OnEnable()
         {
             _puzzleGame.Finished += _gameBehaviour.SwitchState<ActionState>;
-            _puzzleGame.Finished += SetHacked;
+            _puzzleGame.Finished += OnHacked;
         }
 
         private void OnDisable()
         {
             _puzzleGame.Finished -= _gameBehaviour.SwitchState<ActionState>;
-            _puzzleGame.Finished -= SetHacked;
+            _puzzleGame.Finished -= OnHacked;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnHacked()
         {
-            if (!_hacked && other.TryGetComponent(out Hacking hacking))
+            Open();
+        }
+
+        public bool TryApplySkill(Skill skill)
+        {
+            if (skill == Skill.Hacking)
             {
-                hacking.SetHackable(this);
+                return TryHack();
             }
+
+            return false;
         }
 
-        private void OnTriggerExit(Collider other)
+        public bool TryHack()
         {
-            if (!_hacked && other.TryGetComponent(out Hacking hacking))
+            if (!_puzzleGame.IsFinished)
             {
-                hacking.SetHackable(null);
+                _puzzleGame.gameObject.SetActive(true);
+                _puzzleGame.StartGame();
+                return true;
             }
-        }
 
-        public void ApplyHack()
-        {
-            _puzzleGame.gameObject.SetActive(true);
-            _puzzleGame.StartGame();
-        }
-
-        private void SetHacked()
-        {
-            _hacked = true;
+            return false;
         }
     }
 }

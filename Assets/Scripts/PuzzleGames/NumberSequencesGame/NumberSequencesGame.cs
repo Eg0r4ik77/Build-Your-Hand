@@ -12,7 +12,7 @@ namespace NumberSequencesGame
         
         public override void InitializeGame()
         {
-            Initialized = true;
+            IsInitialized = true;
             
             foreach (var inputField in _inputFields)
             {
@@ -27,7 +27,7 @@ namespace NumberSequencesGame
 
         public override void StartGame()
         {
-            if (!Initialized)
+            if (!IsInitialized)
             { 
                 InitializeGame();
             }
@@ -55,11 +55,6 @@ namespace NumberSequencesGame
             }
             
             return rightAnswersCount == _inputFields.Count;
-        }
-
-        public override void FinishGame()
-        {
-            StartCoroutine(CloseGame());
         }
     }
 }

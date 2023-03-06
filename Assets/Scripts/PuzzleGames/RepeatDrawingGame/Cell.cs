@@ -1,9 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace RepeatDrawingGame
 {
+    [RequireComponent(typeof(Image))]
     public class Cell : MonoBehaviour
     {
         protected Image CellImage;

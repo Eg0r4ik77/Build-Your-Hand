@@ -2,11 +2,11 @@
 {
     public abstract class InputHandler
     {
-        protected PlayerMovement Player;
+        protected Player HandlingPlayer;
 
-        public void SetPlayer(PlayerMovement player)
+        public void SetPlayer(Player player)
         {
-            Player = player;
+            HandlingPlayer = player;
         }
     
         public abstract void Handle();

@@ -1,4 +1,6 @@
 using System;
+using Doors;
+using PuzzleGames;
 using UnityEngine;
 
 namespace PlayerInput
@@ -6,17 +8,8 @@ namespace PlayerInput
     [Serializable]
     public class ActionInputHandler : InputHandler
     {
-        [SerializeField] private float _walkSpeed = 3f;
-
-        [SerializeField, Range(1, 10)] private float _lookSpeedX = 2f;
-        [SerializeField, Range(1, 10)] private float _lookSpeedY = 2f;
-    
-        [SerializeField, Range(1, 180)] private float _upperLookLimit = 80f;
-        [SerializeField, Range(1, 180)] private float _lowerLookLimit = 80f;
-
-        [SerializeField] private Camera _camera;
-
-        private float _rotationX;
+        [SerializeField, Range(1, 10)] private float _horizontalLookSpeed = 2f;
+        [SerializeField] private FirstPersonCamera _camera;
 
         private float VerticalAxis => Input.GetAxis("Vertical");
         private float HorizontalAxis => Input.GetAxis("Horizontal");
@@ -24,35 +17,51 @@ namespace PlayerInput
         private float MouseHorizontalAxis => Input.GetAxis("Mouse X");
         private float MouseVerticalAxis => Input.GetAxis("Mouse Y");
 
-        public event Action SwitchedToPuzzle;
-
+        public event Action<PuzzleGame> SwitchedToPuzzle;
+        
         public override void Handle()
         {
             HandleMovementInput();
             HandleMouseLook();
 
-
-            var hacking = Player.GetComponent<Hacking>();
-            if (Input.GetKeyDown(KeyCode.E) && hacking.CanHack)
+            Skill hacking = HandlingPlayer.TryGetSkill(Skill.Hacking);
+            
+            if (Input.GetKeyDown(KeyCode.E) && hacking != Skill.Null)
             {
-                hacking.Hack();
-                SwitchedToPuzzle?.Invoke();
+                ISkillTarget target = TryGetSkillTarget();
+
+                if (target is HackableDoor door && HandlingPlayer.TryUseSkill(target, hacking))
+                {
+                    PuzzleGame game = door.Game;
+                    SwitchedToPuzzle?.Invoke(game);
+                }
             }
         }
     
         private void HandleMovementInput()
         {
-            Vector3 motion = Player.transform.forward * VerticalAxis + Player.transform.right * HorizontalAxis;
-            Player.Move(motion * (_walkSpeed * Time.deltaTime));
+            Transform playerTransform = HandlingPlayer.transform;
+            Vector3 motion = playerTransform.forward * VerticalAxis + playerTransform.right * HorizontalAxis;
+            
+            HandlingPlayer.Move(motion * Time.deltaTime);
         }
 
         private void HandleMouseLook()
         {
-            _rotationX -= MouseVerticalAxis * _lookSpeedY;
-            _rotationX = Mathf.Clamp(_rotationX, -_upperLookLimit, _lowerLookLimit);
-        
-            _camera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
-            Player.transform.rotation *= Quaternion.Euler(0, MouseHorizontalAxis * _lookSpeedX, 0);
+            _camera.RotateVertically(MouseVerticalAxis);
+            HandlingPlayer.transform.rotation *= Quaternion.Euler(0, MouseHorizontalAxis * _horizontalLookSpeed, 0);
+        }
+
+        private ISkillTarget TryGetSkillTarget()
+        {
+            ISkillTarget target = null;
+
+            if (Physics.Raycast(HandlingPlayer.transform.position, HandlingPlayer.transform.forward, out RaycastHit hit, 4f))
+            {
+                target = hit.transform.GetComponent<ISkillTarget>();
+            }
+            
+            return target;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace ShulteTableGame
 {
+    [RequireComponent(typeof(Image), typeof(Button), typeof(TMP_Text))]
     public class Cell : MonoBehaviour
     {
         private Image _image;

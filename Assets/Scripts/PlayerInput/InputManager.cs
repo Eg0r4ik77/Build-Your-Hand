@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameState;
+using PuzzleGames;
 using UnityEngine;
 
 namespace PlayerInput
@@ -10,7 +11,7 @@ namespace PlayerInput
         [SerializeField] private GameBehaviour _gameBehaviour;
         
         [SerializeField] private ActionInputHandler _actionInputHandler;
-        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private Player _player;
     
         private PuzzleInputHandler _puzzleInputHandler;
         private List<InputHandler> _inputHandlers;
@@ -31,13 +32,13 @@ namespace PlayerInput
 
         private void OnEnable()
         {
-            _actionInputHandler.SwitchedToPuzzle += _gameBehaviour.SwitchState<PuzzleState>;
+            _actionInputHandler.SwitchedToPuzzle += OnSwitchedToPuzzle;
             _puzzleInputHandler.SwitchedToAction += _gameBehaviour.SwitchState<ActionState>;
         }
 
         private void OnDisable()
         {
-            _actionInputHandler.SwitchedToPuzzle -= _gameBehaviour.SwitchState<PuzzleState>;
+            _actionInputHandler.SwitchedToPuzzle -= OnSwitchedToPuzzle;
             _puzzleInputHandler.SwitchedToAction -= _gameBehaviour.SwitchState<ActionState>;
         }
 
@@ -49,8 +50,14 @@ namespace PlayerInput
         public void SwitchInputHandling<T>() where T : InputHandler
         {
             InputHandler handler = _inputHandlers.FirstOrDefault(handler => handler is T);
-            handler.SetPlayer(_playerMovement);
+            handler.SetPlayer(_player);
             _currentInputHandler = handler;
+        }
+
+        private void OnSwitchedToPuzzle(PuzzleGame game)
+        {
+            _puzzleInputHandler.SetPuzzleGame(game);
+            _gameBehaviour.SwitchState<PuzzleState>();
         }
     }
 }

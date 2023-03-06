@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PuzzleGames;
 using UnityEngine;
@@ -17,14 +16,14 @@ namespace ShulteTableGame
 
         public override void InitializeGame()
         {
-            Initialized = true;
+            IsInitialized = true;
             _currentCellNumber = 1;
             GenerateField();
         }
 
         public override void StartGame()
         {
-            if (!Initialized)
+            if (!IsInitialized)
             { 
                 InitializeGame();
             }
@@ -43,11 +42,6 @@ namespace ShulteTableGame
             return _currentCellNumber > _cells.Count;
         }
 
-        public override void FinishGame()
-        {
-            StartCoroutine(CloseGame());
-        }
-        
         private void GenerateField()
         {
             var random = new System.Random();

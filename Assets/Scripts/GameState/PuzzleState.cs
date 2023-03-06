@@ -5,8 +5,7 @@ namespace GameState
 {
     public class PuzzleState : GameState
     {
-        public PuzzleState(InputManager input, IGameStateSwitcher gameStateSwitcher) : base(input, gameStateSwitcher)
-        {}
+        public PuzzleState(InputManager input, IGameStateSwitcher gameStateSwitcher) : base(input, gameStateSwitcher) {}
 
         public override void Start()
         {
@@ -14,10 +13,7 @@ namespace GameState
             SetInputHandling();
         }
 
-        public override void Stop()
-        {
-        
-        }
+        public override void Stop() {}
 
         public override void SetInputHandling()
         {

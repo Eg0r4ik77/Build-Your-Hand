@@ -1,8 +1,10 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RepeatDrawingGame
 {
+    [RequireComponent(typeof(Button))]
     public class PlayerCell : Cell
     {
         private Button _button;

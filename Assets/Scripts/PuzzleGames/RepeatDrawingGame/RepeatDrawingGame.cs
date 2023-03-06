@@ -22,13 +22,13 @@ namespace RepeatDrawingGame
 
         public override void InitializeGame()
         {
-            Initialized = true;
+            IsInitialized = true;
             GenerateField();
         }
 
         public override void StartGame()
         {
-            if (!Initialized)
+            if (!IsInitialized)
             { 
                 InitializeGame();
             }
@@ -63,11 +63,6 @@ namespace RepeatDrawingGame
             return _rightCellsOpened == _rightCellsCount && _cellsOpened == _rightCellsCount;
         }
 
-        public override void FinishGame()
-        {
-            StartCoroutine(CloseGame());
-        }
-        
         private void GenerateField()
         {
             var random = new System.Random();

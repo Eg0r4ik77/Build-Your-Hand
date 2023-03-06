@@ -24,24 +24,20 @@ namespace FindPairsGame
 
         private void OnDisable()
         {
-            foreach (Cell cell in _openedCellsPerMove)
-            {
-                cell.SetColor(_defaultColor);
-            }
-
+            HideCells(_openedCellsPerMove);
             _openedCellsPerMove = new List<Cell>();
         }
 
         public override void InitializeGame()
         {
-            Initialized = true;
+            IsInitialized = true;
             _openedCellsPerMove = new List<Cell>();
             GenerateField();
         }
 
         public override void StartGame()
         {
-            if (!Initialized)
+            if (!IsInitialized)
             { 
                 InitializeGame();
             }
@@ -52,7 +48,10 @@ namespace FindPairsGame
         public override void UpdateGame()
         {
             if (_openedCellsPerMove.Count != OpeningPerMoveCount)
-                return;
+            { 
+                return;         
+            }
+
             
             if (AreEqualOpenedCellsPerMove())
             {
@@ -64,18 +63,14 @@ namespace FindPairsGame
             }
 
             if (IsGameOver())
+            {
                 FinishGame();
+            }
         }
 
         public override bool IsGameOver()
         {
             return _openedCellsCount == _cells.Count;
-        }
-
-        public override void FinishGame()
-        {
-            SetFieldClickable(false);
-            StartCoroutine(CloseGame());
         }
 
         private void OpenCell(Cell cell)
@@ -95,11 +90,11 @@ namespace FindPairsGame
                 
             for(int i = 1; i < _openedCellsPerMove.Count; i++)
             {
-                if (_openedCellsPerMove[i].Id == _openedCellsPerMove[i - 1].Id)
-                    continue;
-                    
-                areEqualCells = false;
-                break;
+                if (_openedCellsPerMove[i].Id != _openedCellsPerMove[i - 1].Id)
+                {
+                  areEqualCells = false;
+                  break;  
+                }
             }
 
             return areEqualCells;

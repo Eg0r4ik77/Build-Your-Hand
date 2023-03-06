@@ -6,8 +6,10 @@ namespace PuzzleGames
 {
     public abstract class PuzzleGame : MonoBehaviour
     {
-        protected const float ClosingDurationInSeconds = .8f;
-        protected bool Initialized;
+        private const float ClosingDurationInSeconds = .8f;
+
+        protected bool IsInitialized { get; set; }
+        public bool IsFinished { get; private set; }
 
         public event Action Finished;
         
@@ -15,13 +17,22 @@ namespace PuzzleGames
         public abstract void StartGame();
         public abstract void UpdateGame();
         public abstract bool IsGameOver();
-        public abstract void FinishGame();
-        
 
-        protected IEnumerator CloseGame()
+        public void InterruptGame()
+        {
+            StartCoroutine(CloseGame());
+        }
+
+        protected void FinishGame()
+        {
+            IsFinished = true;
+            Finished?.Invoke();
+            StartCoroutine(CloseGame());
+        }
+        
+        private IEnumerator CloseGame()
         {
             yield return new WaitForSeconds(ClosingDurationInSeconds);
-            Finished?.Invoke();
             gameObject.SetActive(false);
         }
     }

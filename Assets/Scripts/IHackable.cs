@@ -1,4 +1,4 @@
-﻿public interface IHackable
+﻿public interface IHackable : ISkillTarget
 {
-    void ApplyHack();
+    bool TryHack();
 }
