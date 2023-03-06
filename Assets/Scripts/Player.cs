@@ -7,6 +7,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _skillApplyRange = 2f;
+    [SerializeField] private float _health = 100f;
+    
     [SerializeField] private Camera _camera;
     
     private PlayerMovement _movement;
@@ -47,7 +49,7 @@ public class Player : MonoBehaviour
         return target.TryApplySkill(skill);
     }
     
-    public T TryGetSkillTarget<T>()
+    public T TryGetTarget<T>()
     {
         T target = default;
 
@@ -61,6 +63,18 @@ public class Player : MonoBehaviour
 
     public void TryApplyDamage(float damage)
     {
-        throw new System.NotImplementedException();
+        _health -= damage;
+
+        print(_health);
+        
+        if (_health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        print("Die");
     }
 }

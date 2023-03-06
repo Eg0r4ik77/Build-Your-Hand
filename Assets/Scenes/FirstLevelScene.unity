@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 74feb6635eea89c479d613bbe167b0ea, type: 2}
 --- !u!1 &11315405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2572,7 +2572,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &519397218
 MeshCollider:
@@ -2646,7 +2646,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519397217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7836018, y: -0.7973461, z: -1.0328102}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3570,6 +3570,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630423954}
   m_CullTransparentMesh: 1
+--- !u!1 &678235057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 678235059}
+  - component: {fileID: 678235058}
+  m_Layer: 0
+  m_Name: '@GlobalBlackboard'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &678235058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678235057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d4487f1cfc7d114e9eb271eace75d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"player":{"_value":1,"_name":"player","_id":"478cebd6-f0ab-4d32-af22-1fe81ced3b03","$type":"NodeCanvas.Framework.Variable`1[[Player,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 1830053394}
+  _serializedVariables:
+  - _json: '{"_value":1,"_name":"player","_id":"478cebd6-f0ab-4d32-af22-1fe81ced3b03","$type":"NodeCanvas.Framework.Variable`1[[Player,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 1830053394}
+  _UID: b224f9c4-4d92-46ee-b192-05a873f4871a
+  _identifier: Global
+  _singletonMode: 0
+  _dontDestroyOnLoad: 1
+--- !u!4 &678235059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678235057}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &696038711
 GameObject:
   m_ObjectHideFlags: 0
@@ -7755,7 +7815,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1497254980}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.26, y: 0.5836, z: 3.85}
+  m_LocalPosition: {x: 0.26, y: 0.98, z: 3.85}
   m_LocalScale: {x: 0.50503, y: 1.7123041, z: 0.50503}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10260,7 +10320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830053385}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10312,6 +10372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillApplyRange: 4
+  _health: 100
   _camera: {fileID: 963194227}
 --- !u!1 &1907246623
 GameObject:
@@ -10465,8 +10526,11 @@ GameObject:
   - component: {fileID: 1914039877}
   - component: {fileID: 1914039876}
   - component: {fileID: 1914039875}
-  - component: {fileID: 1914039874}
   - component: {fileID: 1914039873}
+  - component: {fileID: 1914039880}
+  - component: {fileID: 1914039879}
+  - component: {fileID: 1914039881}
+  - component: {fileID: 1914039882}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -10486,27 +10550,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961698719d0348c29e2030eee37ad898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 3
-  damage: 10
+  _speed: 3
+  _damage: 10
   _hitMaterial: {fileID: 2100000, guid: 81658de56ec63834f8f3ebf4dde04b56, type: 2}
   _health: 10
   _pushForce: 2
-  _pushTime: 0.5
-  _flashTime: 0.5
+  _pushTime: 0.3
+  _flashTime: 0.3
   _target: {fileID: 1830053394}
---- !u!65 &1914039874
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1914039872}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1914039875
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10556,7 +10607,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914039872}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1914039877
 Transform:
   m_ObjectHideFlags: 0
@@ -10565,13 +10616,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914039872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.49, y: -0.08, z: 1.64}
+  m_LocalPosition: {x: -13.17, y: 1.05, z: 1.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1914039879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914039872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{}}'
+  _objectReferences: []
+  _serializedVariables: []
+--- !u!114 &1914039880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914039872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad115aca74ce3c4891b3f6de0b4aae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.BehaviourTrees.BehaviourTree","nodes":[{"_condition":{"method":{"_baseInfo":"Enemies.Enemy|get_DetectedTarget|System.Boolean","_paramsInfo":""},"checkValue":{"_type":"System.Boolean","_value":{"$content":true,"$type":"System.Boolean"}},"overrideAgent":{"_type":"Enemies.Enemy","_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"$type":"NodeCanvas.Tasks.Conditions.CheckProperty_Multiplatform"},"_position":{"x":410.6613,"y":153.3314},"$type":"NodeCanvas.BehaviourTrees.BinarySelector","$id":"0"},{"dynamic":true,"_condition":{"Range":{"_name":"attackRange","_targetVariableID":"614323ff-949d-499e-ba72-bef698b3e86c"},"Origin":{"_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"Target":{"_name":"Global/player","_targetVariableID":"478cebd6-f0ab-4d32-af22-1fe81ced3b03"},"$type":"Enemies.CustomTasks.CheckRangeTask"},"_position":{"x":253.243,"y":335.4235},"$type":"NodeCanvas.BehaviourTrees.BinarySelector","$id":"1"},{"dynamic":true,"_position":{"x":25.33663,"y":430.7226},"$type":"NodeCanvas.BehaviourTrees.Parallel","$id":"2"},{"_action":{"Origin":{"_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"Target":{"_name":"Global/player","_targetVariableID":"478cebd6-f0ab-4d32-af22-1fe81ced3b03"},"RotationSpeed":{"_value":5.0},"$type":"Enemies.CustomTasks.RotateToTargetTask"},"_position":{"x":-124.0161,"y":534.7363},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"3"},{"dynamic":true,"_position":{"x":128.8228,"y":536.5243},"$type":"NodeCanvas.BehaviourTrees.Sequencer","$id":"4"},{"_action":{"method":{"_baseInfo":"Enemies.Enemy|Attack|System.Void","_paramsInfo":""},"parameters":[],"returnValue":{},"overrideAgent":{"_type":"Enemies.Enemy","_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"$type":"NodeCanvas.Tasks.Actions.ExecuteFunction_Multiplatform"},"_position":{"x":43.33947,"y":673.4029},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"5"},{"_action":{"waitTime":{"_name":"Cooldown","_targetVariableID":"d4403eaf-37d8-4cd5-9fa8-7f791e6227b7"},"$type":"NodeCanvas.Tasks.Actions.Wait"},"_position":{"x":242.8153,"y":669.4908},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"6"},{"_action":{"Target":{"_name":"Global/player","_targetVariableID":"478cebd6-f0ab-4d32-af22-1fe81ced3b03"},"Agent":{"_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"MinimumDistance":{"_name":"attackRange","_targetVariableID":"614323ff-949d-499e-ba72-bef698b3e86c"},"$type":"Enemies.CustomTasks.ChaseTask"},"_position":{"x":384.4856,"y":459.4921},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"7"},{"dynamic":true,"_condition":{"Range":{"_name":"ChaseRange","_targetVariableID":"0c67c7d6-3569-4590-8a4d-368860e7e70a"},"Origin":{"_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"Target":{"_name":"Global/player","_targetVariableID":"478cebd6-f0ab-4d32-af22-1fe81ced3b03"},"$type":"Enemies.CustomTasks.CheckRangeTask"},"_tag":"Chasing","_position":{"x":670.6302,"y":299.2232},"$type":"NodeCanvas.BehaviourTrees.BinarySelector","$id":"8"},{"_action":{"method":{"_baseInfo":"Enemies.Enemy|set_DetectedTarget|System.Void","_paramsInfo":"System.Boolean"},"parameter":{"_type":"System.Boolean","_value":{"$content":true,"$type":"System.Boolean"}},"overrideAgent":{"_type":"Enemies.Enemy","_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"$type":"NodeCanvas.Tasks.Actions.SetProperty_Multiplatform"},"_position":{"x":554.6594,"y":438.661},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"9"},{"_action":{"Agent":{"_name":"Enemy","_targetVariableID":"596354ac-aca9-4636-b92f-d9b78e328230"},"Range":{"_name":"PatrolRange","_targetVariableID":"21d1b157-4db8-48e8-9798-68349dc47e41"},"$type":"Enemies.CustomTasks.PatrolTask"},"_position":{"x":869.7054,"y":435.074},"$type":"NodeCanvas.BehaviourTrees.ActionNode","$id":"10"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.BehaviourTrees.BTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{"attackRange":{"_value":1.5,"_name":"attackRange","_id":"614323ff-949d-499e-ba72-bef698b3e86c","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"ChaseRange":{"_value":8.0,"_name":"ChaseRange","_id":"0c67c7d6-3569-4590-8a4d-368860e7e70a","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"Cooldown":{"_value":0.6,"_name":"Cooldown","_id":"d4403eaf-37d8-4cd5-9fa8-7f791e6227b7","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"PatrolRange":{"_value":6.0,"_name":"PatrolRange","_id":"21d1b157-4db8-48e8-9798-68349dc47e41","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"Enemy":{"_value":1,"_name":"Enemy","_id":"596354ac-aca9-4636-b92f-d9b78e328230","$type":"NodeCanvas.Framework.Variable`1[[Enemies.Enemy,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"RotationSpeed":{"_value":5.0,"_name":"RotationSpeed","_id":"59fe191f-f602-4229-90d5-1eed6c07a46f","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}},"derivedData":{"repeat":true,"$type":"NodeCanvas.BehaviourTrees.BehaviourTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 1914039873}
+  _boundGraphSource:
+    _version: 3.25
+    _category: 
+    _comments: 
+    _translation: {x: 154, y: -41}
+    _zoomFactor: 0.6472678
+  _firstActivation: 0
+  _enableAction: 0
+  _disableAction: 0
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 1914039879}
+--- !u!136 &1914039881
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914039872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!195 &1914039882
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914039872}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1921492634
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ namespace PlayerInput
             
             if (Input.GetKeyDown(KeyCode.E) && hacking != Skill.Null)
             {
-                ISkillTarget target = HandlingPlayer.TryGetSkillTarget<ISkillTarget>();
+                ISkillTarget target = HandlingPlayer.TryGetTarget<ISkillTarget>();
 
                 if (target is HackableDoor door && HandlingPlayer.TryUseSkill(target, hacking))
                 {
@@ -40,7 +40,7 @@ namespace PlayerInput
 
             if (Input.GetMouseButtonDown(0))
             {
-                IApplyableDamage target = HandlingPlayer.TryGetSkillTarget<IApplyableDamage>();
+                IApplyableDamage target = HandlingPlayer.TryGetTarget<IApplyableDamage>();
                 if (target != null)
                 {
                     HandlingPlayer.Attack(target);
