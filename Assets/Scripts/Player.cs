@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Skills;
 using UnityEngine;
@@ -7,13 +8,18 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _skillApplyRange = 2f;
+    [SerializeField] private float _damage = 2f;
     [SerializeField] private float _health = 100f;
     
     [SerializeField] private Camera _camera;
     
     private PlayerMovement _movement;
-    private List<Skill> _skills; 
+    private List<Skill> _skills;
+    
+    private float _maxHealth;
 
+    public event Action<float> Damaged;
+    
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
@@ -21,6 +27,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _maxHealth = _health;
         _skills = new List<Skill> { Skill.Hacking };
     }
 
@@ -31,7 +38,7 @@ public class Player : MonoBehaviour
 
     public void Attack(IApplyableDamage target)
     {
-        target.TryApplyDamage(2f);
+        target.TryApplyDamage(_damage);
     }
     
     public Skill TryGetSkill(Skill skill) 
@@ -64,7 +71,8 @@ public class Player : MonoBehaviour
     public void TryApplyDamage(float damage)
     {
         _health -= damage;
-
+        Damaged?.Invoke(_health / _maxHealth);
+        
         print(_health);
         
         if (_health <= 0)
