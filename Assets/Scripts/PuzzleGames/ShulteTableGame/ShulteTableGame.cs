@@ -14,19 +14,11 @@ namespace ShulteTableGame
         
         private int _currentCellNumber;
 
-        public override void InitializeGame()
+        protected override void InitializeGame()
         {
             IsInitialized = true;
             _currentCellNumber = 1;
             GenerateField();
-        }
-
-        public override void StartGame()
-        {
-            if (!IsInitialized)
-            { 
-                InitializeGame();
-            }
         }
 
         public override void UpdateGame()

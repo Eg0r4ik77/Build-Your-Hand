@@ -20,18 +20,10 @@ namespace RepeatDrawingGame
 
         private int _currentCellIndex;
 
-        public override void InitializeGame()
+        protected override void InitializeGame()
         {
             IsInitialized = true;
             GenerateField();
-        }
-
-        public override void StartGame()
-        {
-            if (!IsInitialized)
-            { 
-                InitializeGame();
-            }
         }
 
         public override void UpdateGame()

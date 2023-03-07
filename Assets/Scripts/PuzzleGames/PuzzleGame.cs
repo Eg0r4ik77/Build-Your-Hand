@@ -7,26 +7,31 @@ namespace PuzzleGames
     {
         protected bool IsInitialized { get; set; }
         public bool IsFinished { get; private set; }
-
-        public event Action Finished;
-        public event Action Interrupted;
         
-        public abstract void InitializeGame();
-        public abstract void StartGame();
+        public event Action Interrupted;
+        public event Action Finished;
+        
+        public virtual void StartGame()
+        {
+            if (!IsInitialized)
+            { 
+                InitializeGame();
+            }
+        }
+
+        protected abstract void InitializeGame();
         public abstract void UpdateGame();
         public abstract bool IsGameOver();
 
         public void InterruptGame()
         {
             Interrupted?.Invoke();
-            gameObject.SetActive(false);
         }
 
         protected void FinishGame()
         {
             IsFinished = true;
             Finished?.Invoke();
-            gameObject.SetActive(false);
         }
     }
 }

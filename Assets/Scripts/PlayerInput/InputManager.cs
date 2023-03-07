@@ -46,7 +46,7 @@ namespace PlayerInput
             
             foreach (HackableDoor hackableDoor in _hackableDoors)
             {
-                hackableDoor.HackingStarted += SwitchToPuzzle;
+                hackableDoor.GameStarted += SwitchToPuzzle;
                 hackableDoor.GameLeft += SwitchToAction;
             }
             _puzzleInputHandler.SwitchedToAction += SwitchToAction;
@@ -59,7 +59,7 @@ namespace PlayerInput
             
             foreach (HackableDoor hackableDoor in _hackableDoors)
             {
-                hackableDoor.HackingStarted -= SwitchToPuzzle;
+                hackableDoor.GameStarted -= SwitchToPuzzle;
             }
             _puzzleInputHandler.SwitchedToAction -= SwitchToAction;
         }

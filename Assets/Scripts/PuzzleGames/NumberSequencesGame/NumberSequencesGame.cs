@@ -9,8 +9,8 @@ namespace NumberSequencesGame
     {
         [SerializeField] private List<NumberSequence> _numberSequences;
         [SerializeField] private List<TMP_InputField> _inputFields;
-        
-        public override void InitializeGame()
+
+        protected override void InitializeGame()
         {
             IsInitialized = true;
             
@@ -22,14 +22,6 @@ namespace NumberSequencesGame
             foreach (var numberSequence in _numberSequences)
             {
                 numberSequence.Initialize();
-            }
-        }
-
-        public override void StartGame()
-        {
-            if (!IsInitialized)
-            { 
-                InitializeGame();
             }
         }
 

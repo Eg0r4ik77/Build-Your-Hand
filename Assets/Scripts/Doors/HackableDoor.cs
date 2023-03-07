@@ -1,5 +1,4 @@
 ﻿using System;
-using GameState;
 using PuzzleGames;
 using Skills;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace Doors
     {
         [SerializeField] private PuzzleGame _puzzleGame;
         public event Action GameLeft;
-        public event Action<PuzzleGame> HackingStarted; 
+        public event Action<PuzzleGame> GameStarted; 
 
         private void OnEnable()
         {
@@ -28,9 +27,7 @@ namespace Doors
         {
             if (!_puzzleGame.IsFinished)
             {
-                HackingStarted?.Invoke(_puzzleGame);
-                _puzzleGame.gameObject.SetActive(true);
-                _puzzleGame.StartGame();
+                GameStarted?.Invoke(_puzzleGame);
                 return true;
             }
 

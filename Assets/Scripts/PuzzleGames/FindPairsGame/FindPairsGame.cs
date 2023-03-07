@@ -28,7 +28,7 @@ namespace FindPairsGame
             _openedCellsPerMove = new List<Cell>();
         }
 
-        public override void InitializeGame()
+        protected override void InitializeGame()
         {
             IsInitialized = true;
             _openedCellsPerMove = new List<Cell>();
@@ -37,11 +37,7 @@ namespace FindPairsGame
 
         public override void StartGame()
         {
-            if (!IsInitialized)
-            { 
-                InitializeGame();
-            }
-            
+            base.StartGame();
             StartCoroutine(HideCellsAfterMove(_openedCellsPerMove));
         }
 
@@ -52,7 +48,6 @@ namespace FindPairsGame
                 return;         
             }
 
-            
             if (AreEqualOpenedCellsPerMove())
             {
                 _openedCellsCount += OpeningPerMoveCount;
