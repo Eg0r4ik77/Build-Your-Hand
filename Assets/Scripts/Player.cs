@@ -7,17 +7,17 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _skillApplyRange = 2f;
     [SerializeField] private float _damage = 2f;
-    [SerializeField] private float _health = 100f;
+    [SerializeField] private float _maxHealth = 100f;
     
     [SerializeField] private Camera _camera;
+    [SerializeField] private UniversalHand _hand;
     
     private PlayerMovement _movement;
 
-    private float _maxHealth;
+    private float _health;
 
+    public UniversalHand Hand => _hand;
     public ResourcesWallet Wallet { get; } = new();
-
-    public UniversalHand Hand { get; set; }
 
     public event Action<float> Damaged;
     
@@ -28,8 +28,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Hand = new UniversalHand(this);
-        _maxHealth = _health;
+        _health = _maxHealth;
+        _hand.SetPlayer(this);
     }
 
     public void Move(Vector3 motion)
@@ -83,5 +83,10 @@ public class Player : MonoBehaviour
         }
             
         return target;
+    }
+
+    public bool HasNoSkills()
+    {
+        return !_hand.Usable();
     }
 }

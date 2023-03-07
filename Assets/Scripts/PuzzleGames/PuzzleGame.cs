@@ -25,14 +25,14 @@ namespace PuzzleGames
 
         protected void FinishGame()
         {
-            IsFinished = true;
-            Finished?.Invoke();
             StartCoroutine(CloseGame());
         }
         
         private IEnumerator CloseGame()
         {
             yield return new WaitForSeconds(ClosingDurationInSeconds);
+            IsFinished = true;
+            Finished?.Invoke();
             gameObject.SetActive(false);
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = System.Random;
@@ -46,7 +45,7 @@ namespace Economy
             rotationDirections = rotationDirections.OrderBy(_ => random.Next()).ToList();
 
             _rotation *= Quaternion.AngleAxis(angle, rotationDirections[0]) *
-                         Quaternion.AngleAxis(.5f, rotationDirections[1]);
+                         Quaternion.AngleAxis(angle, rotationDirections[1]);
         }
     }
 }

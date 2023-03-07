@@ -65,6 +65,8 @@ namespace Economy
                 _purchaseDataButtonImages[i].color = _nonPurchasableColor;
             }
 
+            _purchaseDataButtonImages[0].color = _purchasableColor;
+            
             UpdatePurchaseButtonText();
         }
         

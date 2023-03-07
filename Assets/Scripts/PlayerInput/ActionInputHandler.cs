@@ -15,35 +15,43 @@ namespace PlayerInput
         
         [SerializeField] private Shop _shop;
 
+        private UniversalHand Hand => HandlingPlayer.Hand;
+
         private float VerticalAxis => Input.GetAxis("Vertical");
         private float HorizontalAxis => Input.GetAxis("Horizontal");
     
         private float MouseHorizontalAxis => Input.GetAxis("Mouse X");
         private float MouseVerticalAxis => Input.GetAxis("Mouse Y");
-        
+
         public override void Handle()
         {
             HandleMovementInput();
             HandleMouseLook();
             
+            Hand.SwitchSkill(Input.GetAxis("Mouse ScrollWheel"));
+            
             if (Input.GetKeyDown(KeyCode.E))
             {
-                HandlingPlayer.Hand.TryUseSkill<IHackable, Hacking>();
+                
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (HandlingPlayer.Hand.TryUseSkill<IShootable, Shooting>())
+                if (HandlingPlayer.HasNoSkills())
                 {
-                    _camera.Shake();                    
+                    HandlingPlayer.TryAttack();
+                }
+                else
+                {
+                    bool result = Hand.TryUseCurrentSkill();
+                    
+                    if (Hand.CurrentSkill is Shooting && result)
+                    {
+                        _camera.Shake();                    
+                    }
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Mouse1))
-            {
-                HandlingPlayer.TryAttack();
-            }
-
             if (Input.GetKeyDown(KeyCode.B))
             {
                 _shop.Open();

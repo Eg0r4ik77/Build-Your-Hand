@@ -1,16 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Skills;
+using UnityEngine;
 
-public class UniversalHand
+[RequireComponent(typeof(MeshRenderer))]
+public class UniversalHand : MonoBehaviour
 {
-    private readonly Player _player;
-    private readonly List<Skill> _skills;
+    [SerializeField] private List<Color> _skillColors;
+    private Color _defaultColor;
 
-    public UniversalHand(Player player)
+    private Player _player;
+    
+    private List<Skill> _skills;
+    private int _currentSkillIndex;
+
+    private MeshRenderer _meshRenderer;
+    
+    public Skill CurrentSkill { get; private set; }
+
+    private void Awake()
+    {
+        _meshRenderer = GetComponent<MeshRenderer>();
+    }
+
+    private void Start()
+    {
+        _skills = new List<Skill>();
+        _defaultColor = _meshRenderer.material.color;
+    }
+
+    public void SetPlayer(Player player)
     {
         _player = player;
-        _skills = new List<Skill>();
+    }
+    
+    public void SwitchSkill(float mouseScroll)
+    {
+        if (!Usable())
+        {
+            return;
+        }
+        
+        int sign = Math.Sign(mouseScroll);
+
+        _currentSkillIndex = (_currentSkillIndex + sign) % _skills.Count + 
+                             (_currentSkillIndex + sign >= 0 ? 0 : _skills.Count);
+        CurrentSkill = _skills[_currentSkillIndex];
+
+        _meshRenderer.material.color = GetColor(CurrentSkill);
+    }
+
+    public bool TryUseCurrentSkill()
+    {
+        return CurrentSkill switch
+        {
+            Hacking => TryUseSkill<IHackable, Hacking>(),
+            Shooting => TryUseSkill<IShootable, Shooting>(),
+            _ => false
+        };
     }
     
     public void AddSkill(Skill skill)
@@ -36,5 +84,21 @@ public class UniversalHand
     private T TryGetSkill<T>() where T : Skill
     {
         return _skills.FirstOrDefault(s => s is T) as T;
+    }
+
+    private Color GetColor(Skill skill)
+    {
+        return skill switch
+        {
+            Shooting => _skillColors[0],
+            Hacking => _skillColors[1],
+            Analysis => _skillColors[2],
+            _ => _defaultColor
+        };
+    }
+
+    public bool Usable()
+    {
+        return _skills.Count != 0;
     }
 }
