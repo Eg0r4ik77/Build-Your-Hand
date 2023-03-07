@@ -46,8 +46,12 @@ public class UniversalHand : MonoBehaviour
         
         int sign = Math.Sign(mouseScroll);
 
-        _currentSkillIndex = (_currentSkillIndex + sign) % _skills.Count + 
-                             (_currentSkillIndex + sign >= 0 ? 0 : _skills.Count);
+        _currentSkillIndex = _skills.Count == 1 
+            ? 0 
+            : (_currentSkillIndex + sign) % _skills.Count + (_currentSkillIndex + sign >= 0
+                                 ? 0
+                                 : _skills.Count);
+        
         CurrentSkill = _skills[_currentSkillIndex];
 
         _meshRenderer.material.color = GetColor(CurrentSkill);

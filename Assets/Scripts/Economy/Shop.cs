@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Skills;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 
 namespace Economy
 {
+    [RequireComponent(typeof(Animator))]
     public class Shop : MonoBehaviour
     {
         [SerializeField] private Player _player;
@@ -29,11 +31,18 @@ namespace Economy
         private List<Image> _purchaseDataButtonImages;
 
         private int _currentDataIndex;
+
+        private Animator _animator;
+
+        private int AppearanceAnimationHash = Animator.StringToHash("Appearance");
+        private int DisappearanceAnimationHash = Animator.StringToHash("Disappearance");
         
         public event Action<Shop> Opened;
 
         private void Awake()
         {
+            _animator = GetComponent<Animator>();
+            
             _purchaseDataButtonImages = new List<Image>();
 
             foreach (var data in _dataList)
@@ -131,10 +140,18 @@ namespace Economy
         {
             Opened?.Invoke(this);
             _panel.SetActive(true);
+            _animator.Play(AppearanceAnimationHash);
         }
 
         public void Close()
         {
+            StartCoroutine(CloseCoroutine());
+        }
+
+        private IEnumerator CloseCoroutine()
+        {
+            _animator.Play(DisappearanceAnimationHash);
+            yield return new WaitForSeconds(.5f);
             _panel.SetActive(false);
         }
     }
