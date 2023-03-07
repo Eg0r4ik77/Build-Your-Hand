@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _skillApplyRange = 2f;
+    
     [SerializeField] private float _damage = 2f;
     [SerializeField] private float _maxHealth = 100f;
     
@@ -85,6 +86,11 @@ public class Player : MonoBehaviour
         return target;
     }
 
+    public void RotateHorizontally(float horizontalAxisRotation)
+    {
+        _movement.RotateHorizontally(horizontalAxisRotation);
+    }
+    
     public bool HasNoSkills()
     {
         return !_hand.Usable();

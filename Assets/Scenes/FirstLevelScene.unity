@@ -5817,12 +5817,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b5b85dc3a946f1b5182dac1e860fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameBehaviour: {fileID: 696038712}
+  _player: {fileID: 1203396588}
   _actionInputHandler:
-    _horizontalLookSpeed: 2
     _camera: {fileID: 1510990862}
     _shop: {fileID: 210137701}
-  _player: {fileID: 1203396588}
   _shop: {fileID: 210137701}
 --- !u!4 &895382115
 Transform:
@@ -9770,7 +9768,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f25c0e0a2a44dc898d39e5aacc3dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameBehaviour: {fileID: 696038712}
   _puzzleGame: {fileID: 1907246628}
 --- !u!65 &1497254986
 BoxCollider:

@@ -11,28 +11,35 @@ namespace GameState
         [SerializeField] private InputManager _inputManager;
         [SerializeField] private Image _predictionPointImage;
         
-        private GameState _currentGameState;
         private List<GameState> _gameStates;
 
         private void Start()
         {
             _gameStates = new List<GameState>()
             {
-                new ActionState(_inputManager, _predictionPointImage,this),
-                new PuzzleState(_inputManager, _predictionPointImage, this)
+                new ActionState(_predictionPointImage),
+                new StandState(_predictionPointImage)
             };
         
             SwitchState<ActionState>();
         }
 
+        private void OnEnable()
+        {
+            _inputManager.SwitchedToAction += SwitchState<ActionState>;
+            _inputManager.SwitchedToStand += SwitchState<StandState>;
+        }
+
+        private void OnDisable()
+        {
+            _inputManager.SwitchedToAction -= SwitchState<ActionState>;
+            _inputManager.SwitchedToStand -= SwitchState<StandState>;
+        }
+
         public void SwitchState<T>() where T : GameState
         {
             GameState state = _gameStates.FirstOrDefault(state => state is T);
-
-            _currentGameState?.Stop();
-       
             state.Start();
-            _currentGameState = state;
         }
     }
 }

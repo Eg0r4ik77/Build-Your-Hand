@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 namespace PuzzleGames
 {
     public abstract class PuzzleGame : MonoBehaviour
     {
-        private const float ClosingDurationInSeconds = .8f;
-
         protected bool IsInitialized { get; set; }
         public bool IsFinished { get; private set; }
 
         public event Action Finished;
+        public event Action Interrupted;
         
         public abstract void InitializeGame();
         public abstract void StartGame();
@@ -20,17 +18,12 @@ namespace PuzzleGames
 
         public void InterruptGame()
         {
-            StartCoroutine(CloseGame());
+            Interrupted?.Invoke();
+            gameObject.SetActive(false);
         }
 
         protected void FinishGame()
         {
-            StartCoroutine(CloseGame());
-        }
-        
-        private IEnumerator CloseGame()
-        {
-            yield return new WaitForSeconds(ClosingDurationInSeconds);
             IsFinished = true;
             Finished?.Invoke();
             gameObject.SetActive(false);

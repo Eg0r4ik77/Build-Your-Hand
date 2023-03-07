@@ -9,26 +9,23 @@ namespace PlayerInput
     [Serializable]
     public class ActionInputHandler : InputHandler
     {
-        [SerializeField, Range(1, 10)] private float _horizontalLookSpeed = 2f;
-        
         [SerializeField] private FirstPersonCamera _camera;
-        
         [SerializeField] private Shop _shop;
 
         private UniversalHand Hand => HandlingPlayer.Hand;
 
         private float VerticalAxis => Input.GetAxis("Vertical");
         private float HorizontalAxis => Input.GetAxis("Horizontal");
-    
         private float MouseHorizontalAxis => Input.GetAxis("Mouse X");
         private float MouseVerticalAxis => Input.GetAxis("Mouse Y");
+        private float MouseScrollWheel => Input.GetAxis("Mouse ScrollWheel");
 
         public override void Handle()
         {
             HandleMovementInput();
             HandleMouseLook();
             
-            Hand.SwitchSkill(Input.GetAxis("Mouse ScrollWheel"));
+            Hand.SwitchSkill(MouseScrollWheel);
             
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -64,7 +61,7 @@ namespace PlayerInput
         private void HandleMouseLook()
         {
             _camera.RotateVertically(MouseVerticalAxis);
-            HandlingPlayer.transform.rotation *= Quaternion.Euler(0, MouseHorizontalAxis * _horizontalLookSpeed, 0);
+            HandlingPlayer.RotateHorizontally(MouseHorizontalAxis);
         }
     }
 }

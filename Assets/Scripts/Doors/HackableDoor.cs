@@ -8,39 +8,44 @@ namespace Doors
 {
     public class HackableDoor : Door, IHackable
     {
-        [SerializeField] private GameBehaviour _gameBehaviour;
         [SerializeField] private PuzzleGame _puzzleGame;
-
-        public event Action<PuzzleGame> Hacked; 
+        public event Action GameLeft;
+        public event Action<PuzzleGame> HackingStarted; 
 
         private void OnEnable()
         {
-            _puzzleGame.Finished += _gameBehaviour.SwitchState<ActionState>;
-            _puzzleGame.Finished += OnHacked;
+            _puzzleGame.Finished += ApplyHack;
+            _puzzleGame.Interrupted += LeaveGame;
         }
 
         private void OnDisable()
         {
-            _puzzleGame.Finished -= _gameBehaviour.SwitchState<ActionState>;
-            _puzzleGame.Finished -= OnHacked;
+            _puzzleGame.Finished -= ApplyHack;
+            _puzzleGame.Interrupted -= LeaveGame;
         }
-
-        private void OnHacked()
-        {
-            Open();
-        }
-
+        
         public bool TryHack()
         {
             if (!_puzzleGame.IsFinished)
             {
-                Hacked?.Invoke(_puzzleGame);
+                HackingStarted?.Invoke(_puzzleGame);
                 _puzzleGame.gameObject.SetActive(true);
                 _puzzleGame.StartGame();
                 return true;
             }
 
             return false;
+        }
+
+        private void ApplyHack()
+        {
+            LeaveGame();
+            Open();
+        }
+
+        private void LeaveGame()
+        {
+            GameLeft?.Invoke();
         }
     }
 }

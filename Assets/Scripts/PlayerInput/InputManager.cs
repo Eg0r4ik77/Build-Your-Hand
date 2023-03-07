@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Doors;
 using Economy;
-using GameState;
 using PuzzleGames;
 using UnityEngine;
 
@@ -10,27 +10,25 @@ namespace PlayerInput
 {
     public class InputManager : MonoBehaviour
     {
-        [SerializeField] private GameBehaviour _gameBehaviour;
-        
-        [SerializeField] private ActionInputHandler _actionInputHandler;
         [SerializeField] private Player _player;
+        [SerializeField] private ActionInputHandler _actionInputHandler;
         [SerializeField] private Shop _shop;
         
         private PuzzleInputHandler _puzzleInputHandler;
         private ShopInputHandler _shopInputHandler;
-        
+        private InputHandler _currentInputHandler;
         private List<InputHandler> _inputHandlers;
 
-        private InputHandler _currentInputHandler;
-        
         private List<HackableDoor> _hackableDoors;
+
+        public event Action SwitchedToAction; 
+        public event Action SwitchedToStand; 
 
         private void Awake()
         {
             _puzzleInputHandler = new PuzzleInputHandler();
             _shopInputHandler = new ShopInputHandler();
             
-            // з о ч е м
             _inputHandlers = new List<InputHandler> { _actionInputHandler, _puzzleInputHandler, _shopInputHandler };
             
             _hackableDoors = FindObjectsOfType<HackableDoor>().ToList();
@@ -44,27 +42,26 @@ namespace PlayerInput
         private void OnEnable()
         {
             _shop.Opened += SwitchToShop;
-            _shopInputHandler.SwitchedToAction += _gameBehaviour.SwitchState<ActionState>;
+            _shopInputHandler.SwitchedToAction += SwitchToAction;
             
             foreach (HackableDoor hackableDoor in _hackableDoors)
             {
-                hackableDoor.Hacked += SwitchToPuzzle;
+                hackableDoor.HackingStarted += SwitchToPuzzle;
+                hackableDoor.GameLeft += SwitchToAction;
             }
-            
-            _puzzleInputHandler.SwitchedToAction += _gameBehaviour.SwitchState<ActionState>;
+            _puzzleInputHandler.SwitchedToAction += SwitchToAction;
         }
 
         private void OnDisable()
         {
             _shop.Opened -= SwitchToShop;
-            _shopInputHandler.SwitchedToAction -= _gameBehaviour.SwitchState<ActionState>;
+            _shopInputHandler.SwitchedToAction -= SwitchToAction;
             
             foreach (HackableDoor hackableDoor in _hackableDoors)
             {
-                hackableDoor.Hacked -= SwitchToPuzzle;
+                hackableDoor.HackingStarted -= SwitchToPuzzle;
             }
-            
-            _puzzleInputHandler.SwitchedToAction -= _gameBehaviour.SwitchState<ActionState>;
+            _puzzleInputHandler.SwitchedToAction -= SwitchToAction;
         }
 
         private void Update()
@@ -82,14 +79,23 @@ namespace PlayerInput
         private void SwitchToPuzzle(PuzzleGame game)
         {
             _puzzleInputHandler.SetPuzzleGame(game);
-            _gameBehaviour.SwitchState<PuzzleState>();
+            
+            SwitchedToStand?.Invoke();
+            SwitchInputHandling<PuzzleInputHandler>();
         }
 
         private void SwitchToShop(Shop shop)
         {
             _shopInputHandler.SetShop(shop);
-            _gameBehaviour.SwitchState<PuzzleState>();
+            
+            SwitchedToStand?.Invoke();
             SwitchInputHandling<ShopInputHandler>();
+        }
+
+        private void SwitchToAction()
+        {
+            SwitchedToAction?.Invoke();
+            SwitchInputHandling<ActionInputHandler>();
         }
     }
 }

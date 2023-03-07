@@ -18,7 +18,7 @@ namespace PlayerCamera
     
         private void Awake()
         {
-            _camera = GetComponent<UnityEngine.Camera>();
+            _camera = GetComponent<Camera>();
         }
 
         private void Start()
