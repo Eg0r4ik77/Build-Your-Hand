@@ -30,11 +30,6 @@ namespace PlayerInput
             
             Hand.SwitchSkill(Input.GetAxis("Mouse ScrollWheel"));
             
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                
-            }
-
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 if (HandlingPlayer.HasNoSkills())

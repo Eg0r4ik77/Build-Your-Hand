@@ -8,6 +8,8 @@ using UnityEngine;
 public class UniversalHand : MonoBehaviour
 {
     [SerializeField] private List<Color> _skillColors;
+    [SerializeField] private ParticleSystem _shootParticles;
+    
     private Color _defaultColor;
 
     private Player _player;
@@ -53,12 +55,16 @@ public class UniversalHand : MonoBehaviour
 
     public bool TryUseCurrentSkill()
     {
-        return CurrentSkill switch
+        switch (CurrentSkill)
         {
-            Hacking => TryUseSkill<IHackable, Hacking>(),
-            Shooting => TryUseSkill<IShootable, Shooting>(),
-            _ => false
-        };
+            case Hacking:
+                return TryUseSkill<IHackable, Hacking>();
+            case Shooting:
+                _shootParticles.Play();
+                return TryUseSkill<IShootable, Shooting>();
+            default:
+                return false;
+        }
     }
     
     public void AddSkill(Skill skill)
