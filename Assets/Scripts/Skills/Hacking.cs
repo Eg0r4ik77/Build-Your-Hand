@@ -9,7 +9,7 @@
                 return hackableTarget.TryHack();
             }
 
-            return false;
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Doors;
+using Economy;
 using GameState;
 using PuzzleGames;
 using UnityEngine;
@@ -13,17 +14,25 @@ namespace PlayerInput
         
         [SerializeField] private ActionInputHandler _actionInputHandler;
         [SerializeField] private Player _player;
-    
-        private PuzzleInputHandler _puzzleInputHandler;
-        private List<InputHandler> _inputHandlers;
+        [SerializeField] private Shop _shop;
         
+        private PuzzleInputHandler _puzzleInputHandler;
+        private ShopInputHandler _shopInputHandler;
+        
+        private List<InputHandler> _inputHandlers;
+
         private InputHandler _currentInputHandler;
+        
         private List<HackableDoor> _hackableDoors;
 
         private void Awake()
         {
             _puzzleInputHandler = new PuzzleInputHandler();
-            _inputHandlers = new List<InputHandler> { _actionInputHandler, _puzzleInputHandler };
+            _shopInputHandler = new ShopInputHandler();
+            
+            // з о ч е м
+            _inputHandlers = new List<InputHandler> { _actionInputHandler, _puzzleInputHandler, _shopInputHandler };
+            
             _hackableDoors = FindObjectsOfType<HackableDoor>().ToList();
         }
 
@@ -34,6 +43,9 @@ namespace PlayerInput
 
         private void OnEnable()
         {
+            _shop.Opened += SwitchToShop;
+            _shopInputHandler.SwitchedToAction += _gameBehaviour.SwitchState<ActionState>;
+            
             foreach (HackableDoor hackableDoor in _hackableDoors)
             {
                 hackableDoor.Hacked += SwitchToPuzzle;
@@ -44,6 +56,9 @@ namespace PlayerInput
 
         private void OnDisable()
         {
+            _shop.Opened -= SwitchToShop;
+            _shopInputHandler.SwitchedToAction -= _gameBehaviour.SwitchState<ActionState>;
+            
             foreach (HackableDoor hackableDoor in _hackableDoors)
             {
                 hackableDoor.Hacked -= SwitchToPuzzle;
@@ -68,6 +83,13 @@ namespace PlayerInput
         {
             _puzzleInputHandler.SetPuzzleGame(game);
             _gameBehaviour.SwitchState<PuzzleState>();
+        }
+
+        private void SwitchToShop(Shop shop)
+        {
+            _shopInputHandler.SetShop(shop);
+            _gameBehaviour.SwitchState<PuzzleState>();
+            SwitchInputHandling<ShopInputHandler>();
         }
     }
 }

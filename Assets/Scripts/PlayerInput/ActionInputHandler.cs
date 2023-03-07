@@ -1,4 +1,5 @@
 using System;
+using Economy;
 using PlayerCamera;
 using Skills;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace PlayerInput
         [SerializeField, Range(1, 10)] private float _horizontalLookSpeed = 2f;
         
         [SerializeField] private FirstPersonCamera _camera;
+        
+        [SerializeField] private Shop _shop;
 
         private float VerticalAxis => Input.GetAxis("Vertical");
         private float HorizontalAxis => Input.GetAxis("Horizontal");
@@ -30,13 +33,20 @@ namespace PlayerInput
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                HandlingPlayer.Hand.TryUseSkill<IShootable, Shooting>();
-                _camera.Shake();
+                if (HandlingPlayer.Hand.TryUseSkill<IShootable, Shooting>())
+                {
+                    _camera.Shake();                    
+                }
             }
             
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 HandlingPlayer.TryAttack();
+            }
+
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                _shop.Open();
             }
         }
 

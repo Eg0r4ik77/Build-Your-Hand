@@ -14,10 +14,9 @@
             if (target is IShootable shootableTarget)
             {
                 shootableTarget.TryApplyShoot(_damage);
-                return true;
             }
 
-            return false;
+            return true;
         }
     }
 }

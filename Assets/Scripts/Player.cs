@@ -10,12 +10,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float _health = 100f;
     
     [SerializeField] private Camera _camera;
-
-    private Wallet _wallet;
+    
     private PlayerMovement _movement;
-    
+
     private float _maxHealth;
-    
+
+    public ResourcesWallet Wallet { get; } = new();
+
     public UniversalHand Hand { get; set; }
 
     public event Action<float> Damaged;
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        _wallet = new Wallet();
+        Hand = new UniversalHand(this);
         _maxHealth = _health;
     }
 
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour
 
     public void AddResource(Resource resource)
     {
-        _wallet.Add(resource);
+        Wallet.Add(resource.Value);
     }
     
     public void TryAttack()

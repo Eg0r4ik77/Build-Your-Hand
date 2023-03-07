@@ -1,10 +1,7 @@
-﻿using Economy;
-
-namespace Skills
+﻿namespace Skills
 {
-    public abstract class Skill: IPurchasable
+    public abstract class Skill
     {
-        public float Cost { get; set; }
         public abstract bool TryActivate(ISkillTarget target);
     }
 }

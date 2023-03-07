@@ -4,8 +4,8 @@ using Skills;
 
 public class UniversalHand
 {
-    private Player _player;
-    private List<Skill> _skills;
+    private readonly Player _player;
+    private readonly List<Skill> _skills;
 
     public UniversalHand(Player player)
     {
@@ -25,7 +25,7 @@ public class UniversalHand
         var target = _player.TryGetTarget<T0>();
         var skill = TryGetSkill<T1>();
         
-        if (target != null && skill != null)
+        if (skill != null)
         {
             return skill.TryActivate(target);
         }
