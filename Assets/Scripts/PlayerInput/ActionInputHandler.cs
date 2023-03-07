@@ -1,4 +1,5 @@
 using System;
+using PlayerCamera;
 using Skills;
 using UnityEngine;
 
@@ -24,19 +25,18 @@ namespace PlayerInput
             
             if (Input.GetKeyDown(KeyCode.E))
             {
-                HandlingPlayer.TryUseSkill<IHackable, Hacking>();
+                HandlingPlayer.Hand.TryUseSkill<IHackable, Hacking>();
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                HandlingPlayer.TryUseSkill<IShootable, Shooting>();
+                HandlingPlayer.Hand.TryUseSkill<IShootable, Shooting>();
                 _camera.Shake();
             }
             
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 HandlingPlayer.TryAttack();
-                _camera.Shake();
             }
         }
 

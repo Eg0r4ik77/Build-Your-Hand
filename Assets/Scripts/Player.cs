@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Skills;
+using Economy;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
@@ -12,11 +10,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float _health = 100f;
     
     [SerializeField] private Camera _camera;
-    
+
+    private Wallet _wallet;
     private PlayerMovement _movement;
-    private List<Skill> _skills;
     
     private float _maxHealth;
+    
+    public UniversalHand Hand { get; set; }
 
     public event Action<float> Damaged;
     
@@ -27,8 +27,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _wallet = new Wallet();
         _maxHealth = _health;
-        _skills = new List<Skill> { new Hacking(), new Shooting(100f) };
     }
 
     public void Move(Vector3 motion)
@@ -53,6 +53,11 @@ public class Player : MonoBehaviour
     {
         print("Die");
     }
+
+    public void AddResource(Resource resource)
+    {
+        _wallet.Add(resource);
+    }
     
     public void TryAttack()
     {
@@ -67,27 +72,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void AddSkill(Skill skill)
-    {
-        _skills.Add(skill);
-    }
-
-    public bool TryUseSkill<T0, T1>() 
-        where T0 : ISkillTarget
-        where T1 : Skill
-    {
-        T0 target = TryGetTarget<T0>();
-        T1 skill = TryGetSkill<T1>();
-        
-        if (target != null && skill != null)
-        {
-            return skill.TryActivate(target);
-        }
-
-        return false;
-    }
-
-    private T TryGetTarget<T>()
+    public T TryGetTarget<T>()
     {
         T target = default;
 
@@ -97,10 +82,5 @@ public class Player : MonoBehaviour
         }
             
         return target;
-    }
-    
-    private T TryGetSkill<T>() where T : Skill
-    {
-        return _skills.FirstOrDefault(s => s is T) as T;
     }
 }
