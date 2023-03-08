@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Skills;
 using TMPro;
 using UnityEngine;
@@ -34,8 +33,8 @@ namespace Economy
 
         private Animator _animator;
 
-        private int AppearanceAnimationHash = Animator.StringToHash("Appearance");
-        private int DisappearanceAnimationHash = Animator.StringToHash("Disappearance");
+        private readonly int AppearanceAnimationHash = Animator.StringToHash("Appearance");
+        private readonly int DisappearanceAnimationHash = Animator.StringToHash("Disappearance");
         
         public event Action<Shop> Opened;
 

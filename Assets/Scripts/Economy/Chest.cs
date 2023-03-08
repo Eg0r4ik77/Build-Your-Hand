@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Skills;
 using UnityEngine;
 
 namespace Economy
 {
-    public class Chest : MonoBehaviour, IApplyableDamage
+    public class Chest : MonoBehaviour, IApplyableDamage, IShootable
     {
         [SerializeField] private List<int> _purchaseValues;
 
@@ -38,6 +39,11 @@ namespace Economy
             }
             
             yield return null;
+        }
+
+        public void TryApplyShoot(float damage)
+        {
+            TryApplyDamage(damage);
         }
     }
 }

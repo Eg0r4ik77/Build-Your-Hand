@@ -100,14 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961698719d0348c29e2030eee37ad898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 3
   _damage: 10
   _health: 10
   _hitMaterial: {fileID: 2100000, guid: 81658de56ec63834f8f3ebf4dde04b56, type: 2}
   _pushForce: 2
   _pushTime: 0.3
-  _highlightTime: 0.5
-  _target: {fileID: 5246692205832578347, guid: ecfa45949cfc8bf48b420ef96a1e367f, type: 3}
+  _highlightTime: 0.2
+  _target: {fileID: 0}
 --- !u!114 &1214846987440149292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"Cooldown":{"_value":1.5,"_name":"Cooldown","_id":"d4403eaf-37d8-4cd5-9fa8-7f791e6227b7","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"PatrolRange":{"_value":6.0,"_name":"PatrolRange","_id":"21d1b157-4db8-48e8-9798-68349dc47e41","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"Enemy":{"_value":1,"_name":"Enemy","_id":"596354ac-aca9-4636-b92f-d9b78e328230","$type":"NodeCanvas.Framework.Variable`1[[Enemies.Enemy,
-    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"RotationSpeed":{"_value":5.0,"_name":"RotationSpeed","_id":"59fe191f-f602-4229-90d5-1eed6c07a46f","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"RotationSpeed":{"_value":6.0,"_name":"RotationSpeed","_id":"59fe191f-f602-4229-90d5-1eed6c07a46f","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}},"derivedData":{"repeat":true,"$type":"NodeCanvas.BehaviourTrees.BehaviourTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
@@ -189,7 +189,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

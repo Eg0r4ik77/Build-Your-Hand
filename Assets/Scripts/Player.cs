@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Economy;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerMovement), typeof(Animator))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _skillApplyRange = 2f;
+    [SerializeField] private float _skillApplyRange = 8f;
+    [SerializeField] private float _attackRange = 6f;
     
     [SerializeField] private float _damage = 2f;
     [SerializeField] private float _maxHealth = 100f;
@@ -14,8 +17,11 @@ public class Player : MonoBehaviour
     [SerializeField] private UniversalHand _hand;
     
     private PlayerMovement _movement;
+    private Animator _animator;
 
     private float _health;
+    
+    private readonly int _punchAnimationHash = Animator.StringToHash("PlayerPunch");
 
     public UniversalHand Hand => _hand;
     public ResourcesWallet Wallet { get; } = new();
@@ -25,11 +31,13 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
+        _animator = GetComponent<Animator>();
+        
+        _health = _maxHealth;
     }
 
     private void Start()
     {
-        _health = _maxHealth;
         _hand.SetPlayer(this);
     }
 
@@ -42,8 +50,6 @@ public class Player : MonoBehaviour
     {
         _health -= damage;
         Damaged?.Invoke(_health / _maxHealth);
-        
-        print(_health);
         
         if (_health <= 0)
         {
@@ -63,13 +69,13 @@ public class Player : MonoBehaviour
     
     public void TryAttack()
     {
-        float attackRange = _skillApplyRange;
+        _animator.Play(_punchAnimationHash);
         
-        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit hit, attackRange))
+        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit hit, _attackRange))
         {
             if (hit.transform.TryGetComponent(out IApplyableDamage applyableDamageTarget))
             {
-                applyableDamageTarget.TryApplyDamage(_damage);
+                StartCoroutine(AttackCoroutine(applyableDamageTarget));
             }
         }
     }
@@ -86,6 +92,13 @@ public class Player : MonoBehaviour
         return target;
     }
 
+    private IEnumerator AttackCoroutine(IApplyableDamage target)
+    {
+        const float attackAnimationTime = .15f;
+        yield return new WaitForSeconds(attackAnimationTime);
+        target.TryApplyDamage(_damage);
+    }
+    
     public void RotateHorizontally(float horizontalAxisRotation)
     {
         _movement.RotateHorizontally(horizontalAxisRotation);

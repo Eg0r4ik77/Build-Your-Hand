@@ -26,6 +26,7 @@ namespace Enemies
         private NavMeshAgent _navMeshAgent;
 
         private bool _isHighlighted;
+        private bool _detectedTarget;
         
         public bool DetectedTarget { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PuzzleGames;
@@ -24,8 +23,11 @@ namespace FindPairsGame
 
         private void OnDisable()
         {
-            HideCells(_openedCellsPerMove);
-            _openedCellsPerMove = new List<Cell>();
+            if (_openedCellsPerMove.Count == OpeningPerMoveCount && !AreEqualOpenedCellsPerMove())
+            {
+                HideCells(_openedCellsPerMove);
+                _openedCellsPerMove = new List<Cell>();
+            }
         }
 
         protected override void InitializeGame()
@@ -33,12 +35,6 @@ namespace FindPairsGame
             IsInitialized = true;
             _openedCellsPerMove = new List<Cell>();
             GenerateField();
-        }
-
-        public override void StartGame()
-        {
-            base.StartGame();
-            StartCoroutine(HideCellsAfterMove(_openedCellsPerMove));
         }
 
         public override void UpdateGame()
@@ -51,12 +47,13 @@ namespace FindPairsGame
             if (AreEqualOpenedCellsPerMove())
             {
                 _openedCellsCount += OpeningPerMoveCount;
+                _openedCellsPerMove = new List<Cell>();  
             }
             else
             {
                 StartCoroutine(HideCellsAfterMove(_openedCellsPerMove));
             }
-
+            
             if (IsGameOver())
             {
                 FinishGame();
