@@ -62,7 +62,7 @@ namespace Economy
             {
                 new Shooting(_shootingDamage),
                 new Hacking(),
-                new Analysis()
+                new Acceleration()
             };
             
             _wallet = _player.Wallet;

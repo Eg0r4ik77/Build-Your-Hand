@@ -8,8 +8,9 @@ namespace Doors
     public class HackableDoor : Door, IHackable
     {
         [SerializeField] private PuzzleGame _puzzleGame;
-        public event Action GameLeft;
+
         public event Action<PuzzleGame> GameStarted; 
+        public event Action GameLeft;
 
         private void OnEnable()
         {

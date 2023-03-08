@@ -8,6 +8,7 @@ namespace PuzzleGames
     public class PuzzleGamesSwitcher : MonoBehaviour
     {
         [SerializeField] private List<PuzzleGame> _puzzleGames;
+        [SerializeField] private GameObject _puzzleGamePanel;
         
         private List<HackableDoor> _hackableDoors;
         private PuzzleGame _currentGame;
@@ -47,6 +48,8 @@ namespace PuzzleGames
 
         private void ActivateCurrentGame(PuzzleGame game)
         {
+            _puzzleGamePanel.SetActive(true);
+            
             _currentGame = game;
             _currentGame.gameObject.SetActive(true);
             _currentGame.StartGame();
@@ -54,6 +57,8 @@ namespace PuzzleGames
 
         private void DeactivateCurrentGame()
         {
+            _puzzleGamePanel.SetActive(false);
+            
             _currentGame.gameObject.SetActive(false);
             _currentGame = null;
         }

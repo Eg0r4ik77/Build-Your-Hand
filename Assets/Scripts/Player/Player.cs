@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Economy;
+using Skills;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement), typeof(Animator))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IAcceleratable
 {
     [SerializeField] private float _skillApplyRange = 8f;
     [SerializeField] private float _attackRange = 6f;
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     public ResourcesWallet Wallet { get; } = new();
 
     public event Action<float> Damaged;
+    public event Action Died;
     
     private void Awake()
     {
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Wallet.Add(100f);
         _hand.SetPlayer(this);
     }
 
@@ -59,7 +61,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        print("Die");
+        Died?.Invoke();
     }
 
     public void AddResource(Resource resource)
@@ -94,8 +96,8 @@ public class Player : MonoBehaviour
 
     private IEnumerator AttackCoroutine(IApplyableDamage target)
     {
-        const float attackAnimationTime = .15f;
-        yield return new WaitForSeconds(attackAnimationTime);
+        const float attackAnimationTimeInSeconds = .15f;
+        yield return new WaitForSeconds(attackAnimationTimeInSeconds);
         target.TryApplyDamage(_damage);
     }
     
@@ -107,5 +109,10 @@ public class Player : MonoBehaviour
     public bool HasNoSkills()
     {
         return !_hand.Usable();
+    }
+
+    public bool TryAccelerate()
+    {
+        throw new NotImplementedException();
     }
 }

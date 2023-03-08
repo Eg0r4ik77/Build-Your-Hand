@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace PuzzleGames
@@ -30,6 +31,14 @@ namespace PuzzleGames
 
         protected void FinishGame()
         {
+            StartCoroutine(FinishGameCoroutine());
+        }
+
+        private IEnumerator FinishGameCoroutine()
+        {
+            const float deactivateTimeInSeconds = .3f;
+            yield return new WaitForSeconds(deactivateTimeInSeconds);
+            
             IsFinished = true;
             Finished?.Invoke();
         }

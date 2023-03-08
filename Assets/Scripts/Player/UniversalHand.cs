@@ -102,7 +102,7 @@ public class UniversalHand : MonoBehaviour
         {
             Shooting => _skillColors[0],
             Hacking => _skillColors[1],
-            Analysis => _skillColors[2],
+            Acceleration => _skillColors[2],
             _ => _defaultColor
         };
     }
