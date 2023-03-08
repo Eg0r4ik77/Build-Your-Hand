@@ -2,7 +2,7 @@
 {
     public class Shooting : Skill
     {
-        private float _damage;
+        private readonly float _damage;
 
         public Shooting(float damage)
         {

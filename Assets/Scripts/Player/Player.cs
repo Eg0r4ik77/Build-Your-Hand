@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using Economy;
+using Movement;
 using Skills;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement), typeof(Animator))]
-public class Player : MonoBehaviour, IAcceleratable
+public class Player : MonoBehaviour, IUniversalHandOwner, IAcceleratable
 {
     [SerializeField] private float _skillApplyRange = 8f;
     [SerializeField] private float _attackRange = 6f;
@@ -16,13 +17,13 @@ public class Player : MonoBehaviour, IAcceleratable
     [SerializeField] private Camera _camera;
     [SerializeField] private UniversalHand _hand;
     
-    private PlayerMovement _movement;
-    private Animator _animator;
-
     private float _health;
-    
-    private readonly int _punchAnimationHash = Animator.StringToHash("PlayerPunch");
 
+    private PlayerMovement _movement;
+    
+    private Animator _animator;
+    private readonly int _punchAnimationHash = Animator.StringToHash("PlayerPunch");
+    
     public UniversalHand Hand => _hand;
     public ResourcesWallet Wallet { get; } = new();
 
@@ -105,14 +106,24 @@ public class Player : MonoBehaviour, IAcceleratable
     {
         _movement.RotateHorizontally(horizontalAxisRotation);
     }
+
+    public void SetMovement(IMovementStrategy strategy)
+    {
+        _movement.Strategy = strategy;
+    }
     
     public bool HasNoSkills()
     {
         return !_hand.Usable();
     }
-
-    public bool TryAccelerate()
+    
+    public void TryAccelerate(float acceleration)
     {
-        throw new NotImplementedException();
+        _movement.Strategy = new AcceleratedMovement(acceleration);
+    }
+
+    public void ResetAcceleration()
+    {
+        _movement.Strategy = new SimpleMovement();
     }
 }

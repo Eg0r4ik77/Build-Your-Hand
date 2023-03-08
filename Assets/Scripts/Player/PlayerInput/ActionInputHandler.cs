@@ -1,5 +1,6 @@
 using System;
 using Economy;
+using Movement;
 using PlayerCamera;
 using Skills;
 using UnityEngine;
@@ -35,11 +36,15 @@ namespace PlayerInput
                 }
                 else
                 {
-                    bool result = Hand.TryUseCurrentSkill();
-                    
-                    if (Hand.CurrentSkill is Shooting && result)
+                    Skill skill = Hand.CurrentSkill;
+                    if (skill is Shooting or Hacking)
                     {
-                        _camera.Shake();                    
+                        bool result = Hand.TryUseCurrentSkill();
+                    
+                        if (skill is Shooting && result)
+                        {
+                            _camera.Shake();                    
+                        }   
                     }
                 }
             }
@@ -48,6 +53,8 @@ namespace PlayerInput
             {
                 _shop.Open();
             }
+            
+            Hand.TryUseAcceleration();
         }
 
         private void HandleMovementInput()

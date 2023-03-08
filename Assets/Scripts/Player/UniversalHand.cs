@@ -10,15 +10,15 @@ public class UniversalHand : MonoBehaviour
     [SerializeField] private List<Color> _skillColors;
     [SerializeField] private ParticleSystem _shootParticles;
     
-    private Color _defaultColor;
-
-    private Player _player;
+    private IUniversalHandOwner _owner;
     
     private List<Skill> _skills;
-    private int _currentSkillIndex;
-
+    private Color _defaultColor;
+    
     private MeshRenderer _meshRenderer;
     
+    private int _currentSkillIndex;
+
     public Skill CurrentSkill { get; private set; }
 
     private void Awake()
@@ -32,9 +32,9 @@ public class UniversalHand : MonoBehaviour
         _defaultColor = _meshRenderer.material.color;
     }
 
-    public void SetPlayer(Player player)
+    public void SetPlayer(IUniversalHandOwner owner)
     {
-        _player = player;
+        _owner = owner;
     }
     
     public void SwitchSkill(float mouseScroll)
@@ -71,6 +71,34 @@ public class UniversalHand : MonoBehaviour
         }
     }
     
+    // Unity handles the event {shift held down} in OnGUI
+    // But ActionInputHandler is not Monobehaviour...
+    // So I'm gonna handle shift events here...
+    public void TryUseAcceleration()
+    {
+        if (_owner is IAcceleratable acceleratableOwner)
+        {
+            if (CurrentSkill is Acceleration acceleration)
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    acceleratableOwner.TryAccelerate(acceleration.Value);
+                }
+                else
+                {
+                    acceleratableOwner.ResetAcceleration();
+                }
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    acceleratableOwner.ResetAcceleration();
+                }
+            }
+        }
+    }
+    
     public void AddSkill(Skill skill)
     {
         _skills.Add(skill);
@@ -80,7 +108,7 @@ public class UniversalHand : MonoBehaviour
         where T0 : ISkillTarget
         where T1 : Skill
     {
-        var target = _player.TryGetTarget<T0>();
+        var target = _owner.TryGetTarget<T0>();
         var skill = TryGetSkill<T1>();
         
         if (skill != null)

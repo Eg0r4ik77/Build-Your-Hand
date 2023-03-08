@@ -22,6 +22,7 @@ namespace Economy
         [SerializeField] private Color _purchasedColor;
  
         [SerializeField] private float _shootingDamage = 3f;
+        [SerializeField] private float _acceleration = 3f;
         
         private List<Skill> _skills;
         private ResourcesWallet _wallet;
@@ -62,7 +63,7 @@ namespace Economy
             {
                 new Shooting(_shootingDamage),
                 new Hacking(),
-                new Acceleration()
+                new Acceleration(_acceleration)
             };
             
             _wallet = _player.Wallet;
