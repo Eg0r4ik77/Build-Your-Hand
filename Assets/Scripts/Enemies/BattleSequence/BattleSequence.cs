@@ -82,13 +82,13 @@ namespace Enemies.BattleSequence
             
             spawnInfo.RandomizePoints();
             
-            var enemies = _enemySpawner.SpawnWave(spawnInfo);
+            List<Enemy> enemies = _enemySpawner.SpawnWave(spawnInfo);
             InitializeEnemies(enemies);
         }
 
         private void InitializeEnemies(List<Enemy> enemies)
         {
-            foreach (var enemy in enemies)
+            foreach (Enemy enemy in enemies)
             {
                 // enemy set target;
                 enemy.Died += UpdateSequenceScenario;
@@ -101,7 +101,9 @@ namespace Enemies.BattleSequence
         private void TrySetObstacles(bool state)
         {
             foreach (var obstacle in _obstacles.Where(obstacle => obstacle))
-                obstacle.SetActive(state);
+            {
+                 obstacle.SetActive(state);
+            }
         }
     }
 }

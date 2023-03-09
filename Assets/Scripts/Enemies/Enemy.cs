@@ -15,23 +15,26 @@ namespace Enemies
         
         [SerializeField] private float _health = 10f;
         [SerializeField] private Material _hitMaterial;
+        [SerializeField] private Transform _spawnPoint;
         
         [SerializeField] private float _pushForce = 2f;
         [SerializeField] private float _pushTime = .5f;
 
         [SerializeField] private float _highlightTime = .5f;
 
-        [SerializeReference] private Player _target;
-    
         private MeshRenderer _meshRenderer;
         private NavMeshAgent _navMeshAgent;
-
+        
         private bool _isHighlighted;
         private bool _detectedTarget;
-        
-        public bool DetectedTarget { get; set; }
 
-        public event Action Damaged;
+        public IEnemyTarget Target { get; set; }
+
+        public bool DetectedTarget => _detectedTarget;
+
+        public Transform SpawnPoint => _spawnPoint;
+
+        public event Action<Enemy> Detected;
         public event Action Died;
 
         private void Awake()
@@ -47,12 +50,9 @@ namespace Enemies
 
         public void Attack()
         {
-            if (_target)
-            {
-                _target.TryApplyDamage(_damage);
-            }
+            Target?.TryApplyDamage(_damage);
         }
-    
+
         public void TryApplyDamage(float damage)
         {
             if (IsDead())
@@ -61,7 +61,7 @@ namespace Enemies
             }
             
             _health -= damage;
-            Damaged?.Invoke();
+            TryDetectTarget();
 
             if (IsDead())
             {
@@ -75,10 +75,18 @@ namespace Enemies
             }
             
             Transform victimTransform = transform;
-            Vector3 pushVector = (victimTransform.position - _target.transform.position).normalized * _pushForce;
+            Vector3 normalizedVector =
+                (victimTransform.position - ((MonoBehaviour)Target).transform.position).normalized;
+            Vector3 pushVector = normalizedVector * _pushForce;
+            
             ApplyPush(pushVector, _pushTime);
         }
 
+        public bool IsDead()
+        {
+            return _health <= 0;
+        }
+        
         private void Die()
         {
             Died?.Invoke();
@@ -109,10 +117,14 @@ namespace Enemies
         {
             TryApplyDamage(damage);
         }
-        
-        private bool IsDead()
+
+        public void TryDetectTarget()
         {
-            return _health <= 0;
+            if (!_detectedTarget)
+            {
+                _detectedTarget = true;
+                Detected?.Invoke(this);
+            }
         }
     }
 }

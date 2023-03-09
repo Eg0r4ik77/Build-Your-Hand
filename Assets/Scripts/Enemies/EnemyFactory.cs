@@ -12,8 +12,8 @@ namespace Enemies
         {
             return type switch
             {
-                EnemyType.Simple => Instantiate(_simpleEnemyPrefab),
-                EnemyType.Fast => Instantiate(_fastEnemyPrefab),
+                EnemyType.Simple => _simpleEnemyPrefab,
+                EnemyType.Fast => _fastEnemyPrefab,
                 _ => null
             };
         }

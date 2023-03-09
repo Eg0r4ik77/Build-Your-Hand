@@ -39,9 +39,12 @@ namespace Enemies.Spawn
 
         private Enemy Spawn(EnemyType type, Vector3 position)
         {
-            Enemy enemy = _enemyFactory.Get(type);
-            enemy.transform.position = position;
+            Enemy enemyPrefab = _enemyFactory.Get(type);
+
+            Vector3 additionalVector = enemyPrefab.transform.position -enemyPrefab.SpawnPoint.position;
+            Vector3 spawnPosition = position + additionalVector;
             
+            var enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             return enemy;
         }
     }
