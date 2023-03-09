@@ -36,6 +36,7 @@ namespace Economy
 
         private readonly int AppearanceAnimationHash = Animator.StringToHash("Appearance");
         private readonly int DisappearanceAnimationHash = Animator.StringToHash("Disappearance");
+        private readonly int IsShopOpenedHash = Animator.StringToHash("Opened");
         
         public event Action<Shop> Opened;
 
@@ -149,19 +150,16 @@ namespace Economy
         {
             Opened?.Invoke(this);
             _panel.SetActive(true);
+            
             _animator.Play(AppearanceAnimationHash);
+            _animator.SetBool(IsShopOpenedHash, true);
+            
         }
 
         public void Close()
         {
-            StartCoroutine(CloseCoroutine());
-        }
-
-        private IEnumerator CloseCoroutine()
-        {
             _animator.Play(DisappearanceAnimationHash);
-            yield return new WaitForSeconds(.5f);
-            _panel.SetActive(false);
+            _animator.SetBool(IsShopOpenedHash, false);
         }
     }
 }

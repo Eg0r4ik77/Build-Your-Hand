@@ -15,6 +15,10 @@ namespace PlayerInput
 
         private UniversalHand Hand => HandlingPlayer.Hand;
 
+
+        private bool IsUseSkillOrAttackInput => Input.GetKeyDown(KeyCode.Mouse0);
+        private bool IsOpenShopInput => Input.GetKeyDown(KeyCode.B);
+        
         private float VerticalAxis => Input.GetAxis("Vertical");
         private float HorizontalAxis => Input.GetAxis("Horizontal");
         private float MouseHorizontalAxis => Input.GetAxis("Mouse X");
@@ -28,7 +32,7 @@ namespace PlayerInput
             
             Hand.SwitchSkill(MouseScrollWheel);
             
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (IsUseSkillOrAttackInput)
             {
                 if (HandlingPlayer.HasNoSkills())
                 {
@@ -36,20 +40,11 @@ namespace PlayerInput
                 }
                 else
                 {
-                    Skill skill = Hand.CurrentSkill;
-                    if (skill is Shooting or Hacking)
-                    {
-                        bool result = Hand.TryUseCurrentSkill();
-                    
-                        if (skill is Shooting && result)
-                        {
-                            _camera.Shake();                    
-                        }   
-                    }
+                    HandleSkill(Hand.CurrentSkill);
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.B))
+            if (IsOpenShopInput)
             {
                 _shop.Open();
             }
@@ -69,6 +64,19 @@ namespace PlayerInput
         {
             _camera.RotateVertically(MouseVerticalAxis);
             HandlingPlayer.RotateHorizontally(MouseHorizontalAxis);
+        }
+
+        private void HandleSkill(Skill skill)
+        {
+            if (skill is Shooting or Hacking)
+            {
+                bool result = Hand.TryUseCurrentSkill();
+                    
+                if (skill is Shooting && result)
+                {
+                    _camera.Shake();                    
+                }   
+            }
         }
     }
 }

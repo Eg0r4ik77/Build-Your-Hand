@@ -4,14 +4,13 @@ namespace GameState
 {
     public abstract class GameState
      {
-         protected readonly Image PredictionPointImage;
+         protected readonly CursorSwitcher Switcher;
 
-         protected GameState(Image predictionPoint)
+         protected GameState(CursorSwitcher switcher)
          {
-             PredictionPointImage = predictionPoint;
+             Switcher = switcher;
          }
      
          public abstract void Start();
-         public abstract void SetCursor();
      }
 }

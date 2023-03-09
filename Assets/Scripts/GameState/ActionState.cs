@@ -1,22 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace GameState
+﻿namespace GameState
 {
     public class ActionState : GameState
     {
-        public ActionState(Image predictionPoint) : base(predictionPoint){}
+        public ActionState(CursorSwitcher switcher) : base(switcher) {}
 
         public override void Start()
         {
-            PredictionPointImage.gameObject.SetActive(true);
-            SetCursor();
-        }
-
-        public override void SetCursor()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Switcher.SwitchCursorToPredictionPoint();
         }
     }
 }

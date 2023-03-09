@@ -7,6 +7,9 @@ namespace PlayerInput
     public class PuzzleInputHandler : InputHandler
     {
         private PuzzleGame _currentGame;
+        
+        private bool IsCloseGameInput => Input.GetKeyDown(KeyCode.E);
+
         public event Action SwitchedToAction;
 
         public void SetPuzzleGame(PuzzleGame game)
@@ -16,7 +19,7 @@ namespace PlayerInput
 
         public override void Handle()
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (IsCloseGameInput)
             {
                 _currentGame.InterruptGame();
                 SwitchedToAction?.Invoke();

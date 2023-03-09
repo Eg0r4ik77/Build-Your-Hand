@@ -7,6 +7,9 @@ namespace PlayerInput
     public class ShopInputHandler : InputHandler
     {
         private Shop _shop;
+
+        private bool IsCloseShopInput => Input.GetKeyDown(KeyCode.B);
+        
         public event Action SwitchedToAction;
 
         public void SetShop(Shop shop)
@@ -16,7 +19,7 @@ namespace PlayerInput
 
         public override void Handle()
         {
-            if (Input.GetKeyDown(KeyCode.B))
+            if (IsCloseShopInput)
             {
                 _shop.Close();
                 SwitchedToAction?.Invoke();

@@ -73,8 +73,12 @@ namespace PlayerInput
         public void SwitchInputHandling<T>() where T : InputHandler
         {
             InputHandler handler = _inputHandlers.FirstOrDefault(handler => handler is T);
-            handler.SetPlayer(_player);
-            _currentInputHandler = handler;
+            
+            if (handler != null)
+            {
+                handler.SetPlayer(_player);
+                _currentInputHandler = handler;
+            }
         }
 
         private void SwitchToPuzzle(PuzzleGame game)

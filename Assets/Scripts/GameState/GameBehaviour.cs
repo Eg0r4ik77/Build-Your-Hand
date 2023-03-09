@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PlayerInput;
 using UnityEngine;
@@ -8,17 +9,23 @@ namespace GameState
 {
     public class GameBehaviour : MonoBehaviour, IGameStateSwitcher
     {
-        [SerializeField] private InputManager _inputManager;
-        [SerializeField] private Image _predictionPointImage;
+        private InputManager _inputManager;
+        private CursorSwitcher _cursorSwitcher;
         
         private List<GameState> _gameStates;
+
+        private void Awake()
+        {
+            _inputManager = FindObjectOfType<InputManager>();
+            _cursorSwitcher = FindObjectOfType<CursorSwitcher>();
+        }
 
         private void Start()
         {
             _gameStates = new List<GameState>()
             {
-                new ActionState(_predictionPointImage),
-                new StandState(_predictionPointImage)
+                new ActionState(_cursorSwitcher),
+                new StandState(_cursorSwitcher)
             };
         
             SwitchState<ActionState>();
@@ -39,7 +46,7 @@ namespace GameState
         public void SwitchState<T>() where T : GameState
         {
             GameState state = _gameStates.FirstOrDefault(state => state is T);
-            state.Start();
+            state?.Start();
         }
     }
 }
