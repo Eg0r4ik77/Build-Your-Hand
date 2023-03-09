@@ -5,7 +5,7 @@ namespace Economy
 {
     public class PurchaseButton : Button
     {
-        private const string Text = "Купить: ";
+        private const string Text = "Purchase: ";
         
         public TMP_Text PurchaseText { private get; set; }
 
@@ -14,6 +14,14 @@ namespace Economy
             if (PurchaseText)
             {
                 PurchaseText.text = Text + cost;                
+            }
+        }
+
+        public void OutputCompleted()
+        {
+            if (PurchaseText)
+            {
+                PurchaseText.text = "Completed";                
             }
         }
     }

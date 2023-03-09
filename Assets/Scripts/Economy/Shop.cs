@@ -91,21 +91,23 @@ namespace Economy
 
         public void TryPurchase()
         {
+            if (_currentDataIndex == _dataList.Count)
+            {
+                return;
+            }
+            
             PurchaseData currentData = _dataList[_currentDataIndex];
 
             if (AvailableForPurchase(currentData))
             {
                 Purchase(currentData);
-                
-                if (_currentDataIndex != _dataList.Count - 1)
-                {
-                    _currentDataIndex++;
-                    
-                    Image image = _purchaseDataButtonImages[_currentDataIndex];
+                if (_currentDataIndex < _dataList.Count - 1)
+                { 
+                    Image image = _purchaseDataButtonImages[_currentDataIndex + 1];
                     image.color = _purchasableColor;
-                    
-                    UpdatePurchaseButtonText();
                 }
+                _currentDataIndex++;
+                UpdatePurchaseButtonText();
             }
         }
 
@@ -122,13 +124,20 @@ namespace Economy
             image.color = _purchasedColor;
             data.IsPurchased = true;
         }
-
+        
         private void UpdatePurchaseButtonText()
         {
-            PurchaseData data = _dataList[_currentDataIndex];
-            float cost = data.Cost;
-                    
-            _purchaseButton.UpdateView(cost);
+            if (_currentDataIndex == _dataList.Count)
+            {
+                _purchaseButton.OutputCompleted();
+            }
+            else
+            {
+                PurchaseData data = _dataList[_currentDataIndex];
+                float cost = data.Cost;
+                        
+                _purchaseButton.UpdateView(cost);
+            }
         }
 
         private bool AvailableForPurchase(PurchaseData data)
