@@ -110,11 +110,6 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
         _movement.RotateHorizontally(horizontalAxisRotation);
     }
 
-    public void SetMovement(IMovementStrategy strategy)
-    {
-        _movement.Strategy = strategy;
-    }
-    
     public bool HasNoSkills()
     {
         return !_hand.Usable();
@@ -128,5 +123,10 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     public void ResetAcceleration()
     {
         _movement.Strategy = new SimpleMovement();
+    }
+
+    public void ResetHealth()
+    {
+        _health = _maxHealth;
     }
 }

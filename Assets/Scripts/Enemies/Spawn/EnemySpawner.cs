@@ -24,19 +24,6 @@ namespace Enemies.Spawn
             return enemies;
         }
 
-        public List<Enemy> SpawnWave(EnemySpawnInfo spawnInfo, Vector3 position)
-        {
-            var enemies = new List<Enemy>();
-            
-            for (int i = 0; i < spawnInfo.Count; i++)
-            {
-                Enemy enemy = Spawn(spawnInfo.Type, position);
-                enemies.Add(enemy);
-            }
-            
-            return enemies;
-        }
-
         private Enemy Spawn(EnemyType type, Vector3 position)
         {
             Enemy enemyPrefab = _enemyFactory.Get(type);

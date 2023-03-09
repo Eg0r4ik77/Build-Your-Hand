@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enemies.Spawn;
@@ -10,22 +11,32 @@ namespace Enemies.BattleSequence
         [SerializeField] private List<EnemyWaveInfo> _waves;
         [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private List<GameObject> _obstacles;
-
+        [SerializeField] private BattleSequenceTimer _timer;
+        
         private bool _initialized;
         private int _currentWaveIndex;
         private int _currentWaveEnemiesCount;
 
-        private IEnemyTarget _target;
+        private List<Enemy> _currentEnemies;
+
+        private Player _target;
 
         private void Awake()
         {
             _target = FindObjectOfType<Player>();
         }
 
+        private void Start()
+        {
+            _timer.Finished += InitializeSequence;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out Player _) && !_initialized)
-            { 
+            {
+                _target.ResetHealth();
+                TrySetObstacles(true);
                 InitializeSequence();                
             }
         }
@@ -34,13 +45,13 @@ namespace Enemies.BattleSequence
         public void InitializeSequence()
         {
             _initialized = true;
-
             SpawnWave();
         }
 
         public void FinishSequence()
         {
-            // door opened
+            _currentWaveIndex = _currentWaveEnemiesCount = 0;
+            _timer.StartTimer();
         }
         
         public void UpdateSequenceScenario()
@@ -54,7 +65,7 @@ namespace Enemies.BattleSequence
             
             if (_currentWaveIndex != _waves.Count)
             {
-                SpawnWave();                
+                _timer.StartTimer();
             }
             else
             {
@@ -67,6 +78,7 @@ namespace Enemies.BattleSequence
             EnemyWaveInfo info = _waves[_currentWaveIndex];
 
             TrySpawnEnemiesInRandomPoints(info);
+            InitializeEnemies();
             
             _currentWaveIndex++;
         }
@@ -79,22 +91,19 @@ namespace Enemies.BattleSequence
             {
                 _currentWaveEnemiesCount += enemySpawnInfo.Count;
             }
-            
+
             spawnInfo.RandomizePoints();
             
-            List<Enemy> enemies = _enemySpawner.SpawnWave(spawnInfo);
-            InitializeEnemies(enemies);
+            _currentEnemies = _enemySpawner.SpawnWave(spawnInfo);
         }
 
-        private void InitializeEnemies(List<Enemy> enemies)
+        private void InitializeEnemies()
         {
-            foreach (Enemy enemy in enemies)
+            foreach (Enemy enemy in _currentEnemies)
             {
-                // enemy set target;
+                enemy.Target = _target;
+                enemy.TryDetectTarget();
                 enemy.Died += UpdateSequenceScenario;
-                
-                // enemy damaged => detected (???) 
-                // detected += TrySetObstacles
             }
         }
 
