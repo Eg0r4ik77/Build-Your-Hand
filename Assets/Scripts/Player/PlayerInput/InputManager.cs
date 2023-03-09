@@ -17,6 +17,7 @@ namespace PlayerInput
         private PuzzleInputHandler _puzzleInputHandler;
         private ShopInputHandler _shopInputHandler;
         private InputHandler _currentInputHandler;
+        
         private List<InputHandler> _inputHandlers;
 
         private List<HackableDoor> _hackableDoors;

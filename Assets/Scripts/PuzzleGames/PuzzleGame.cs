@@ -12,7 +12,7 @@ namespace PuzzleGames
         public event Action Interrupted;
         public event Action Finished;
         
-        public void StartGame()
+        public virtual void StartGame()
         {
             if (!IsInitialized)
             { 

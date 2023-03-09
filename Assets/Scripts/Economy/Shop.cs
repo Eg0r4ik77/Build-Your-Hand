@@ -89,7 +89,7 @@ namespace Economy
             _purchaseButton.onClick.AddListener(TryPurchase);
         }
 
-        public void TryPurchase()
+        private void TryPurchase()
         {
             if (_currentDataIndex == _dataList.Count)
             {
