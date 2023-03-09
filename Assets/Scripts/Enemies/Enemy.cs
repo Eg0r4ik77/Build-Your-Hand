@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Skills;
 using UnityEngine;
@@ -30,6 +31,9 @@ namespace Enemies
         
         public bool DetectedTarget { get; set; }
 
+        public event Action Damaged;
+        public event Action Died;
+
         private void Awake()
         {
             _meshRenderer = GetComponent<MeshRenderer>();
@@ -51,9 +55,15 @@ namespace Enemies
     
         public void TryApplyDamage(float damage)
         {
+            if (IsDead())
+            {
+                return;
+            }
+            
             _health -= damage;
+            Damaged?.Invoke();
 
-            if (_health <= 0)
+            if (IsDead())
             {
                 Die();
             }
@@ -71,6 +81,7 @@ namespace Enemies
 
         private void Die()
         {
+            Died?.Invoke();
             Destroy(gameObject);
         }
 
@@ -97,6 +108,11 @@ namespace Enemies
         public void TryApplyShoot(float damage)
         {
             TryApplyDamage(damage);
+        }
+        
+        private bool IsDead()
+        {
+            return _health <= 0;
         }
     }
 }

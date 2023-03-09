@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using Economy;
+using Enemies;
 using Movement;
 using Skills;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement), typeof(Animator))]
-public class Player : MonoBehaviour, IUniversalHandOwner, IAcceleratable
+public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceleratable
 {
     [SerializeField] private float _skillApplyRange = 8f;
     [SerializeField] private float _attackRange = 6f;
@@ -40,7 +41,9 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IAcceleratable
 
     private void Start()
     {
+        // убрать
         Wallet.Add(100f);
+        
         _hand.SetPlayer(this);
     }
 
