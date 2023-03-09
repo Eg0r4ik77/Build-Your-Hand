@@ -9,7 +9,7 @@ namespace PlayerInput
         private Shop _shop;
 
         private bool IsCloseShopInput => Input.GetKeyDown(KeyCode.B);
-        
+
         public event Action SwitchedToAction;
 
         public void SetShop(Shop shop)

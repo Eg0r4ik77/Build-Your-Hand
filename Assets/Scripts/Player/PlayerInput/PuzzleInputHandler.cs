@@ -9,7 +9,7 @@ namespace PlayerInput
         private PuzzleGame _currentGame;
         
         private bool IsCloseGameInput => Input.GetKeyDown(KeyCode.E);
-
+        
         public event Action SwitchedToAction;
 
         public void SetPuzzleGame(PuzzleGame game)

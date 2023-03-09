@@ -1,6 +1,5 @@
 using System;
 using Economy;
-using Movement;
 using PlayerCamera;
 using Skills;
 using UnityEngine;
@@ -12,11 +11,11 @@ namespace PlayerInput
     {
         [SerializeField] private FirstPersonCamera _camera;
         [SerializeField] private Shop _shop;
+        
         [SerializeField] private GameObject _keyPanel;
         
         private UniversalHand Hand => HandlingPlayer.Hand;
-
-
+        
         private bool IsUseSkillOrAttackInput => Input.GetKeyDown(KeyCode.Mouse0);
         private bool IsOpenShopInput => Input.GetKeyDown(KeyCode.B);
         private bool IsKeysPanelOpenInput => Input.GetKey(KeyCode.R);
@@ -45,7 +44,7 @@ namespace PlayerInput
                     HandleSkill(Hand.CurrentSkill);
                 }
             }
-            
+
             if (IsOpenShopInput)
             {
                 _shop.Open();

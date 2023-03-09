@@ -1,9 +1,11 @@
-﻿namespace PlayerInput
+﻿using System;
+
+namespace PlayerInput
 {
     public abstract class InputHandler
     {
         protected Player HandlingPlayer;
-
+        
         public void SetPlayer(Player player)
         {
             HandlingPlayer = player;

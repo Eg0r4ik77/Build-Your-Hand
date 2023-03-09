@@ -41,9 +41,6 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
 
     private void Start()
     {
-        // убрать
-        Wallet.Add(100f);
-        
         _hand.SetPlayer(this);
     }
 

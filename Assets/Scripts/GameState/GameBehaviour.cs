@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PlayerInput;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameState
 {
