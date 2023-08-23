@@ -11,14 +11,13 @@ namespace PlayerInput
     {
         [SerializeField] private FirstPersonCamera _camera;
         [SerializeField] private Shop _shop;
-        
-        [SerializeField] private GameObject _keyPanel;
+        [SerializeField] private PauseMenu _pauseMenu;
         
         private UniversalHand Hand => HandlingPlayer.Hand;
         
         private bool IsUseSkillOrAttackInput => Input.GetKeyDown(KeyCode.Mouse0);
         private bool IsOpenShopInput => Input.GetKeyDown(KeyCode.B);
-        private bool IsKeysPanelOpenInput => Input.GetKey(KeyCode.R);
+        private bool IsOpenPauseMenuInput => Input.GetKey(KeyCode.Escape);
         
         private float VerticalAxis => Input.GetAxis("Vertical");
         private float HorizontalAxis => Input.GetAxis("Horizontal");
@@ -50,9 +49,12 @@ namespace PlayerInput
                 _shop.Open();
             }
             
-            Hand.TryUseAcceleration();
+            if (IsOpenPauseMenuInput)
+            {
+                _pauseMenu.OpenPausePanel();
+            }
             
-            _keyPanel.SetActive(IsKeysPanelOpenInput);
+            Hand.TryUseAcceleration();
         }
 
         private void HandleMovementInput()

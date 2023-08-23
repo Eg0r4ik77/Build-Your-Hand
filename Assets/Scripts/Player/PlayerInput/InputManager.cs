@@ -12,6 +12,7 @@ namespace PlayerInput
     {
         [SerializeField] private Player _player;
         [SerializeField] private ActionInputHandler _actionInputHandler;
+        [SerializeField] private PauseMenu _pauseMenu;
         [SerializeField] private Shop _shop;
         
         private PuzzleInputHandler _puzzleInputHandler;
@@ -42,6 +43,8 @@ namespace PlayerInput
 
         private void OnEnable()
         {
+            _pauseMenu.Opened += SwitchToPauseMenu;
+            
             _shop.Opened += SwitchToShop;
             _shopInputHandler.SwitchedToAction += SwitchToAction;
             
@@ -55,6 +58,8 @@ namespace PlayerInput
 
         private void OnDisable()
         {
+            _pauseMenu.Opened -= SwitchToPauseMenu;
+
             _shop.Opened -= SwitchToShop;
             _shopInputHandler.SwitchedToAction -= SwitchToAction;
             
@@ -95,6 +100,11 @@ namespace PlayerInput
             
             SwitchedToStand?.Invoke();
             SwitchInputHandling<ShopInputHandler>();
+        }
+
+        private void SwitchToPauseMenu()
+        {
+            SwitchedToStand?.Invoke();
         }
 
         private void SwitchToAction()

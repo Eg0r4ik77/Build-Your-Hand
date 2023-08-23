@@ -1,13 +1,12 @@
 using GameState;
 using PlayerInput;
-using Scenario;
 using UnityEngine;
 
 public class GameFinisher : MonoBehaviour
 {
     [SerializeField] private GameBehaviour _behaviour;
     [SerializeField] private InputManager _inputManager;
-    [SerializeField] private MenuManager _finishPanel;
+    [SerializeField] private MainMenu _finishPanel;
 
     private void OnTriggerEnter(Collider other)
     {

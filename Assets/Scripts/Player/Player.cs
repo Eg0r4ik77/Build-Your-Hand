@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     
     [SerializeField] private Camera _camera;
     [SerializeField] private UniversalHand _hand;
+
+    [SerializeField] private int _startWalletSum;
     
     private float _health;
 
@@ -42,6 +44,7 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     private void Start()
     {
         _hand.SetPlayer(this);
+        Wallet.Add(_startWalletSum);
     }
 
     public void Move(Vector3 motion)
