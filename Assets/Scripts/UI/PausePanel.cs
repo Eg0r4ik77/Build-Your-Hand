@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PausePanel : MonoBehaviour
@@ -11,20 +10,19 @@ public class PausePanel : MonoBehaviour
     
     [SerializeField] private Panel _howToPlayPanel;
     
-    private const string MainMenuSceneName = "MainMenu";
-
     public Action PauseCancelled;
+    public Action MainMenuButtonClicked;
 
     private void OnEnable()
     {
-        _mainMenuButton.onClick.AddListener(MainMenu);
+        _mainMenuButton.onClick.AddListener(GoToMainMenu);
         _resumeGameButton.onClick.AddListener(ResumeGame);
         _howToPlayButton.onClick.AddListener(_howToPlayPanel.Open);
     }
     
     private void OnDisable()
     {
-        _mainMenuButton.onClick.RemoveListener(MainMenu);
+        _mainMenuButton.onClick.RemoveListener(GoToMainMenu);
         _resumeGameButton.onClick.RemoveListener(ResumeGame);
         _howToPlayButton.onClick.RemoveListener(_howToPlayPanel.Open);
     }
@@ -34,10 +32,10 @@ public class PausePanel : MonoBehaviour
         CancelPause();
     }
 
-    private void MainMenu()
+    private void GoToMainMenu()
     {
         CancelPause();
-        SceneManager.LoadScene(MainMenuSceneName);
+        MainMenuButtonClicked?.Invoke();
     }
 
     private void CancelPause()

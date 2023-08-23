@@ -20,13 +20,14 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenPausePanel()
     {
+        Opened?.Invoke();
         _panel.gameObject.SetActive(true);
         Time.timeScale = 0;
-        Opened?.Invoke();
     }
 
-    private void ClosePausePanel()
+    public void ClosePausePanel()
     {
+        Closed?.Invoke();
         _panel.gameObject.SetActive(false);
         Time.timeScale = 1;
     }

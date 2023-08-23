@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Economy;
-using PlayerInput;
 using PuzzleGames;
 using UnityEngine;
 
@@ -12,8 +11,11 @@ public class InputHandlersSwitcher : MonoBehaviour
     [SerializeField] private PuzzleGamesSwitcher _puzzleGamesSwitcher;
     [SerializeField] private Shop _shop;
     [SerializeField] private CursorSwitcher _cursorSwitcher;
+    [SerializeField] private GameFinisher _gameFinisher;
 
     private List<InputHandler> _inputHandlers;
+    
+    private InputHandler _previousInputHandler;
     private InputHandler _currentInputHandler;
 
     private void Awake()
@@ -21,8 +23,9 @@ public class InputHandlersSwitcher : MonoBehaviour
         _inputHandlers = new List<InputHandler>
         { 
             new ActionInputHandler(_player, _shop, _pauseMenu),
-            //new pause handler
-            new ShopInputHandler(_shop)
+            new PauseMenuInputHandler(_pauseMenu),
+            new ShopInputHandler(_shop, _pauseMenu),
+            new NullInputHandler(_pauseMenu)
         };
     }
 
@@ -34,57 +37,61 @@ public class InputHandlersSwitcher : MonoBehaviour
     private void OnEnable()
     {
         _pauseMenu.Opened += SwitchToPauseMenu;
-        //переключение должно быть к предыдущему хендлеру, а не к action
-        _pauseMenu.Closed += SwitchToAction;
+        _pauseMenu.Closed += SwitchToPreviousInputHandler;
         
         _shop.Opened += SwitchToShop;
         _shop.Closed += SwitchToAction;
 
         _puzzleGamesSwitcher.Opened += SwitchToPuzzle;
         _puzzleGamesSwitcher.Closed += SwitchToAction;
+
+        _gameFinisher.GameFinished += DisableHandling;
     }
 
     private void OnDisable()
     {
         _pauseMenu.Opened -= SwitchToPauseMenu;
-        //переключение должно быть к предыдущему хендлеру, а не к action
-        _pauseMenu.Closed -= SwitchToAction;
+        _pauseMenu.Closed -= SwitchToPreviousInputHandler;
 
         _shop.Opened -= SwitchToShop;
         _shop.Closed -= SwitchToAction;
 
         _puzzleGamesSwitcher.Opened -= SwitchToPuzzle;
         _puzzleGamesSwitcher.Closed -= SwitchToAction;
+        
+        _gameFinisher.GameFinished -= DisableHandling;
     }
 
     private void Update()
     {
         _currentInputHandler.Handle();
     }
+    
+    private void SwitchToAction()
+    {
+        SwitchInputHandling<ActionInputHandler>();
+    }
 
     private void SwitchToPuzzle(PuzzleGame game)
     {
-        _currentInputHandler = new PuzzleInputHandler(game);
-        
-        _cursorSwitcher.SwitchPredictionPointToCursor();
-        SwitchInputHandling<PuzzleInputHandler>();
+        var puzzleInputHandler = new PuzzleInputHandler(game, _pauseMenu);
+        SetCurrentInputHandler(puzzleInputHandler);
     }
 
     private void SwitchToShop()
     {
-        _cursorSwitcher.SwitchPredictionPointToCursor();
         SwitchInputHandling<ShopInputHandler>();
     }
 
     private void SwitchToPauseMenu()
     {
-        _cursorSwitcher.SwitchPredictionPointToCursor();
+        SwitchInputHandling<PauseMenuInputHandler>();
     }
+    
 
-    private void SwitchToAction()
+    private void DisableHandling()
     {
-        _cursorSwitcher.SwitchCursorToPredictionPoint();
-        SwitchInputHandling<ActionInputHandler>();
+        SwitchInputHandling<NullInputHandler>();
     }
     
     private void SwitchInputHandling<T>() where T : InputHandler
@@ -93,7 +100,19 @@ public class InputHandlersSwitcher : MonoBehaviour
         
         if (handler != null)
         {
-            _currentInputHandler = handler;
+            SetCurrentInputHandler(handler);
         }
+    }
+    
+    private void SetCurrentInputHandler(InputHandler handler)
+    {
+        _previousInputHandler = _currentInputHandler;
+        _currentInputHandler = handler;
+        handler.SetCursor(_cursorSwitcher);
+    }
+    
+    private void SwitchToPreviousInputHandler()
+    {
+        SetCurrentInputHandler(_previousInputHandler);
     }
 }

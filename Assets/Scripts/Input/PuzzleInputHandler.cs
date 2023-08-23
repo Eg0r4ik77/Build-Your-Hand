@@ -7,16 +7,23 @@ public class PuzzleInputHandler : InputHandler
     
     private bool IsCloseGameInput => Input.GetKeyDown(KeyCode.E);
 
-    public PuzzleInputHandler(PuzzleGame game)
+    public PuzzleInputHandler(PuzzleGame game, PauseMenu pauseMenu) : base(pauseMenu)
     {
         _currentGame = game;
     }
     
-    public void Handle()
+    public override void Handle()
     {
+        base.Handle();
+        
         if (IsCloseGameInput)
         {
             _currentGame.InterruptGame();
         }
+    }
+
+    public override void SetCursor(CursorSwitcher cursorSwitcher)
+    {
+        cursorSwitcher.SwitchToCursor();
     }
 }

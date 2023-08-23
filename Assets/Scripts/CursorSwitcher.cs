@@ -5,7 +5,7 @@ public class CursorSwitcher : MonoBehaviour
 { 
     [SerializeField] private Image _predictionPointImage;
 
-    public void SwitchCursorToPredictionPoint()
+    public void SwitchToPredictionPoint()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -13,7 +13,7 @@ public class CursorSwitcher : MonoBehaviour
         _predictionPointImage.gameObject.SetActive(true);
     }
     
-    public void SwitchPredictionPointToCursor()
+    public void SwitchToCursor()
     {
         _predictionPointImage.gameObject.SetActive(false);
 
