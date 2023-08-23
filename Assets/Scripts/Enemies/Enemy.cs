@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using NodeCanvas.BehaviourTrees;
 using Skills;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,6 +25,7 @@ namespace Enemies
 
         private MeshRenderer _meshRenderer;
         private NavMeshAgent _navMeshAgent;
+        private BehaviourTreeOwner _behaviourTreeOwner;
         
         private bool _isHighlighted;
         private bool _detectedTarget;
@@ -41,13 +43,14 @@ namespace Enemies
         {
             _meshRenderer = GetComponent<MeshRenderer>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _behaviourTreeOwner = GetComponent<BehaviourTreeOwner>();
         }
 
         private void Start()
         {
             _navMeshAgent.speed = _speed;
         }
-
+        
         public void Attack()
         {
             Target?.TryApplyDamage(_damage);

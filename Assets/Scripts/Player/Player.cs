@@ -21,12 +21,12 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
 
     [SerializeField] private int _startWalletSum;
     
+    private readonly int _punchAnimationHash = Animator.StringToHash("PlayerPunch");
+
     private float _health;
 
     private PlayerMovement _movement;
-    
     private Animator _animator;
-    private readonly int _punchAnimationHash = Animator.StringToHash("PlayerPunch");
 
     public FirstPersonCamera Camera => _camera;
     public UniversalHand Hand => _hand;
@@ -47,6 +47,16 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     {
         _hand.SetPlayer(this);
         Wallet.Add(_startWalletSum);
+    }
+
+    private void OnEnable()
+    {
+        Pause.Instance.OnPaused += SetPaused;
+    }
+
+    private void OnDisable()
+    {
+        Pause.Instance.OnPaused -= SetPaused;
     }
 
     public void Move(Vector3 motion)
@@ -130,5 +140,12 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     public void ResetHealth()
     {
         _health = _maxHealth;
+    }
+
+    private void SetPaused(bool paused)
+    {
+        _movement.enabled = !paused;
+        _animator.enabled = !paused;
+        _hand.SetPaused(paused);
     }
 }

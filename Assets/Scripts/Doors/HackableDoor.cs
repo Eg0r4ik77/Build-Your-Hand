@@ -10,11 +10,13 @@ public class HackableDoor : Door, IHackable
     private void OnEnable()
     {
         _puzzleGame.Finished += ApplyHack;
+        Pause.Instance.OnPaused += SetPaused;
     }
 
     private void OnDisable()
     {
         _puzzleGame.Finished -= ApplyHack;
+        Pause.Instance.OnPaused -= SetPaused;
     }
     
     public bool TryHack()

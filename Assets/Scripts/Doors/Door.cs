@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Doors
 {
@@ -6,6 +7,7 @@ namespace Doors
     public class Door : MonoBehaviour
     {
         private readonly int _openingAnimationHash = Animator.StringToHash("Open");
+        
         private Animator _animator;
 
         private void Awake()
@@ -16,6 +18,11 @@ namespace Doors
         protected void Open()
         {
             _animator.Play(_openingAnimationHash);
+        }
+        
+        protected void SetPaused(bool paused)
+        {
+            _animator.enabled = !paused;
         }
     }
 }

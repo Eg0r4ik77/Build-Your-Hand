@@ -8,6 +8,7 @@ namespace Economy
     public class Resource : MonoBehaviour
     {
         private Quaternion _rotation;
+        private bool _isRotating = true;
         public float Value { get; set; }
 
         private void Start()
@@ -16,9 +17,22 @@ namespace Economy
             SetRandomRotation();
         }
 
+        private void OnEnable()
+        {
+            Pause.Instance.OnPaused += SetPaused;
+        }
+
+        private void OnDisable()
+        {
+            Pause.Instance.OnPaused -= SetPaused;
+        }
+        
         private void Update()
         {
-            transform.rotation *= _rotation;
+            if (_isRotating)
+            {
+                transform.rotation *= _rotation;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -46,6 +60,11 @@ namespace Economy
 
             _rotation *= Quaternion.AngleAxis(angle, rotationDirections[0]) *
                          Quaternion.AngleAxis(angle, rotationDirections[1]);
+        }
+        
+        private void SetPaused(bool paused)
+        {
+            _isRotating = !paused;
         }
     }
 }

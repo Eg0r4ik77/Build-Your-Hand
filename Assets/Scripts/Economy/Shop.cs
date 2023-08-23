@@ -84,11 +84,18 @@ namespace Economy
         private void OnEnable()
         {
             _purchaseButton.onClick.AddListener(TryPurchase);
+            Pause.Instance.OnPaused += SetPaused;
         }
 
         private void OnDisable()
         {
             _purchaseButton.onClick.AddListener(TryPurchase);
+            Pause.Instance.OnPaused -= SetPaused;
+        }
+
+        private void SetPaused(bool paused)
+        {
+            _animator.enabled = !paused;
         }
 
         private void TryPurchase()

@@ -139,4 +139,24 @@ public class UniversalHand : MonoBehaviour
     {
         return _skills.Count != 0;
     }
+
+    public void SetPaused(bool paused)
+    {
+        SetParticlesPaused(paused);
+    }
+
+    private void SetParticlesPaused(bool paused)
+    {
+        if (paused)
+        {
+            _shootParticles.Pause();
+        }
+        else
+        {
+            if (_shootParticles.time > 0)
+            {
+                _shootParticles.Play();
+            }
+        }
+    }
 }

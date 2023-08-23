@@ -22,13 +22,15 @@ public class PauseMenu : MonoBehaviour
     {
         Opened?.Invoke();
         _panel.gameObject.SetActive(true);
-        Time.timeScale = 0;
+        
+        Pause.Instance.SetPaused(true);
     }
 
     public void ClosePausePanel()
     {
         Closed?.Invoke();
         _panel.gameObject.SetActive(false);
-        Time.timeScale = 1;
+        
+        Pause.Instance.SetPaused(false);
     }
 }

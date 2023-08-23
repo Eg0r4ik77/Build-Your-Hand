@@ -17,8 +17,8 @@ public class InputHandlersSwitcher : MonoBehaviour
     
     private InputHandler _previousInputHandler;
     private InputHandler _currentInputHandler;
-
-    private void Awake()
+    
+    private void Start()
     {
         _inputHandlers = new List<InputHandler>
         { 
@@ -27,10 +27,7 @@ public class InputHandlersSwitcher : MonoBehaviour
             new ShopInputHandler(_shop, _pauseMenu),
             new NullInputHandler(_pauseMenu)
         };
-    }
-
-    private void Start()
-    {
+        
         SwitchToAction();
     }
 
@@ -104,15 +101,15 @@ public class InputHandlersSwitcher : MonoBehaviour
         }
     }
     
+    private void SwitchToPreviousInputHandler()
+    {
+        SetCurrentInputHandler(_previousInputHandler);
+    }
+    
     private void SetCurrentInputHandler(InputHandler handler)
     {
         _previousInputHandler = _currentInputHandler;
         _currentInputHandler = handler;
         handler.SetCursor(_cursorSwitcher);
-    }
-    
-    private void SwitchToPreviousInputHandler()
-    {
-        SetCurrentInputHandler(_previousInputHandler);
     }
 }

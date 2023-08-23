@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -11,33 +10,64 @@ namespace Enemies.BattleSequence
         [SerializeField] private float _timeBetweenEnemyWavesInSeconds = 10f;
 
         private const string OriginText = "New wave will arrive in: ";
-
-        public event Action Finished;
         
+        private bool _paused = true;
+        private bool _started = false;
+        
+        private float _timeLeft;
+        
+        public event Action Finished;
+
+        private void OnEnable()
+        {
+            Pause.Instance.OnPaused += SetPaused;
+        }
+
+        private void OnDisable()
+        {
+            Pause.Instance.OnPaused -= SetPaused;
+        }
+
+        private void Update()
+        {
+            if (!_paused && _started)
+            {
+                Tick();
+            }
+        }
+
         public void StartTimer()
         {
             _tmpText.gameObject.SetActive(true);
-            StartCoroutine(TimerCoroutine());
+            _timeLeft = _timeBetweenEnemyWavesInSeconds;
+            _started = true;
+            _paused = false;
         }
 
-        private IEnumerator TimerCoroutine()
+        private void Tick()
         {
-            float timer = _timeBetweenEnemyWavesInSeconds;
-
-            while (timer > 0)
+            if (_timeLeft > 0)
             {
-                timer -= Time.deltaTime;
-                UpdateText((int)Math.Ceiling(timer));
-                yield return null;
+                _timeLeft -= Time.deltaTime;
+                UpdateText((int)Math.Ceiling(_timeLeft));
             }
-            
-            _tmpText.gameObject.SetActive(false);
-            Finished?.Invoke();
+            else
+            {
+                _tmpText.gameObject.SetActive(false);
+                Finished?.Invoke();
+                _paused = true;
+                _started = false;
+            }
         }
-
+        
         private void UpdateText(int seconds)
         {
             _tmpText.text = OriginText + seconds;
+        }
+        
+        private void SetPaused(bool paused)
+        {
+            _paused = paused;
         }
     }
 }
