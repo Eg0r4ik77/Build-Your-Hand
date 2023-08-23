@@ -1,49 +1,35 @@
-﻿using System;
+﻿using Doors;
 using PuzzleGames;
 using Skills;
 using UnityEngine;
 
-namespace Doors
+public class HackableDoor : Door, IHackable
 {
-    public class HackableDoor : Door, IHackable
+    [SerializeField] private PuzzleGame _puzzleGame;
+    
+    private void OnEnable()
     {
-        [SerializeField] private PuzzleGame _puzzleGame;
+        _puzzleGame.Finished += ApplyHack;
+    }
 
-        public event Action<PuzzleGame> GameStarted; 
-        public event Action GameLeft;
-
-        private void OnEnable()
+    private void OnDisable()
+    {
+        _puzzleGame.Finished -= ApplyHack;
+    }
+    
+    public bool TryHack()
+    {
+        if (!_puzzleGame.IsFinished)
         {
-            _puzzleGame.Finished += ApplyHack;
-            _puzzleGame.Interrupted += LeaveGame;
+            _puzzleGame.StartGame();
+            return true;
         }
 
-        private void OnDisable()
-        {
-            _puzzleGame.Finished -= ApplyHack;
-            _puzzleGame.Interrupted -= LeaveGame;
-        }
-        
-        public bool TryHack()
-        {
-            if (!_puzzleGame.IsFinished)
-            {
-                GameStarted?.Invoke(_puzzleGame);
-                return true;
-            }
+        return false;
+    }
 
-            return false;
-        }
-
-        private void ApplyHack()
-        {
-            LeaveGame();
-            Open();
-        }
-
-        private void LeaveGame()
-        {
-            GameLeft?.Invoke();
-        }
+    private void ApplyHack()
+    {
+        Open();
     }
 }

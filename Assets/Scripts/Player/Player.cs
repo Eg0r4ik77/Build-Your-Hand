@@ -3,6 +3,7 @@ using System.Collections;
 using Economy;
 using Enemies;
 using Movement;
+using PlayerCamera;
 using Skills;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     [SerializeField] private float _damage = 2f;
     [SerializeField] private float _maxHealth = 100f;
     
-    [SerializeField] private Camera _camera;
+    [SerializeField] private FirstPersonCamera _camera;
     [SerializeField] private UniversalHand _hand;
 
     [SerializeField] private int _startWalletSum;
@@ -26,7 +27,8 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     
     private Animator _animator;
     private readonly int _punchAnimationHash = Animator.StringToHash("PlayerPunch");
-    
+
+    public FirstPersonCamera Camera => _camera;
     public UniversalHand Hand => _hand;
     public ResourcesWallet Wallet { get; } = new();
 

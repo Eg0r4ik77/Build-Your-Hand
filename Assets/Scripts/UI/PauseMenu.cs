@@ -6,6 +6,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private PausePanel _panel;
 
     public Action Opened;
+    public Action Closed;
 
     private void OnEnable()
     {
@@ -27,6 +28,6 @@ public class PauseMenu : MonoBehaviour
     private void ClosePausePanel()
     {
         _panel.gameObject.SetActive(false);
-        Time.timeScale = 0;
+        Time.timeScale = 1;
     }
 }

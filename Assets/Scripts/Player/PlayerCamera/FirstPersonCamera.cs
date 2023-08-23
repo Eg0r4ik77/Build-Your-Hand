@@ -12,7 +12,8 @@ namespace PlayerCamera
         [SerializeField, Range(1, 180)] private float _upperLookLimit = 80f;
         [SerializeField, Range(1, 180)] private float _lowerLookLimit = 80f;
 
-        private UnityEngine.Camera _camera;
+        private Camera _camera;
+        
         private float _horizontalRotation;
         private float _verticalRotation;
     

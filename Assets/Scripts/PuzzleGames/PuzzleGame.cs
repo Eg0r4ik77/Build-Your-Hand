@@ -9,11 +9,14 @@ namespace PuzzleGames
         protected bool IsInitialized { get; set; }
         public bool IsFinished { get; private set; }
         
+        public event Action<PuzzleGame> Started;
         public event Action Interrupted;
         public event Action Finished;
         
         public virtual void StartGame()
         {
+            Started?.Invoke(this);
+            
             if (!IsInitialized)
             { 
                 InitializeGame();

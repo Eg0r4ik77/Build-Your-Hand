@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace PlayerInput
 {
-    [Serializable]
     public class ActionInputHandler : InputHandler
     {
-        [SerializeField] private FirstPersonCamera _camera;
-        [SerializeField] private Shop _shop;
-        [SerializeField] private PauseMenu _pauseMenu;
+        private readonly Player _player;
+        private readonly Shop _shop;
+        private readonly PauseMenu _pauseMenu;
         
-        private UniversalHand Hand => HandlingPlayer.Hand;
+        private FirstPersonCamera Camera => _player.Camera;
+        private UniversalHand Hand => _player.Hand;
         
         private bool IsUseSkillOrAttackInput => Input.GetKeyDown(KeyCode.Mouse0);
         private bool IsOpenShopInput => Input.GetKeyDown(KeyCode.B);
@@ -25,7 +25,14 @@ namespace PlayerInput
         private float MouseVerticalAxis => Input.GetAxis("Mouse Y");
         private float MouseScrollWheel => Input.GetAxis("Mouse ScrollWheel");
 
-        public override void Handle()
+        public ActionInputHandler(Player player, Shop shop, PauseMenu pauseMenu)
+        {
+            _player = player;
+            _shop = shop;
+            _pauseMenu = pauseMenu;
+        }
+
+        public void Handle()
         {
             HandleMovementInput();
             HandleMouseLook();
@@ -34,9 +41,9 @@ namespace PlayerInput
             
             if (IsUseSkillOrAttackInput)
             {
-                if (HandlingPlayer.HasNoSkills())
+                if (_player.HasNoSkills())
                 {
-                    HandlingPlayer.TryAttack();
+                    _player.TryAttack();
                 }
                 else
                 {
@@ -59,16 +66,16 @@ namespace PlayerInput
 
         private void HandleMovementInput()
         {
-            Transform playerTransform = HandlingPlayer.transform;
+            Transform playerTransform = _player.transform;
             Vector3 motion = playerTransform.forward * VerticalAxis + playerTransform.right * HorizontalAxis;
             
-            HandlingPlayer.Move(motion * Time.deltaTime);
+            _player.Move(motion * Time.deltaTime);
         }
 
         private void HandleMouseLook()
         {
-            _camera.RotateVertically(MouseVerticalAxis);
-            HandlingPlayer.RotateHorizontally(MouseHorizontalAxis);
+            Camera.RotateVertically(MouseVerticalAxis);
+            _player.RotateHorizontally(MouseHorizontalAxis);
         }
 
         private void HandleSkill(Skill skill)
@@ -79,7 +86,7 @@ namespace PlayerInput
                     
                 if (skill is Shooting && result)
                 {
-                    _camera.Shake();                    
+                    Camera.Shake();                    
                 }   
             }
         }

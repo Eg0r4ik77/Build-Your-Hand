@@ -34,11 +34,12 @@ namespace Economy
 
         private Animator _animator;
 
-        private readonly int AppearanceAnimationHash = Animator.StringToHash("Appearance");
-        private readonly int DisappearanceAnimationHash = Animator.StringToHash("Disappearance");
-        private readonly int IsShopOpenedHash = Animator.StringToHash("Opened");
+        private readonly int AppearanceHash = Animator.StringToHash("Appearance");
+        private readonly int DisappearanceHash = Animator.StringToHash("Disappearance");
+        private readonly int OpenedHash = Animator.StringToHash("Opened");
         
-        public event Action<Shop> Opened;
+        public event Action Opened;
+        public event Action Closed;
 
         private void Awake()
         {
@@ -148,18 +149,18 @@ namespace Economy
         
         public void Open()
         {
-            Opened?.Invoke(this);
+            Opened?.Invoke();
             _panel.SetActive(true);
             
-            _animator.Play(AppearanceAnimationHash);
-            _animator.SetBool(IsShopOpenedHash, true);
-            
+            _animator.Play(AppearanceHash);
+            _animator.SetBool(OpenedHash, true);
         }
 
         public void Close()
         {
-            _animator.Play(DisappearanceAnimationHash);
-            _animator.SetBool(IsShopOpenedHash, false);
+            Closed?.Invoke();
+            _animator.Play(DisappearanceHash);
+            _animator.SetBool(OpenedHash, false);
         }
     }
 }

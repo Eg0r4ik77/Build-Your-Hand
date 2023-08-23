@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Doors;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PuzzleGames
@@ -10,25 +9,18 @@ namespace PuzzleGames
         [SerializeField] private List<PuzzleGame> _puzzleGames;
         [SerializeField] private GameObject _puzzleGamePanel;
         
-        private List<HackableDoor> _hackableDoors;
         private PuzzleGame _currentGame;
 
-        private void Awake()
-        {
-            _hackableDoors = FindObjectsOfType<HackableDoor>().ToList();
-        }
+        public Action<PuzzleGame> Opened;
+        public Action Closed;
 
         private void Start()
         {
             foreach (PuzzleGame puzzleGame in _puzzleGames)
             {
-                puzzleGame.Finished += DeactivateCurrentGame;
-                puzzleGame.Interrupted += DeactivateCurrentGame;
-            }
-            
-            foreach (HackableDoor hackableDoor in _hackableDoors)
-            {
-                hackableDoor.GameStarted += ActivateCurrentGame;
+                puzzleGame.Started += Open;
+                puzzleGame.Finished += Close;
+                puzzleGame.Interrupted += Close;
             }
         }
 
@@ -36,29 +28,26 @@ namespace PuzzleGames
         {
             foreach (PuzzleGame puzzleGame in _puzzleGames)
             {
-                puzzleGame.Finished -= DeactivateCurrentGame;
-                puzzleGame.Interrupted -= DeactivateCurrentGame;
-            }
-            
-            foreach (HackableDoor hackableDoor in _hackableDoors)
-            {
-                hackableDoor.GameStarted -= ActivateCurrentGame;
+                puzzleGame.Started -= Open;
+                puzzleGame.Finished -= Close;
+                puzzleGame.Interrupted -= Close;
             }
         }
 
-        private void ActivateCurrentGame(PuzzleGame game)
+        private void Open(PuzzleGame game)
         {
-            _puzzleGamePanel.SetActive(true);
+            Opened?.Invoke(game);
             
+            _puzzleGamePanel.SetActive(true);
             _currentGame = game;
             _currentGame.gameObject.SetActive(true);
-            _currentGame.StartGame();
         }
 
-        private void DeactivateCurrentGame()
+        private void Close()
         {
+            Closed?.Invoke();
+
             _puzzleGamePanel.SetActive(false);
-            
             _currentGame.gameObject.SetActive(false);
             _currentGame = null;
         }
