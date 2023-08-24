@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Enemies.Spawn;
 using UnityEngine;
 using Zenject;
@@ -10,7 +9,7 @@ namespace Enemies.Waves
  public class BattleSequence : MonoBehaviour
     {
         [SerializeField] private List<EnemyWaveData> _waves;
-        [SerializeField] private List<GameObject> _obstacles;
+        [SerializeField] private float _signalDistance = 6f;
 
         private List<IEnemyTarget> _enemyTargets;
         private EnemyTargetDetector _targetDetector;
@@ -46,7 +45,6 @@ namespace Enemies.Waves
             _initialized = true;
             
             SubscribeSequenceCleaningToTargetsDeath();
-            SetObstacles(true);
             SpawnWave();
         }
         
@@ -108,7 +106,6 @@ namespace Enemies.Waves
         {
             Finished?.Invoke();
             ResetSequence();
-            SetObstacles(false);
         }
         
         private void ResetSequence()
@@ -119,15 +116,7 @@ namespace Enemies.Waves
             _targetDetector.UndetectAll();
             UnsubscribeSequenceCleaningFromTargetsDeath();
         }
-        
-        private void SetObstacles(bool state)
-        {
-            foreach (GameObject obstacle in _obstacles.Where(obstacle => obstacle))
-            {
-                obstacle.SetActive(state);             
-            }
-        }
-        
+
         private void SubscribeSequenceCleaningToTargetsDeath()
         {
             foreach (IEnemyTarget target in _enemyTargets)
@@ -159,7 +148,9 @@ namespace Enemies.Waves
             foreach (Enemy enemy in enemies)
             {
                 enemy.ReturnedToPool += UpdateSequenceScenario;
-                enemy.Damaged += DetectTarget;
+                enemy.DamagedByEnemyTarget += _targetDetector.Detect;
+                
+                _targetDetector.Detected += SendDetectingSignal;
             }
         }
         
@@ -168,7 +159,9 @@ namespace Enemies.Waves
             foreach (Enemy enemy in _currentEnemies)
             {
                 enemy.ReturnedToPool -= UpdateSequenceScenario;
-                enemy.Damaged -= DetectTarget;
+                enemy.DamagedByEnemyTarget -= _targetDetector.Detect;
+                
+                _targetDetector.Detected -= SendDetectingSignal;
             }
         }
 
@@ -179,10 +172,10 @@ namespace Enemies.Waves
                 enemy.ReturnToPool();
             }
         }
-        
-        private void DetectTarget()
+
+        private void SendDetectingSignal(Enemy enemy)
         {
-            _targetDetector.DetectAll();
+            _targetDetector.SendSignal(enemy, _currentEnemies, _signalDistance);
         }
         
         private bool WaveIsOver()

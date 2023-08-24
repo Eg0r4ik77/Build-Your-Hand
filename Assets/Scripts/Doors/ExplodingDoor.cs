@@ -5,7 +5,7 @@ namespace Doors
 {
     public class ExplodingDoor : MonoBehaviour, IShootable
     {
-        public void TryApplyShoot(float damage)
+        public void TryApplyShoot(Player player, float damage)
         {
             Destroy(gameObject);
         }

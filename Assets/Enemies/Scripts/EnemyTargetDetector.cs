@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +9,8 @@ namespace Enemies
     {
         private List<Enemy> _enemies;
         private List<IEnemyTarget> _targets;
+
+        public Action<Enemy> Detected;
         
         [Inject]
         public void Construct(List<Enemy> enemies, List<IEnemyTarget> targets)
@@ -16,8 +18,7 @@ namespace Enemies
             _enemies = enemies;
             _targets = targets;
         }
-
-        // 0.1с
+        
         private void Update()
         {
             if(_enemies != null)
@@ -37,7 +38,7 @@ namespace Enemies
                 {
                     if (target != null && enemy != null && enemy.TryDetect(target))
                     {
-                        DetectAll();
+                        Detect(enemy, target);
                         break;
                     }
                 }
@@ -55,13 +56,32 @@ namespace Enemies
         
         public void UndetectAll()
         {
-            foreach (IEnemyTarget enemyTarget in _targets)
+            foreach (Enemy enemy in _enemies)
             {
-                foreach (Enemy enemy in _enemies)
-                {
-                    Undetect(enemy, enemyTarget);
-                }
+                Undetect(enemy);
             }
+        }
+        
+        public void Detect(Enemy enemy, IEnemyTarget target)
+        {
+            enemy.Target = target;
+            Detected?.Invoke(enemy);
+        }
+        
+        public void SendSignal(Enemy sourceEnemy, List<Enemy> enemies, float signalDistance)
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy != sourceEnemy && enemy.InUse && enemy.Target == null)
+                {
+                    float distance = Vector3.Distance(sourceEnemy.transform.position, enemy.transform.position);
+
+                    if (distance < signalDistance)
+                    {
+                        Detect(enemy, sourceEnemy.Target);
+                    }
+                }
+            }       
         }
 
         private IEnemyTarget FindClosestTargetTo(Enemy enemy)
@@ -82,13 +102,8 @@ namespace Enemies
 
             return closestTarget;
         }
-        
-        private void Detect(Enemy enemy, IEnemyTarget target)
-        {
-            enemy.Target = target;
-        }
-        
-        private void Undetect(Enemy enemy, IEnemyTarget target)
+
+        private void Undetect(Enemy enemy)
         {
             enemy.Target = null;
         }

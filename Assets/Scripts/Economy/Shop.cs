@@ -63,7 +63,7 @@ namespace Economy
         {
             _skills = new List<Skill>
             {
-                new Shooting(_shootingDamage),
+                new Shooting(_player, _shootingDamage),
                 new Hacking(),
                 new Acceleration(_acceleration)
             };

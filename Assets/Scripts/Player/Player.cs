@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using Economy;
 using Enemies;
 using Movement;
@@ -100,14 +99,6 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     public void TryAttack()
     {
         _animator.Play(_punchAnimationHash);
-        
-        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit hit, _attackRange))
-        {
-            if (hit.transform.TryGetComponent(out IApplyableDamage applyableDamageTarget))
-            {
-                StartCoroutine(AttackCoroutine(applyableDamageTarget));
-            }
-        }
     }
 
     public T TryGetTarget<T>()
@@ -122,11 +113,15 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
         return target;
     }
 
-    private IEnumerator AttackCoroutine(IApplyableDamage target)
+    private void OnAttackAnimation()
     {
-        const float attackAnimationTimeInSeconds = .15f;
-        yield return new WaitForSeconds(attackAnimationTimeInSeconds);
-        target.TryApplyDamage(_damage);
+        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit hit, _attackRange))
+        { 
+            if (hit.transform.TryGetComponent(out IApplyableDamage applyableDamageTarget))
+            {
+                applyableDamageTarget.TryApplyDamage(_damage);
+            }
+        }
     }
     
     public void RotateHorizontally(float horizontalAxisRotation)

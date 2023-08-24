@@ -40,7 +40,7 @@ namespace Economy
             yield return null;
         }
 
-        public void TryApplyShoot(float damage)
+        public void TryApplyShoot(Player player, float damage)
         {
             TryApplyDamage(damage);
         }

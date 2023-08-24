@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyAmountsData:
   - <Type>k__BackingField: 0
-    <Amount>k__BackingField: 5
+    <Amount>k__BackingField: 20
   - <Type>k__BackingField: 1
-    <Amount>k__BackingField: 5
+    <Amount>k__BackingField: 10

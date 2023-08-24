@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Enemies
 {
-    public abstract class Enemy : MonoBehaviour, IPoolObject, IApplyableDamage, ISkillTarget
+    public abstract class Enemy : MonoBehaviour, IPoolObject, IApplyableDamage, IShootable
     {
         [SerializeField] private EnemyConfig _config;
         [SerializeField] private Transform _center;
@@ -36,8 +36,10 @@ namespace Enemies
         public bool CanApplyDamage { get; set; }
 
         public bool InUse { get; set; }
-
-        public Action Damaged;
+        
+        public Action<Enemy, IEnemyTarget> DamagedByEnemyTarget;
+        public Action<Enemy> Damaged;
+        
         public Action<Enemy> Died;
         public Action<Enemy> ReturnedToPool;
         
@@ -65,22 +67,34 @@ namespace Enemies
             gameObject.SetActive(false);
         }
 
+        public void TryApplyShoot(Player player, float damage)
+        {
+            TryApplyDamage(player, damage);
+        }
+
+        public void TryApplyDamage(IEnemyTarget target, float damage)
+        {
+            DamagedByEnemyTarget?.Invoke(this, target);
+            TryApplyDamage(damage);
+        }
+        
         public virtual void TryApplyDamage(float damage)
         {
             if (!CanApplyDamage || damage <= 0)
                 return;
-
-            Damaged?.Invoke();
             
-            if (reaction)
-            {
-                reaction.React();
-            }
+            Damaged?.Invoke(this);
             _health -= damage;
             
             if (_health <= 0)
             {
                 Die();
+                return;
+            }
+            
+            if (reaction)
+            {
+                reaction.React();
             }
         }
 

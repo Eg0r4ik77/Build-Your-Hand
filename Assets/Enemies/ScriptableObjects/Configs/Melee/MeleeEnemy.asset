@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MeleeEnemy
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 10
-  <DetectDistance>k__BackingField: 2
+  <DetectDistance>k__BackingField: 5
   <ViewAngle>k__BackingField: 30

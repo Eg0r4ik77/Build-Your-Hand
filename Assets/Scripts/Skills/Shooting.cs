@@ -2,10 +2,12 @@
 {
     public class Shooting : Skill
     {
+        private readonly Player _player;
         private readonly float _damage;
 
-        public Shooting(float damage)
+        public Shooting(Player player, float damage)
         {
+            _player = player;
             _damage = damage;
         }
         
@@ -13,7 +15,7 @@
         {
             if (target is IShootable shootableTarget)
             {
-                shootableTarget.TryApplyShoot(_damage);
+                shootableTarget.TryApplyShoot(_player, _damage);
             }
 
             return true;

@@ -2,6 +2,6 @@
 {
     public interface IShootable : ISkillTarget
     {
-        void TryApplyShoot(float damage);
+        void TryApplyShoot(Player player, float damage);
     }
 }
