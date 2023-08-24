@@ -8,7 +8,13 @@ public class FinalBattleSequence : BattleSequence
     {
         _timer.Finished += base.StartNextWave;
     }
-    
+
+    protected override void InitializeSequence()
+    {
+        base.InitializeSequence();
+        DetectAll();
+    }
+
     protected override void FinishSequence()
     {
         ResetCurrentWave();

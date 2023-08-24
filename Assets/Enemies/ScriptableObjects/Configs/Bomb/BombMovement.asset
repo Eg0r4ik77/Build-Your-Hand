@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db6cf0a66d94bc7af1c2e6e13e045c7, type: 3}
   m_Name: BombMovement
   m_EditorClassIdentifier: 
-  <MovementSpeed>k__BackingField: 13
+  <MovementSpeed>k__BackingField: 8
   <RotationSpeed>k__BackingField: 120
   <StoppingDistance>k__BackingField: 0.4
-  <PatrolRange>k__BackingField: 3
-  <ChaseRange>k__BackingField: 6

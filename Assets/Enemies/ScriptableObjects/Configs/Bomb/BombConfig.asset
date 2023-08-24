@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 874e210863774247a7e0ff015fe3cae9, type: 3}
   m_Name: BombConfig
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 22
+  <Health>k__BackingField: 6
   <DetectDistance>k__BackingField: 6
   <ViewAngle>k__BackingField: 30

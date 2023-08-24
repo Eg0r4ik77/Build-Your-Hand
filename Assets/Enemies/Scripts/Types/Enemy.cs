@@ -38,9 +38,6 @@ namespace Enemies
         public bool InUse { get; set; }
         
         public Action<Enemy, IEnemyTarget> DamagedByEnemyTarget;
-        public Action<Enemy> Damaged;
-        
-        public Action<Enemy> Died;
         public Action<Enemy> ReturnedToPool;
         
         protected void Awake()
@@ -64,6 +61,8 @@ namespace Enemies
             _health = _maxHealth;
             CanApplyDamage = true;
             Target = null;
+            
+            behaviourTreeOwner.enabled = true;
             gameObject.SetActive(false);
         }
 
@@ -83,7 +82,6 @@ namespace Enemies
             if (!CanApplyDamage || damage <= 0)
                 return;
             
-            Damaged?.Invoke(this);
             _health -= damage;
             
             if (_health <= 0)
@@ -100,7 +98,6 @@ namespace Enemies
 
         protected virtual void Die()
         {
-            Died?.Invoke(this);
             ReturnToPool();
         }
 

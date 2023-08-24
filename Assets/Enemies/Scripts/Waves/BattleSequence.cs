@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enemies;
@@ -39,16 +38,58 @@ public class BattleSequence : MonoBehaviour
             InitializeSequence();
         }
     }
-
-    private void InitializeSequence()
+    
+    protected virtual void InitializeSequence()
     {
         _initialized = true;
         
         SubscribeSequenceCleaningToTargetsDeath();
         SetObstacles(true);
+        
         SpawnWave();
     }
+
+    protected void DetectAll()
+    {
+        _targetDetector.DetectAll();
+    }
     
+    private void SpawnWave()
+    {
+        EnemyWaveData info = _waves[_currentWaveIndex];
+        List<EnemySpawnData> pointInfos = info.SpawnDatas;
+        var enemies = new List<Enemy>() ;
+
+        foreach (EnemySpawnData enemySpawnData in pointInfos)
+        {
+            List<Enemy> spawnedEnemies = SpawnWaveBySpawnData(enemySpawnData);
+            enemies.AddRange(spawnedEnemies);
+            
+            _currentWaveEnemiesAmount += enemySpawnData.Amount;
+        }
+
+        SubscribeScenarioToEnemies(enemies);
+        _currentEnemies = enemies;
+    }
+    
+    protected virtual void StartNextWave()
+    {
+        SpawnWave();
+        DetectAll();
+    }
+    
+    protected virtual void FinishSequence()
+    {
+        ResetSequence();
+        SetObstacles(false);
+    }
+
+    protected void ResetCurrentWave()
+    {
+        _currentWaveIndex = 0;
+        _currentWaveEnemiesAmount = 0;
+    }
+
     private void UpdateSequenceScenario(Enemy deadEnemy)
     {
         // there was a check for initialized == false
@@ -71,42 +112,6 @@ public class BattleSequence : MonoBehaviour
         {
             StartNextWave();
         }
-    }
-
-    protected virtual void StartNextWave()
-    {
-        SpawnWave();
-        _targetDetector.DetectAll();
-    }
-    
-    protected virtual void FinishSequence()
-    {
-        ResetSequence();
-        SetObstacles(false);
-    }
-
-    protected void ResetCurrentWave()
-    {
-        _currentWaveIndex = 0;
-        _currentWaveEnemiesAmount = 0;
-    }
-
-    private void SpawnWave()
-    {
-        EnemyWaveData info = _waves[_currentWaveIndex];
-        List<EnemySpawnData> pointInfos = info.SpawnDatas;
-        var enemies = new List<Enemy>() ;
-
-        foreach (EnemySpawnData enemySpawnData in pointInfos)
-        {
-            List<Enemy> spawnedEnemies = SpawnWaveBySpawnData(enemySpawnData);
-            enemies.AddRange(spawnedEnemies);
-            
-            _currentWaveEnemiesAmount += enemySpawnData.Amount;
-        }
-
-        SubscribeScenarioToEnemies(enemies);
-        _currentEnemies = enemies;
     }
 
     private List<Enemy> SpawnWaveBySpawnData(EnemySpawnData enemySpawnData)
