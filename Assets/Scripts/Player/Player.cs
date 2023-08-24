@@ -27,6 +27,7 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
 
     private PlayerMovement _movement;
     private Animator _animator;
+    private CapsuleCollider _capsuleCollider;
     
     public event Action<float> HealthChanged;
     public event Action Damaged;
@@ -35,6 +36,9 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     public FirstPersonCamera Camera => _camera;
     public UniversalHand Hand => _hand;
     public ResourcesWallet Wallet { get; } = new();
+
+    public Vector3 CenterPosition => transform.position;
+    public CapsuleCollider Collider => _capsuleCollider;
 
     private float Health
     {
@@ -50,12 +54,12 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     {
         _movement = GetComponent<PlayerMovement>();
         _animator = GetComponent<Animator>();
-        
-        Health = _maxHealth;
+        _capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     private void Start()
     {
+        Health = _maxHealth;
         _hand.SetPlayer(this);
         Wallet.Add(_startWalletSum);
     }
