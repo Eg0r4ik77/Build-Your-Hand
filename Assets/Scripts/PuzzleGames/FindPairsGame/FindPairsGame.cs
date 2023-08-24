@@ -47,13 +47,14 @@ namespace FindPairsGame
             if (AreEqualOpenedCellsPerMove())
             {
                 _openedCellsCount += OpeningPerMoveCount;
-                _openedCellsPerMove = new List<Cell>();  
             }
             else
             {
                 StartCoroutine(HideCellsAfterMove(_openedCellsPerMove));
             }
             
+            _openedCellsPerMove = new List<Cell>();
+
             if (IsGameOver())
             {
                 FinishGame();
@@ -67,29 +68,26 @@ namespace FindPairsGame
 
         private void OpenCell(Cell cell)
         {
+            _openedCellsPerMove.Add(cell);
+            cell.SetClickable(false);
+
             if (_openedCellsPerMove.Count == OpeningPerMoveCount)
             { 
-                _openedCellsPerMove = new List<Cell>();  
+                UpdateGame(); 
             }
-
-            _openedCellsPerMove.Add(cell);
-            UpdateGame();
         }
 
         private bool AreEqualOpenedCellsPerMove()
         {
-            bool areEqualCells = true;
-                
             for(int i = 1; i < _openedCellsPerMove.Count; i++)
             {
                 if (_openedCellsPerMove[i].Id != _openedCellsPerMove[i - 1].Id)
                 {
-                  areEqualCells = false;
-                  break;  
+                    return false;
                 }
             }
 
-            return areEqualCells;
+            return true;
         }
         
         private void SetFieldClickable(bool clickable)
