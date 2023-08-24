@@ -34,7 +34,6 @@ namespace Enemies.BattleSequence
         {
             if (other.TryGetComponent(out Player _) && !_initialized)
             {
-                _target.ResetHealth();
                 TrySetObstacles(true);
                 InitializeSequence();                
             }

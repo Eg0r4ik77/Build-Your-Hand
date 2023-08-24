@@ -27,20 +27,31 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
 
     private PlayerMovement _movement;
     private Animator _animator;
+    
+    public event Action<float> HealthChanged;
+    public event Action Damaged;
+    public event Action Died;
 
     public FirstPersonCamera Camera => _camera;
     public UniversalHand Hand => _hand;
     public ResourcesWallet Wallet { get; } = new();
 
-    public event Action<float> Damaged;
-    public event Action Died;
-    
+    private float Health
+    {
+        get => _health;
+        set
+        {
+            _health = value;
+            HealthChanged?.Invoke(_health / _maxHealth);
+        }
+    }
+
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
         _animator = GetComponent<Animator>();
         
-        _health = _maxHealth;
+        Health = _maxHealth;
     }
 
     private void Start()
@@ -66,18 +77,15 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
 
     public void TryApplyDamage(float damage)
     {
-        _health -= damage;
-        Damaged?.Invoke(_health / _maxHealth);
+        Health -= damage;
         
-        if (_health <= 0)
+        if (Health <= 0)
         {
             Die();
+            return;
         }
-    }
-
-    private void Die()
-    {
-        Died?.Invoke();
+        
+        Damaged?.Invoke();
     }
 
     public void AddResource(Resource resource)
@@ -139,7 +147,12 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
 
     public void ResetHealth()
     {
-        _health = _maxHealth;
+        Health = _maxHealth;
+    }
+    
+    private void Die()
+    {
+        Died?.Invoke();
     }
 
     private void SetPaused(bool paused)

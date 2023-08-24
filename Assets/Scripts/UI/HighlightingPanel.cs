@@ -13,16 +13,32 @@ namespace UI
         {
             _animator = GetComponent<Animator>();
             _player.Damaged += Highlight;
+            _player.Died += StopHighlighting;
+            
+            Pause.Instance.OnPaused += SetPaused;
         }
 
         private void OnDestroy()
         {
             _player.Damaged -= Highlight;
+            _player.Died -= StopHighlighting;
+
+            Pause.Instance.OnPaused += SetPaused;
         }
 
-        private void Highlight(float health)
+        private void Highlight()
         {
             _animator.Play("RedFlashing");
+        }
+
+        private void StopHighlighting()
+        {
+            _animator.InterruptMatchTarget();
+        }
+
+        private void SetPaused(bool paused)
+        {
+            _animator.enabled = !paused;
         }
     }
 }

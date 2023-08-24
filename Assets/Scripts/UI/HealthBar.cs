@@ -17,12 +17,12 @@ namespace UI
             _barImage.fillAmount = _fillAmount;
             _barImage.color = _gradient.Evaluate(_fillAmount);
 
-            _player.Damaged += UpdateView;
+            _player.HealthChanged += UpdateView;
         }
 
         private void OnDestroy()
         {
-            _player.Damaged -= UpdateView;
+            _player.HealthChanged -= UpdateView;
         }
 
         private void UpdateView(float health)
