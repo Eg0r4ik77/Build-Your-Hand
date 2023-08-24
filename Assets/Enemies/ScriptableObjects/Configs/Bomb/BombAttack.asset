@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Range>k__BackingField: 0.5
   <DelayBeforeExplosion>k__BackingField: 0.2
-  <Explosion>k__BackingField: {fileID: -7136705563721525808, guid: 694e3c558608f3147806669184f624b6, type: 3}
+  <Explosion>k__BackingField: {fileID: -7136705563721525808, guid: 61de8ab1485fd134d876616f0e30ad32, type: 3}

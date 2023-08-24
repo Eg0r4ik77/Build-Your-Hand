@@ -879,6 +879,7 @@ Transform:
   - {fileID: 1743330167}
   - {fileID: 1569933124}
   - {fileID: 110615847}
+  - {fileID: 1598969460}
   m_Father: {fileID: 1276642595}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3418,6 +3419,7 @@ MonoBehaviour:
       <Type>k__BackingField: 0
       <Amount>k__BackingField: 1
   _signalDistance: 18
+  _obstacles: []
 --- !u!1 &112067916
 GameObject:
   m_ObjectHideFlags: 0
@@ -6003,6 +6005,7 @@ MonoBehaviour:
       <Type>k__BackingField: 0
       <Amount>k__BackingField: 1
   _signalDistance: 8
+  _obstacles: []
 --- !u!1 &269204546
 GameObject:
   m_ObjectHideFlags: 0
@@ -27997,6 +28000,7 @@ MonoBehaviour:
       <Type>k__BackingField: 0
       <Amount>k__BackingField: 1
   _signalDistance: 2
+  _obstacles: []
 --- !u!43 &948173924
 Mesh:
   m_ObjectHideFlags: 0
@@ -28913,7 +28917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tmpText: {fileID: 1772046178}
-  _timeBetweenEnemyWavesInSeconds: 10
+  _duration: 10
 --- !u!1001 &973494489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34201,7 +34205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5864919770053233163, guid: 0166b3873134cb24a96cc936eb1ad937, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.77
+      value: -33.1
       objectReference: {fileID: 0}
     - target: {fileID: 5864919770053233163, guid: 0166b3873134cb24a96cc936eb1ad937, type: 3}
       propertyPath: m_LocalPosition.y
@@ -34209,7 +34213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5864919770053233163, guid: 0166b3873134cb24a96cc936eb1ad937, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 169
+      value: 206.4
       objectReference: {fileID: 0}
     - target: {fileID: 5864919770053233163, guid: 0166b3873134cb24a96cc936eb1ad937, type: 3}
       propertyPath: m_LocalRotation.w
@@ -38360,7 +38364,6 @@ Transform:
   - {fileID: 1390624207}
   - {fileID: 1353536385}
   - {fileID: 35835228}
-  - {fileID: 1598969460}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45963,6 +45966,7 @@ MonoBehaviour:
       <Type>k__BackingField: 0
       <Amount>k__BackingField: 1
   _signalDistance: 18
+  _obstacles: []
 --- !u!1 &1570272534
 GameObject:
   m_ObjectHideFlags: 0
@@ -46905,26 +46909,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1598969460}
   - component: {fileID: 1598969459}
-  - component: {fileID: 1598969458}
+  - component: {fileID: 1598969461}
   m_Layer: 2
-  m_Name: BattleSequence
+  m_Name: FinalBattleSequence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1598969458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1598969457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5de8293798bb482a8657df572f8cb0cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &1598969459
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46946,7 +46938,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598969457}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.364271, y: 1.8375891, z: 159.61913}
+  m_LocalPosition: {x: -21.523499, y: -4.1601095, z: 135.215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46961,9 +46953,73 @@ Transform:
   - {fileID: 129087045}
   - {fileID: 41389024}
   - {fileID: 963217112}
-  m_Father: {fileID: 1276642595}
+  m_Father: {fileID: 35835228}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1598969461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598969457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70167b6a0554c83a1dc68e53199fa38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _waves:
+  - SpawnDatas:
+    - <Point>k__BackingField: {fileID: 399824505}
+      <Type>k__BackingField: 0
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 788390917}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 1371677187}
+      <Type>k__BackingField: 0
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 1918204094}
+      <Type>k__BackingField: 0
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 2108196613}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 2007043107}
+      <Type>k__BackingField: 0
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 91543558}
+      <Type>k__BackingField: 0
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 417522207}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 129087045}
+      <Type>k__BackingField: 0
+      <Amount>k__BackingField: 1
+  - SpawnDatas:
+    - <Point>k__BackingField: {fileID: 399824505}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 788390917}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 1371677187}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 91543558}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 417522207}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+    - <Point>k__BackingField: {fileID: 129087045}
+      <Type>k__BackingField: 1
+      <Amount>k__BackingField: 1
+  _signalDistance: 100
+  _obstacles:
+  - {fileID: 41389022}
+  _timer: {fileID: 963217113}
 --- !u!1 &1607236208
 GameObject:
   m_ObjectHideFlags: 0
@@ -51709,6 +51765,7 @@ MonoBehaviour:
       <Type>k__BackingField: 0
       <Amount>k__BackingField: 1
   _signalDistance: 8
+  _obstacles: []
 --- !u!1 &1749281000
 GameObject:
   m_ObjectHideFlags: 0
@@ -61306,6 +61363,7 @@ MonoBehaviour:
       <Type>k__BackingField: 0
       <Amount>k__BackingField: 1
   _signalDistance: 6
+  _obstacles: []
 --- !u!1 &2108196612
 GameObject:
   m_ObjectHideFlags: 0
