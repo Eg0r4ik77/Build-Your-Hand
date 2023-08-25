@@ -1,15 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PlayerRespawn : MonoBehaviour
 {
-    [SerializeField] private Player _player;
     [SerializeField] private List<Checkpoint> _checkpoints;
 
+    private Player _player;
+    
     private Vector3 _respawnPlayerPosition;
     private Quaternion _respawnPlayerRotation;
     private Quaternion _respawnCameraRotation;
 
+    [Inject]
+    private void Construct(Player player)
+    {
+        _player = player;
+    }
+    
     private void Start()
     {
         OnChecked();

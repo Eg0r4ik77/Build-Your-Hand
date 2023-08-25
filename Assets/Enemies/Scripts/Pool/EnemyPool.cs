@@ -15,7 +15,7 @@ namespace Enemies.Spawn
             _enemyFactory = enemyFactory;
         }
 
-        protected override Pool.IPoolObject Create()
+        protected override IPoolObject Create()
         {
             Enemy enemy = _enemyFactory.Create(_type);
 

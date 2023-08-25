@@ -1,22 +1,28 @@
-﻿using Doors;
-using PuzzleGames;
+﻿using PuzzleGames;
 using Skills;
 using UnityEngine;
 
-public class HackableDoor : Door, IHackable
+public class HackableDoor : MonoBehaviour, IHackable, IPauseable
 {
     [SerializeField] private PuzzleGame _puzzleGame;
+    
+    private readonly int _openingAnimationHash = Animator.StringToHash("Open");
+
+    private Animator _animator;
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
     
     private void OnEnable()
     {
         _puzzleGame.Finished += ApplyHack;
-        Pause.Instance.OnPaused += SetPaused;
     }
 
     private void OnDisable()
     {
         _puzzleGame.Finished -= ApplyHack;
-        Pause.Instance.OnPaused -= SetPaused;
     }
     
     public bool TryHack()
@@ -28,6 +34,16 @@ public class HackableDoor : Door, IHackable
         }
 
         return false;
+    }
+    
+    public void SetPaused(bool paused)
+    {
+        _animator.enabled = !paused;
+    }
+        
+    private void Open()
+    {
+        _animator.Play(_openingAnimationHash);
     }
 
     private void ApplyHack()

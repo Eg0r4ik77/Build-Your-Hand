@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Enemies
 {
-    public abstract class Enemy : MonoBehaviour, IPoolObject, IApplyableDamage, IShootable
+    public abstract class Enemy : MonoBehaviour, IPoolObject, IApplyableDamage, IShootable, IPauseable
     {
         [SerializeField] private EnemyConfig _config;
         [SerializeField] private Transform _center;
@@ -20,7 +20,7 @@ namespace Enemies
 
         protected Patrol patrol;
         protected Reaction reaction;
-
+        
         private CapsuleCollider _collider;
         
         private float _health;
@@ -95,10 +95,12 @@ namespace Enemies
                 reaction.React();
             }
         }
-
-        protected virtual void Die()
+        
+        public void SetPaused(bool paused)
         {
-            ReturnToPool();
+            behaviourTreeOwner.enabled = !paused;
+            navMeshAgent.enabled = !paused;
+            animator.enabled = !paused;
         }
 
         public void ReturnToPool()
@@ -149,6 +151,11 @@ namespace Enemies
             behaviourTreeOwner.graph.blackboard.SetVariableValue(variableName, value);
         }
         
+        protected virtual void Die()
+        {
+            ReturnToPool();
+        }
+
         private void SetConfigValues()
         {
             _health = _config.Health;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -11,7 +10,7 @@ namespace Economy
         [SerializeField] private List<Resource> _resourcePrefabs;
 
         private List<Chest> _chests;
-
+        
         private void Awake()
         {
             _chests = FindObjectsOfType<Chest>().ToList();

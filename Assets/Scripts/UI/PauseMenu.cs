@@ -1,13 +1,22 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private PausePanel _panel;
 
+    private Pause _pause;
+    
     public Action Opened;
     public Action Closed;
 
+    [Inject]
+    private void Construct(Pause pause)
+    {
+        _pause = pause;
+    }
+    
     private void OnEnable()
     {
         _panel.PauseCancelled += ClosePausePanel;
@@ -23,7 +32,7 @@ public class PauseMenu : MonoBehaviour
         Opened?.Invoke();
         _panel.gameObject.SetActive(true);
         
-        Pause.Instance.SetPaused(true);
+        _pause.SetPaused(true);
     }
 
     public void ClosePausePanel()
@@ -31,6 +40,6 @@ public class PauseMenu : MonoBehaviour
         Closed?.Invoke();
         _panel.gameObject.SetActive(false);
         
-        Pause.Instance.SetPaused(false);
+        _pause.SetPaused(false);
     }
 }

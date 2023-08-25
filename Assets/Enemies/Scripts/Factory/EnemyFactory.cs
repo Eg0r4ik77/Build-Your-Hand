@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Enemies;
 using Enemies.Spawn;
@@ -8,8 +9,10 @@ public class EnemyFactory
     private readonly DiContainer _diContainer;
     private readonly EnemyPrefabs _enemyPrefabs;
     
-    public List<Enemy> CreatedEnemies { get; } = new();
+    public Action<Enemy> Created;
 
+    public List<Enemy> CreatedEnemies { get; } = new();
+    
     public EnemyFactory(DiContainer diContainer, EnemyPrefabs prefabs)
     {
         _diContainer = diContainer;
@@ -24,6 +27,7 @@ public class EnemyFactory
         enemy.Initialize();
         
         CreatedEnemies.Add(enemy);
+        Created?.Invoke(enemy);
         return enemy;
     }
 

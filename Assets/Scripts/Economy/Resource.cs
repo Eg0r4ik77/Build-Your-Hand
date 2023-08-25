@@ -5,26 +5,17 @@ using Random = System.Random;
 
 namespace Economy
 {
-    public class Resource : MonoBehaviour
+    public class Resource : MonoBehaviour, IPauseable
     {
         private Quaternion _rotation;
         private bool _isRotating = true;
+        
         public float Value { get; set; }
 
         private void Start()
         {
             _rotation = transform.rotation;
             SetRandomRotation();
-        }
-
-        private void OnEnable()
-        {
-            Pause.Instance.OnPaused += SetPaused;
-        }
-
-        private void OnDisable()
-        {
-            Pause.Instance.OnPaused -= SetPaused;
         }
         
         private void Update()
@@ -43,6 +34,11 @@ namespace Economy
                 Destroy(gameObject);
             }
         }
+        
+        public void SetPaused(bool paused)
+        {
+            _isRotating = !paused;
+        }
 
         private void SetRandomRotation()
         {
@@ -60,11 +56,6 @@ namespace Economy
 
             _rotation *= Quaternion.AngleAxis(angle, rotationDirections[0]) *
                          Quaternion.AngleAxis(angle, rotationDirections[1]);
-        }
-        
-        private void SetPaused(bool paused)
-        {
-            _isRotating = !paused;
         }
     }
 }

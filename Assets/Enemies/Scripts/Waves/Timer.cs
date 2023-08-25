@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Timer : MonoBehaviour
+public class Timer : MonoBehaviour, IPauseable
 {
     [SerializeField] private TMP_Text _tmpText;
     [SerializeField] private float _duration = 10f;
@@ -15,16 +15,6 @@ public class Timer : MonoBehaviour
     private float _timeLeft;
     
     public event Action Finished;
-
-    private void OnEnable()
-    {
-        Pause.Instance.OnPaused += SetPaused;
-    }
-
-    private void OnDisable()
-    {
-        Pause.Instance.OnPaused -= SetPaused;
-    }
 
     private void Update()
     {
@@ -42,6 +32,11 @@ public class Timer : MonoBehaviour
         _paused = false;
     }
 
+    public void SetPaused(bool paused)
+    {
+        _paused = paused;
+    }
+    
     private void Tick()
     {
         if (_timeLeft > 0)
@@ -61,10 +56,5 @@ public class Timer : MonoBehaviour
     private void UpdateText(int seconds)
     {
         _tmpText.text = OriginText + seconds;
-    }
-    
-    private void SetPaused(bool paused)
-    {
-        _paused = paused;
     }
 }

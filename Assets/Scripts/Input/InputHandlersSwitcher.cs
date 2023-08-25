@@ -3,20 +3,33 @@ using System.Linq;
 using Economy;
 using PuzzleGames;
 using UnityEngine;
+using Zenject;
 
 public class InputHandlersSwitcher : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-    [SerializeField] private PauseMenu _pauseMenu;
-    [SerializeField] private PuzzleGamesSwitcher _puzzleGamesSwitcher;
-    [SerializeField] private Shop _shop;
-    [SerializeField] private CursorSwitcher _cursorSwitcher;
-    [SerializeField] private GameFinisher _gameFinisher;
-
+    private Player _player;
+    private CursorSwitcher _cursorSwitcher;
+    private PauseMenu _pauseMenu;
+    private PuzzleGamesSwitcher _puzzleGamesSwitcher;
+    private Shop _shop;
+    private GameFinisher _gameFinisher;
+    
     private List<InputHandler> _inputHandlers;
     
     private InputHandler _previousInputHandler;
     private InputHandler _currentInputHandler;
+
+    [Inject]
+    private void Construct(Player player, CursorSwitcher cursorSwitcher, PauseMenu pauseMenu,
+        PuzzleGamesSwitcher puzzleGamesSwitcher, Shop shop, GameFinisher gameFinisher)
+    {
+        _player = player;
+        _cursorSwitcher = cursorSwitcher;
+        _pauseMenu = pauseMenu;
+        _puzzleGamesSwitcher = puzzleGamesSwitcher;
+        _shop = shop;
+        _gameFinisher = gameFinisher;
+    }
     
     private void Start()
     {
@@ -42,7 +55,7 @@ public class InputHandlersSwitcher : MonoBehaviour
         _puzzleGamesSwitcher.Opened += SwitchToPuzzle;
         _puzzleGamesSwitcher.Closed += SwitchToAction;
 
-        _gameFinisher.GameFinished += DisableHandling;
+        _gameFinisher.GameFinished += SwitchToNull;
     }
 
     private void OnDisable()
@@ -56,7 +69,7 @@ public class InputHandlersSwitcher : MonoBehaviour
         _puzzleGamesSwitcher.Opened -= SwitchToPuzzle;
         _puzzleGamesSwitcher.Closed -= SwitchToAction;
         
-        _gameFinisher.GameFinished -= DisableHandling;
+        _gameFinisher.GameFinished -= SwitchToNull;
     }
 
     private void Update()
@@ -86,7 +99,7 @@ public class InputHandlersSwitcher : MonoBehaviour
     }
     
 
-    private void DisableHandling()
+    private void SwitchToNull()
     {
         SwitchInputHandling<NullInputHandler>();
     }

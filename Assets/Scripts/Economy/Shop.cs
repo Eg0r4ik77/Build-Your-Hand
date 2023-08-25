@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Skills;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Economy
 {
     [RequireComponent(typeof(Animator))]
-    public class Shop : MonoBehaviour
+    public class Shop : MonoBehaviour, IPauseable
     {
-        [SerializeField] private Player _player;
         [SerializeField] private List<PurchaseData> _dataList;
         
         [SerializeField] private GameObject _panel;
@@ -23,6 +22,8 @@ namespace Economy
  
         [SerializeField] private float _shootingDamage = 3f;
         [SerializeField] private float _acceleration = 3f;
+
+        private Player _player;
         
         private List<Skill> _skills;
         private ResourcesWallet _wallet;
@@ -41,6 +42,12 @@ namespace Economy
         public event Action Opened;
         public event Action Closed;
 
+        [Inject]
+        private void Construct(Player player)
+        {
+            _player = player;
+        }
+        
         private void Awake()
         {
             _animator = GetComponent<Animator>();
@@ -84,18 +91,19 @@ namespace Economy
         private void OnEnable()
         {
             _purchaseButton.onClick.AddListener(TryPurchase);
-            Pause.Instance.OnPaused += SetPaused;
         }
 
         private void OnDisable()
         {
             _purchaseButton.onClick.AddListener(TryPurchase);
-            Pause.Instance.OnPaused -= SetPaused;
         }
-
-        private void SetPaused(bool paused)
+        
+        public void SetPaused(bool paused)
         {
-            _animator.enabled = !paused;
+            if (_animator)
+            {
+                _animator.enabled = !paused;
+            }
         }
 
         private void TryPurchase()

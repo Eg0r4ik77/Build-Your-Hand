@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class CursorSwitcher : MonoBehaviour
+[Serializable]
+public class CursorSwitcher 
 { 
     [SerializeField] private Image _predictionPointImage;
 

@@ -3,7 +3,7 @@
 namespace UI
 {
     [RequireComponent(typeof(Animator))]
-    public class HighlightingPanel : MonoBehaviour
+    public class HighlightingPanel : MonoBehaviour, IPauseable
     {
         [SerializeField] private Player _player;
 
@@ -14,16 +14,17 @@ namespace UI
             _animator = GetComponent<Animator>();
             _player.Damaged += Highlight;
             _player.Died += StopHighlighting;
-            
-            Pause.Instance.OnPaused += SetPaused;
         }
 
         private void OnDestroy()
         {
             _player.Damaged -= Highlight;
             _player.Died -= StopHighlighting;
-
-            Pause.Instance.OnPaused += SetPaused;
+        }
+        
+        public void SetPaused(bool paused)
+        {
+            _animator.enabled = !paused;
         }
 
         private void Highlight()
@@ -34,11 +35,6 @@ namespace UI
         private void StopHighlighting()
         {
             _animator.InterruptMatchTarget();
-        }
-
-        private void SetPaused(bool paused)
-        {
-            _animator.enabled = !paused;
         }
     }
 }

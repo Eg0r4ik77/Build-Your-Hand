@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Enemies.Pool
 {
@@ -7,6 +6,8 @@ namespace Enemies.Pool
     {
         private readonly int _size;
         private readonly List<IPoolObject> _objects = new();
+
+        public List<IPoolObject> Objects => _objects;
 
         protected Pool(int size)
         {
@@ -21,9 +22,7 @@ namespace Enemies.Pool
                 Add(poolObject);
             }
         }
-
-        protected abstract IPoolObject Create();
-
+        
         public IPoolObject Get()
         {
             if (HasUnusedObject(out IPoolObject poolObject))
@@ -32,6 +31,19 @@ namespace Enemies.Pool
             }
             
             return null;
+        }
+
+        protected abstract IPoolObject Create();
+
+        protected void Release(IPoolObject poolObject)
+        {
+            poolObject.Clear();
+            poolObject.InUse = false;
+        }
+        
+        private void Add(IPoolObject poolObject)
+        {
+            _objects.Add(poolObject);
         }
 
         private bool HasUnusedObject(out IPoolObject unusedObject)
@@ -48,17 +60,6 @@ namespace Enemies.Pool
 
             unusedObject = default;
             return false;
-        }
-
-        private void Add(IPoolObject poolObject)
-        {
-            _objects.Add(poolObject);
-        }
-        
-        public void Release(IPoolObject poolObject)
-        {
-            poolObject.Clear();
-            poolObject.InUse = false;
         }
     }
 }

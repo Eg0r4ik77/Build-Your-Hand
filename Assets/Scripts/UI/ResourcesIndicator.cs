@@ -1,16 +1,22 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
     [RequireComponent(typeof(TMP_Text))]
     public class ResourcesIndicator : MonoBehaviour
     {
-        [SerializeField] private Player _player;
-
+        private Player _player;
         private TMP_Text _tmpText;
 
+        [Inject]
+        private void Construct(Player player)
+        {
+            _player = player;
+        }
+        
         private void Awake()
         {
             _tmpText = GetComponent<TMP_Text>();

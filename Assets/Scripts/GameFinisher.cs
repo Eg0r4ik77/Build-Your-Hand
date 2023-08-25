@@ -1,17 +1,24 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class GameFinisher : MonoBehaviour
 {
-    [SerializeField] private CursorSwitcher _cursorSwitcher;
-
     [SerializeField] private FinishPanel _finishPanel;
     [SerializeField] private PausePanel _pausePanel;
 
     private const string MainMenuSceneName = "MainMenu";
 
+    private CursorSwitcher _cursorSwitcher;
+    
     public Action GameFinished;
+    
+    [Inject]
+    private void Construct(CursorSwitcher cursorSwitcher)
+    {
+        _cursorSwitcher = cursorSwitcher;
+    }
     
     private void OnEnable()
     {

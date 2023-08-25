@@ -5,9 +5,10 @@ using Movement;
 using PlayerCamera;
 using Skills;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(PlayerMovement), typeof(Animator))]
-public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceleratable
+public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceleratable, IPauseable
 {
     [SerializeField] private float _skillApplyRange = 8f;
     [SerializeField] private float _attackRange = 6f;
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
     private PlayerMovement _movement;
     private Animator _animator;
     private CapsuleCollider _capsuleCollider;
-    
+
     public event Action<float> HealthChanged;
     public event Action Damaged;
     public event Action Died;
@@ -61,16 +62,6 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
         Health = _maxHealth;
         _hand.SetPlayer(this);
         Wallet.Add(_startWalletSum);
-    }
-
-    private void OnEnable()
-    {
-        Pause.Instance.OnPaused += SetPaused;
-    }
-
-    private void OnDisable()
-    {
-        Pause.Instance.OnPaused -= SetPaused;
     }
 
     public void Move(Vector3 motion)
@@ -149,15 +140,15 @@ public class Player : MonoBehaviour, IUniversalHandOwner, IEnemyTarget, IAcceler
         Health = _maxHealth;
     }
     
-    private void Die()
-    {
-        Died?.Invoke();
-    }
-
-    private void SetPaused(bool paused)
+    public void SetPaused(bool paused)
     {
         _movement.enabled = !paused;
         _animator.enabled = !paused;
         _hand.SetPaused(paused);
+    }
+    
+    private void Die()
+    {
+        Died?.Invoke();
     }
 }

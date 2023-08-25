@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Enemies.Spawn;
 using ScriptableObjects.Enemies;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Enemies
@@ -14,8 +13,14 @@ namespace Enemies
         [SerializeField] private EnemyAmounts _enemyAmountsData;
         [SerializeField] private EnemyTargetDetector _targetDetector;
 
-        [SerializeField] private Player _player;
+        private Player _player;
 
+        [Inject]
+        private void Construct(Player player)
+        {
+            _player = player;
+        }
+        
         public override void InstallBindings()
         {
             var targets = new List<IEnemyTarget>
