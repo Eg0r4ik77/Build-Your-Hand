@@ -10,10 +10,12 @@ public class LevelPauseInstaller : MonoInstaller
     [SerializeField] private HighlightingPanel _highlightingPanel;
     [SerializeField] private List<HackableDoor> _hackableDoors;
     
+    private readonly Pause _pause = new();
+
     private Player _player;
     private EnemyFactory _enemyFactory;
     private Shop _shop;
-
+    
     [Inject]
     private void Construct(Player player, EnemyFactory enemyFactory, Shop shop)
     {
@@ -24,20 +26,27 @@ public class LevelPauseInstaller : MonoInstaller
     
     public override void InstallBindings()
     {
-        var pause = new Pause();
-        
-        pause.Register(_player);
-
-        _enemyFactory.Created += pause.Register;
-        
-        pause.Register(_timer);
-        pause.Register(_highlightingPanel);
-        pause.Register(_hackableDoors.ConvertAll(door => (IPauseable)door));
-        pause.Register(_shop);
+        RegisterPauseables();
 
         Container
             .Bind<Pause>()
-            .FromInstance(pause)
+            .FromInstance(_pause)
             .AsSingle();
+    }
+
+    private void RegisterPauseables()
+    {
+        var pauseables = new List<IPauseable>()
+        {
+            _player,
+            _timer, 
+            _highlightingPanel,
+            _shop
+        };
+        
+        _pause.Register(pauseables);
+        
+        _pause.Register(_hackableDoors.ConvertAll(door => (IPauseable)door));
+        _enemyFactory.Created += _pause.Register;
     }
 }

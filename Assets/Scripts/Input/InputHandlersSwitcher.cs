@@ -9,7 +9,7 @@ public class InputHandlersSwitcher : MonoBehaviour
 {
     private Player _player;
     private CursorSwitcher _cursorSwitcher;
-    private PauseMenu _pauseMenu;
+    private PauseMenu _pauseMenu; 
     private PuzzleGamesSwitcher _puzzleGamesSwitcher;
     private Shop _shop;
     private GameFinisher _gameFinisher;
