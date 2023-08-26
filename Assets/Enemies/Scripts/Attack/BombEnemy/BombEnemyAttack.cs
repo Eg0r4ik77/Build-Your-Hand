@@ -8,14 +8,14 @@ public class BombEnemyAttack : EnemyAttack
     [SerializeField] private BombEnemyAttackConfig _config;
     
     private float _range;
-    private float _delayBeforeExplosion;
     private BombExplosion _explosion;
 
     private BombEnemy _enemy;
+    private Animator _animator;
+    
     private List<IEnemyTarget> _targets;
 
     public float Range => _range;
-    public float DelayBeforeExplosion => _delayBeforeExplosion;
 
     [Inject]
     private void Construct(List<IEnemyTarget> targets)
@@ -23,12 +23,19 @@ public class BombEnemyAttack : EnemyAttack
         _targets = targets;
     }
 
-    public void Initialize(BombEnemy enemy)
+    public void Initialize(BombEnemy enemy, Animator animator)
     {
         _enemy = enemy;
+        _animator = animator;
+        
         SetConfigValues();
     }
-    
+
+    public void Attack()
+    {
+        _animator.SetTrigger("Jump");
+    }
+
     public void Explode()
     {
         BombExplosion explosion = Instantiate(_explosion, _enemy.Center.position, Quaternion.identity);
@@ -44,8 +51,7 @@ public class BombEnemyAttack : EnemyAttack
     
     protected override void SetConfigValues()
     {
-        _range = _config.DelayBeforeExplosion;
-        _delayBeforeExplosion = _config.DelayBeforeExplosion;
+        _range = _config.Range;
         _explosion = _config.Explosion;
     }
 }

@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9adddeb28524809b15663b8bb8f5e04, type: 3}
   m_Name: BombAttack
   m_EditorClassIdentifier: 
-  <Range>k__BackingField: 0.5
-  <DelayBeforeExplosion>k__BackingField: 0.4
+  <Range>k__BackingField: 2.5
   <Explosion>k__BackingField: {fileID: -7136705563721525808, guid: 694e3c558608f3147806669184f624b6, type: 3}

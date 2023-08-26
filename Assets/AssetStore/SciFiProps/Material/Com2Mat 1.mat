@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SwitchMat 1
+  m_Name: Com2Mat 1
   m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -28,7 +28,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 98b257fe1ee076445ab89dd14a34508f, type: 3}
+        m_Texture: {fileID: 2800000, guid: b1539642eeef7534fb3a8ca82408af14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -44,23 +44,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 0794b689756a9b04d899699c0c28f53e, type: 3}
-        m_Scale: {x: 0.73, y: 5.23}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: a730e3203058a4b4d98b7604f1ebfb6c, type: 3}
+        m_Scale: {x: 2.21, y: 0.9}
+        m_Offset: {x: 0.49, y: -0.02}
     - _MainTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 0.73, y: 5.23}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 2.21, y: 0.9}
+        m_Offset: {x: 0.49, y: -0.02}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 62edc4ea3bf28804991d3e7f74eaf1c8, type: 3}
+        m_Texture: {fileID: 2800000, guid: a2f0c1dfa5fdf0f469fc2c0dfb9ebb31, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 20284a0c9dec4204c886f9d6bd3c4f53, type: 3}
+        m_Texture: {fileID: 2800000, guid: d422435a7d413e64794ca455b5c0d1f3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 2800000, guid: ca73a3a7716b98747a68970693555bed, type: 3}
+        m_Texture: {fileID: 2800000, guid: a3f78c02b38b691419022adc93adcda6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -82,6 +82,6 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
-    - _EmissionColor: {r: 2.293665, g: 0.12210061, b: 0, a: 1}
+    - _EmissionColor: {r: 2, g: 0, b: 0.022057531, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

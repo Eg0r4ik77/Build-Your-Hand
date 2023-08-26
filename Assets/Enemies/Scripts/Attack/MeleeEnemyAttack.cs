@@ -9,8 +9,8 @@ public class MeleeEnemyAttack : EnemyAttack
     private static readonly int PunchHash = Animator.StringToHash("Punch");
     private static readonly int PunchingHash = Animator.StringToHash("Punching");
 
-    private static readonly int UppercutHash = Animator.StringToHash("Uppercut");
-    private static readonly int UppercuttingHash = Animator.StringToHash("Uppercutting");
+    private static readonly int KickHash = Animator.StringToHash("Kick");
+    private static readonly int KickingHash = Animator.StringToHash("Kicking");
     
     private int _currentAnimationHash = PunchingHash;
 
@@ -80,7 +80,7 @@ public class MeleeEnemyAttack : EnemyAttack
 
         _currentAnimationHash = randomAttackProbability <= _punchProbability
             ? PunchingHash
-            : UppercuttingHash;
+            : KickingHash;
     }
 
     private bool IsAnimationFinished()
@@ -89,7 +89,7 @@ public class MeleeEnemyAttack : EnemyAttack
         int attackHash = currentAnimatorStateInfo.shortNameHash;
 
         bool isPunchState = attackHash == PunchHash;
-        bool isUppercutState = attackHash == UppercutHash;
+        bool isUppercutState = attackHash == KickHash;
 
         bool isAnimationFinished = !isPunchState && !isUppercutState;
         

@@ -18,7 +18,7 @@ namespace Enemies
         protected override void InitializeEnemyComponents()
         {
             _movement.Initialize(this, navMeshAgent, animator);
-            _attack.Initialize(this);
+            _attack.Initialize(this, animator);
         }
 
         protected override void InitializeBehaviourTreeVariables()
@@ -28,7 +28,6 @@ namespace Enemies
             SetBehaviourTreeVariable("Patrol", patrol);
             SetBehaviourTreeVariable("Attack", _attack);
             SetBehaviourTreeVariable("AttackRange", _attack.Range);
-            SetBehaviourTreeVariable("DelayBeforeAttackSeconds", _attack.DelayBeforeExplosion);
         }
     }
 }
