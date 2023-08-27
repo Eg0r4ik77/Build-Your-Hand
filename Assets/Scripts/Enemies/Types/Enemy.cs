@@ -61,7 +61,8 @@ namespace Enemies
             _health = _maxHealth;
             CanApplyDamage = true;
             Target = null;
-            
+
+            navMeshAgent.enabled = true;
             behaviourTreeOwner.enabled = true;
             gameObject.SetActive(false);
         }

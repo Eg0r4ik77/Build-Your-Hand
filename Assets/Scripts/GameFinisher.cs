@@ -10,13 +10,15 @@ public class GameFinisher : MonoBehaviour
 
     private const string MainMenuSceneName = "MainMenu";
 
+    private Pause _pause;
     private CursorSwitcher _cursorSwitcher;
     
     public Action GameFinished;
     
     [Inject]
-    private void Construct(CursorSwitcher cursorSwitcher)
+    private void Construct(Pause pause, CursorSwitcher cursorSwitcher)
     {
+        _pause = pause;
         _cursorSwitcher = cursorSwitcher;
     }
     
@@ -37,6 +39,7 @@ public class GameFinisher : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _finishPanel.Open();
+        _pause.SetPaused(true);
         GameFinished?.Invoke();
     }
     

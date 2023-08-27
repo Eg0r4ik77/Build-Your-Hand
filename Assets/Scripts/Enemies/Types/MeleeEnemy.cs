@@ -38,7 +38,8 @@ public class MeleeEnemy : Enemy
     
     protected override void Die()
     { 
-        CanApplyDamage = false; 
+        CanApplyDamage = false;
+        behaviourTreeOwner.enabled = false;
         AnimateDying(); 
     }
 
