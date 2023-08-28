@@ -1,2 +1,2 @@
-# TrajectoryOfFuture
+# Build Your Hand
 ## Игра на тему "Один инструмент - много назначений"
