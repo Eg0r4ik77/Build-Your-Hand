@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using ModestTree;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -19,6 +20,7 @@ public class UsersPanel : Panel
     [SerializeField] private UserView _userViewPrefab;
     [SerializeField] private UserInfoPanel _userInfoPanel;
 
+    private List<User> _users = new();
     private List<UserView> _userViews = new();
 
     private Tab _currentTab;
@@ -30,7 +32,7 @@ public class UsersPanel : Panel
         {
             {_allUsersTab, "http://localhost:8088/users"},
             {_followingsTab, "http://localhost:8088/1/followings"},
-            {_followersTab, "http://localhost:8088/users"}
+            {_followersTab, "http://localhost:8088/1/followers"}
         };
 
         SwitchContent(_allUsersTab);
@@ -70,26 +72,33 @@ public class UsersPanel : Panel
         _currentTab.Select();
 
         string request = _tabsRequests[tab];
-        List<User> users = await GetUsersByRequest(request);
 
         ClearContent();
-        ShowUsers(users);
+        _users = await GetUsersByRequest(request);
+        ShowUsers();
     }
 
-    private async void SearchForUser(string template)
+    private void SearchForUser(string template)
     {
+        if(template.IsEmpty()) 
+            return;
+
         ClearContent();
-        List<User> users = await GetUserByTemplate(template);
-        ShowUsers(users);
+        _users = GetUserByTemplate(template);
+        ShowUsers();
     }
 
-    private void ShowUsers(List<User> users)
+    private void ShowUsers()
     {
+        List<User> users = new(_users);
+
         foreach (User user in users)
         {
             UserView view = Instantiate(_userViewPrefab, _contentRectTransform);
             view.Initialize(user, _userInfoPanel);
+
             _userViews.Add(view);
+            _users.Add(user);
         }
     }
 
@@ -97,15 +106,23 @@ public class UsersPanel : Panel
     {
         _userViews.ForEach(userView => Destroy(userView.gameObject));
         _userViews = new List<UserView>();
+        _users = new();
     }
 
-    private async UniTask<List<User>> GetUserByTemplate(string template)
+    private List<User> GetUserByTemplate(string template)
     {
-        string request = template.IsEmpty()
-            ? _tabsRequests[_currentTab]
-            : $"http://localhost:8088/users/{template}";
+        string regex = "(?i).*" + template + ".*";
+        List<User> users = new List<User>();
 
-        return await GetUsersByRequest(request);
+        foreach (User user in _users)
+        {
+            if (Regex.IsMatch(user.Login, regex))
+            {
+                users.Add(user);
+            }
+        }
+
+        return users;
     }
 
     private async UniTask<List<User>> GetUsersByRequest(string uri)
