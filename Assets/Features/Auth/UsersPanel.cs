@@ -1,11 +1,12 @@
-using Assets.Features;
 using Assets.Features.Auth;
+using Cysharp.Threading.Tasks;
+using ModestTree;
+using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class UsersPanel : Panel
 {
@@ -18,7 +19,8 @@ public class UsersPanel : Panel
     private Tab _currentTab;
 
     // список объектов UserView
-    private Dictionary<Tab, Func<List<User>>> _tabsActions;
+    private Dictionary<Tab, Func<UniTask<List<User>>>> _tabsActions;
+
 
     private void Start()
     {
@@ -57,39 +59,16 @@ public class UsersPanel : Panel
         }
     }
 
-    private void SwitchContent(Tab tab)
+    private async void SwitchContent(Tab tab)
     {
         _currentTab?.SetDefaultColor();
         _currentTab = tab;
         _currentTab.Select();
 
-        List<User> users = _tabsActions[tab]();
+        List<User> users = await _tabsActions[tab]();
 
         ClearContent();
         ShowUsers(users);
-    }
-
-    private void SearchForUser(string template)
-    {
-        Debug.Log("Запрос на поиск пользователя");
-    }
-
-    private List<User> GetAllUsers()
-    {
-        Debug.Log("Запрос на получение всех пользователей");
-        return null;
-    }
-
-    private List<User> GetFollowings()
-    {
-        Debug.Log("Запрос на получение подписок");
-        return null;
-    }
-
-    private List<User> GetFollowers()
-    {
-        Debug.Log("Запрос на получение подписчиков");
-        return null;
     }
 
     private void ClearContent()
@@ -97,8 +76,45 @@ public class UsersPanel : Panel
         // очистить вьюшки
     }
 
+    private async void SearchForUser(string template)
+    {
+        List<User> users = await GetUserByTemplate(template);
+        ShowUsers(users);
+    }
+
     private void ShowUsers(List<User> users)
     {
         // генерация вьюшек, добавление в список
+    }
+
+    private async UniTask<List<User>> GetUserByTemplate(string template)
+    {
+        return template.IsEmpty()
+            ? await _tabsActions[_currentTab]()
+            : await GetUsersByRequest($"http://localhost:8088/users/{template}");
+    }
+
+    private async UniTask<List<User>> GetAllUsers()
+        => await GetUsersByRequest("http://localhost:8088/users");
+
+    private async UniTask<List<User>> GetFollowings()
+        => await GetUsersByRequest("http://localhost:8088/1/followings");
+
+    private async UniTask<List<User>> GetFollowers()
+        => await GetUsersByRequest("http://localhost:8088/users");
+
+    private async UniTask<List<User>> GetUsersByRequest(string uri)
+    {
+        UnityWebRequest request = await UnityWebRequest
+            .Get(uri)
+            .SendWebRequest()
+            .WithCancellation(this.GetCancellationTokenOnDestroy());
+
+        string usersJson = request.downloadHandler.text;
+
+        Debug.Log($"{usersJson}");
+        List<User> users = JsonConvert.DeserializeObject<List<User>>(usersJson);
+
+        return users;
     }
 }
