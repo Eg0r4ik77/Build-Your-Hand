@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Panel : MonoBehaviour
@@ -8,10 +7,20 @@ public class Panel : MonoBehaviour
 
     private void OnEnable()
     {
+        Enable();
+    }
+
+    protected void OnDisable()
+    {
+        Disable();
+    }
+
+    protected virtual void Enable()
+    {
         _closeButton.onClick.AddListener(Close);
     }
 
-    private void OnDisable()
+    protected virtual void Disable()
     {
         _closeButton.onClick.RemoveListener(Close);
     }
@@ -21,7 +30,7 @@ public class Panel : MonoBehaviour
         gameObject.SetActive(true);
     }
     
-    private void Close()
+    public void Close()
     {
         gameObject.SetActive(false);
     }
