@@ -362,4 +362,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 1063508256259109214}
-  _rating: {fileID: 768437361574818785}
+  _ratingText: {fileID: 768437361574818785}

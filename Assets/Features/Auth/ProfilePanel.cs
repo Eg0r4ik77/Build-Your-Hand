@@ -1,3 +1,5 @@
+using Assets.Features;
+using Assets.Features.Auth;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +13,8 @@ public class ProfilePanel : Panel
     [SerializeField] private Button _changeLoginButton;
     [SerializeField] private Button _changePasswordButton;
 
+    [SerializeField] private AchievementsPanel _achievementsPanel;
+
     protected override void Enable()
     {
         base.Enable();
@@ -18,7 +22,7 @@ public class ProfilePanel : Panel
         _changeLoginButton.onClick.AddListener(TryChangeLogin);
         _changePasswordButton.onClick.AddListener(TryChangePassword);
 
-        ShowAchievements();
+        _achievementsPanel.ShowAchievements("http://localhost:8088/1/achievements/");
     }
 
     protected override void Disable()
@@ -27,6 +31,8 @@ public class ProfilePanel : Panel
 
         _changeLoginButton.onClick.RemoveListener(TryChangeLogin);
         _changePasswordButton.onClick.RemoveListener(TryChangePassword);
+
+        _achievementsPanel.ClearContent();
     }
 
     private void TryChangeLogin()
@@ -44,11 +50,5 @@ public class ProfilePanel : Panel
         {
             Debug.Log("Запрос на изменение пароля");
         }
-    }
-
-    private void ShowAchievements()
-    {
-        Debug.Log("Запрос на получение достижений");
-
     }
 }

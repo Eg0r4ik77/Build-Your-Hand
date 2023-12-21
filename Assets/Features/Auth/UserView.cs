@@ -1,21 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Features.Auth;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UserView : MonoBehaviour
+public class UserView : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TMP_Text _nameText;
-    [SerializeField] private TMP_Text _rating;
+    [SerializeField] private TMP_Text _ratingText;
+    
+    private User _user;
+    private UserInfoPanel _userInfoPanel;
 
-    public string Name {
-        get => _nameText.text;
-        set => _nameText.text = value;
+    public void Initialize(User user, UserInfoPanel userInfoPanel)
+    {
+        _user = user;
+        _userInfoPanel = userInfoPanel;
+
+        _nameText.text = user.Login;
+        _ratingText.text = "100";
     }
 
-    public string Rating
+    public void OnPointerClick(PointerEventData eventData)
     {
-        get => _rating.text;
-        set => _rating.text = value;
+        _userInfoPanel.SetUser(_user);
+        _userInfoPanel.Open();
     }
 }

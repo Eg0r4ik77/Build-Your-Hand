@@ -23,15 +23,16 @@ namespace Assets.Features.Auth
             _rectTransform = GetComponent<RectTransform>();
         }
 
-        private async void OnEnable()
+        public async void ShowAchievements(string uri)
         {
-            List<Achievement> achievements = await GetAchievements();
+            List<Achievement> achievements = await GetAchievements(uri);
             ShowAchievements(achievements);
         }
 
-        private void OnDisable()
+        public void ClearContent()
         {
-            ClearContent();
+            _achievementViews?.ForEach(achievementView => Destroy(achievementView.gameObject));
+            _achievementViews = new List<AchievementView>();
         }
 
         private void ShowAchievements(List<Achievement> achievements)
@@ -46,16 +47,10 @@ namespace Assets.Features.Auth
             }
         }
 
-        private void ClearContent()
-        {
-            _achievementViews?.ForEach(achievementView => Destroy(achievementView.gameObject));
-            _achievementViews = new List<AchievementView>();
-        }
-
-        private async UniTask<List<Achievement>> GetAchievements()
+        private async UniTask<List<Achievement>> GetAchievements(string uri)
         {
             UnityWebRequest request = await UnityWebRequest
-                .Get("http://localhost:8088/1/achievements/")
+                .Get(uri)
                 .SendWebRequest()
                 .WithCancellation(this.GetCancellationTokenOnDestroy());
 

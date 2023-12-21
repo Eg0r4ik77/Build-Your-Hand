@@ -294,7 +294,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3647119248702161433}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999411
+  m_Size: 0.95399034
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -396,6 +396,7 @@ MonoBehaviour:
   _repeatPassword: {fileID: 712015497437050764}
   _changeLoginButton: {fileID: 3153662065507174785}
   _changePasswordButton: {fileID: 3101848886840791730}
+  _achievementsPanel: {fileID: 17945336800325087}
 --- !u!1 &1671047069623041262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,7 +1134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00057297444}
+  m_AnchoredPosition: {x: 0, y: 0.002226065}
   m_SizeDelta: {x: 0.00018310547, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4156607988053906613

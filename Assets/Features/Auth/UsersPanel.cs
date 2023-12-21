@@ -17,6 +17,7 @@ public class UsersPanel : Panel
 
     [SerializeField] private RectTransform _contentRectTransform;
     [SerializeField] private UserView _userViewPrefab;
+    [SerializeField] private UserInfoPanel _userInfoPanel;
 
     private List<UserView> _userViews = new();
 
@@ -87,9 +88,7 @@ public class UsersPanel : Panel
         foreach (User user in users)
         {
             UserView view = Instantiate(_userViewPrefab, _contentRectTransform);
-            view.Name = user.Login;
-            view.Rating = "100";
-
+            view.Initialize(user, _userInfoPanel);
             _userViews.Add(view);
         }
     }
