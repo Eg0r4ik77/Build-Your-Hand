@@ -2,7 +2,6 @@ using Assets.Features.Auth;
 using Cysharp.Threading.Tasks;
 using ModestTree;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,19 +15,21 @@ public class UsersPanel : Panel
     [SerializeField] private Tab _followingsTab;
     [SerializeField] private Tab _followersTab;
 
+    [SerializeField] private RectTransform _contentRectTransform;
+    [SerializeField] private UserView _userViewPrefab;
+
+    private List<UserView> _userViews = new();
+
     private Tab _currentTab;
-
-    // список объектов UserView
-    private Dictionary<Tab, Func<UniTask<List<User>>>> _tabsActions;
-
+    private Dictionary<Tab, string> _tabsRequests;
 
     private void Start()
     {
-        _tabsActions = new()
+        _tabsRequests = new()
         {
-            {_allUsersTab, GetAllUsers},
-            {_followingsTab, GetFollowings},
-            {_followersTab, GetFollowers}
+            {_allUsersTab, "http://localhost:8088/users"},
+            {_followingsTab, "http://localhost:8088/1/followings"},
+            {_followersTab, "http://localhost:8088/users"}
         };
 
         SwitchContent(_allUsersTab);
@@ -57,6 +58,8 @@ public class UsersPanel : Panel
         {
             tab.Clicked -= SwitchContent;
         }
+
+        ClearContent();
     }
 
     private async void SwitchContent(Tab tab)
@@ -65,43 +68,46 @@ public class UsersPanel : Panel
         _currentTab = tab;
         _currentTab.Select();
 
-        List<User> users = await _tabsActions[tab]();
+        string request = _tabsRequests[tab];
+        List<User> users = await GetUsersByRequest(request);
 
         ClearContent();
         ShowUsers(users);
     }
 
-    private void ClearContent()
-    {
-        // очистить вьюшки
-    }
-
     private async void SearchForUser(string template)
     {
+        ClearContent();
         List<User> users = await GetUserByTemplate(template);
         ShowUsers(users);
     }
 
     private void ShowUsers(List<User> users)
     {
-        // генерация вьюшек, добавление в список
+        foreach (User user in users)
+        {
+            UserView view = Instantiate(_userViewPrefab, _contentRectTransform);
+            view.Name = user.Login;
+            view.Rating = "100";
+
+            _userViews.Add(view);
+        }
+    }
+
+    private void ClearContent()
+    {
+        _userViews.ForEach(userView => Destroy(userView.gameObject));
+        _userViews = new List<UserView>();
     }
 
     private async UniTask<List<User>> GetUserByTemplate(string template)
     {
-        return template.IsEmpty()
-            ? await _tabsActions[_currentTab]()
-            : await GetUsersByRequest($"http://localhost:8088/users/{template}");
+        string request = template.IsEmpty()
+            ? _tabsRequests[_currentTab]
+            : $"http://localhost:8088/users/{template}";
+
+        return await GetUsersByRequest(request);
     }
-
-    private async UniTask<List<User>> GetAllUsers()
-        => await GetUsersByRequest("http://localhost:8088/users");
-
-    private async UniTask<List<User>> GetFollowings()
-        => await GetUsersByRequest("http://localhost:8088/1/followings");
-
-    private async UniTask<List<User>> GetFollowers()
-        => await GetUsersByRequest("http://localhost:8088/users");
 
     private async UniTask<List<User>> GetUsersByRequest(string uri)
     {
