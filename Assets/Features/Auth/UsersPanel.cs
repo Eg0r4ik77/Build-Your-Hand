@@ -61,8 +61,6 @@ public class UsersPanel : Panel
         {
             tab.Clicked -= SwitchContent;
         }
-
-        ClearContent();
     }
 
     private async void SwitchContent(Tab tab)
