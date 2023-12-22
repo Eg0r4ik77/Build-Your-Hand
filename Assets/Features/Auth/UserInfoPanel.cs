@@ -1,12 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
+using Zenject;
 
 namespace Assets.Features.Auth
 {
@@ -22,6 +18,13 @@ namespace Assets.Features.Auth
         private User _user;
         private bool _isFollowing;
 
+        private UserService _userService;
+
+        public void Initialize(UserService userService)
+        {
+            _userService = userService;
+        }
+
         public void SetUser(User user)
         {
             _user = user;
@@ -32,9 +35,11 @@ namespace Assets.Features.Auth
             base.Enable();
 
             _nameText.text = _user.Login;
-            _ratingText.text = "100";
+            _ratingText.text = _userService.Rating(_user).ToString();
+
             SwitchFollowingState();
-            _achievementsPanel.ShowAchievements($"http://localhost:8088/{_user.Id}/achievements/");
+            _achievementsPanel.ShowAchievements(_user);
+
             _switchSubscriptionButton.onClick.AddListener(SwitchSubscription);
         }
 
@@ -46,21 +51,15 @@ namespace Assets.Features.Auth
             _switchSubscriptionButton.onClick.RemoveListener(SwitchSubscription);
         }
 
-        private async void SwitchSubscription()
+        private void SwitchSubscription()
         {
             if (_isFollowing)
             {
-                await UnityWebRequest
-                    .Delete($"http://localhost:8088/1/unsubscribe/{_user.Id}")
-                    .SendWebRequest()
-                    .WithCancellation(this.GetCancellationTokenOnDestroy());
+                _userService.UnsubscribeCurrentUser(_user.Id);  
             }
             else
             {
-                await UnityWebRequest
-                    .Post($"http://localhost:8088/1/subscribe/{_user.Id}", "")
-                    .SendWebRequest()
-                    .WithCancellation(this.GetCancellationTokenOnDestroy());
+                _userService.SubscribeCurrentUser(_user.Id);
             }
 
             SwitchFollowingState();
@@ -68,15 +67,7 @@ namespace Assets.Features.Auth
 
         private async void SwitchFollowingState()
         {
-            UnityWebRequest request = await UnityWebRequest
-                .Get("http://localhost:8088/1/followings")
-                .SendWebRequest()
-                .WithCancellation(this.GetCancellationTokenOnDestroy());
-
-            string usersJson = request.downloadHandler.text;
-
-            Debug.Log($"{usersJson}");
-            List<User> followings = JsonConvert.DeserializeObject<List<User>>(usersJson);
+            List<User> followings = await _userService.GetFollowings();
 
             _isFollowing = followings.Exists(following => following.Id == _user.Id);
 

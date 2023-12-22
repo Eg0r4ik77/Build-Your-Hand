@@ -1,13 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
+using Zenject;
 
 namespace Assets.Features.Auth
 {
@@ -18,14 +11,27 @@ namespace Assets.Features.Auth
         private RectTransform _rectTransform;
         private List<AchievementView> _achievementViews = new();
 
+        private UserService _userService;
+
+        [Inject]
+        private void Construct(UserService userService)
+        {
+            _userService = userService;
+        }
+
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
         }
 
-        public async void ShowAchievements(string uri)
+        public void ShowCurrentUserAchievements()
         {
-            List<Achievement> achievements = await GetAchievements(uri);
+            ShowAchievements(_userService.CurrentUser);
+        }
+
+        public async void ShowAchievements(User user)
+        {
+            List<Achievement> achievements = await _userService.GetAchievements(user);
             ShowAchievements(achievements);
         }
 
@@ -45,21 +51,6 @@ namespace Assets.Features.Auth
                 view.Date = achievement.Date;
                 _achievementViews.Add(view);
             }
-        }
-
-        private async UniTask<List<Achievement>> GetAchievements(string uri)
-        {
-            UnityWebRequest request = await UnityWebRequest
-                .Get(uri)
-                .SendWebRequest()
-                .WithCancellation(this.GetCancellationTokenOnDestroy());
-
-            string achievementsJson = request.downloadHandler.text;
-
-            Debug.Log($"{achievementsJson}");
-            List<Achievement> achievements = JsonConvert.DeserializeObject<List<Achievement>>(achievementsJson);
-
-            return achievements;
         }
     }
 }

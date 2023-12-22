@@ -1,11 +1,8 @@
-using Assets.Features;
 using Assets.Features.Auth;
-using Cysharp.Threading.Tasks;
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
+using Zenject;
 
 public class ProfilePanel : Panel
 {
@@ -18,50 +15,57 @@ public class ProfilePanel : Panel
 
     [SerializeField] private AchievementsPanel _achievementsPanel;
 
+    private UserService _userService;
+    private TextMeshProUGUI _placeholderText;
+
+    [Inject]
+    private void Construct(UserService userService)
+    {
+        _userService = userService;
+    }
+
+    private void Awake()
+    {
+        _placeholderText = _login.placeholder.GetComponent<TextMeshProUGUI>();
+    }
+
     protected override void Enable()
     {
         base.Enable();
 
         SetLoginPlaceholder();
 
-        _changeLoginButton.onClick.AddListener(TryChangeLogin);
-        _changePasswordButton.onClick.AddListener(TryChangePassword);
+        _changeLoginButton.onClick.AddListener(TryUpdateLogin);
+        _changePasswordButton.onClick.AddListener(TryUpdatePassword);
 
-        _achievementsPanel.ShowAchievements("http://localhost:8088/1/achievements/");
+        _achievementsPanel.ShowCurrentUserAchievements();
     }
 
     protected override void Disable()
     {
         base.Disable();
 
-        _changeLoginButton.onClick.RemoveListener(TryChangeLogin);
-        _changePasswordButton.onClick.RemoveListener(TryChangePassword);
+        _changeLoginButton.onClick.RemoveListener(TryUpdateLogin);
+        _changePasswordButton.onClick.RemoveListener(TryUpdatePassword);
 
         _achievementsPanel.ClearContent();
     }
 
-    private async void TryChangeLogin()
+    private void TryUpdateLogin()
     {
         string login = _login.text;
-        UnityWebRequest request = await UnityWebRequest
-            .Put($"http://localhost:8088/1/update-login/{login}", new byte[] {})
-            .SendWebRequest()
-            .WithCancellation(this.GetCancellationTokenOnDestroy());
-
+        _userService.TryUpdateLogin(login);
         SetLoginPlaceholder();
     }
 
-    private async void TryChangePassword()
+    private void TryUpdatePassword()
     {
         string newPassword = _newPassword.text;
         string repeatedPassword = _repeatPassword.text;
 
         if (newPassword.Equals(repeatedPassword))
         {
-            UnityWebRequest request = await UnityWebRequest
-                .Put($"http://localhost:8088/1/update-password/{newPassword}", new byte[] { })
-                .SendWebRequest()
-                .WithCancellation(this.GetCancellationTokenOnDestroy());
+            _userService.TryUpdatePassword(newPassword);
         }
         else
         {
@@ -71,7 +75,7 @@ public class ProfilePanel : Panel
 
     private void SetLoginPlaceholder()
     {
-        // get user login
-        ((TMP_Text)_login.placeholder).text = "Login";
+        string login = _userService.CurrentUser.Login;
+        _placeholderText.text = login;
     }
 }

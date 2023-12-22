@@ -1,12 +1,11 @@
 using Assets.Features.Auth;
 using Cysharp.Threading.Tasks;
 using ModestTree;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
+using Zenject;
 
 public class UsersPanel : Panel
 {
@@ -24,17 +23,26 @@ public class UsersPanel : Panel
     private List<UserView> _userViews = new();
 
     private Tab _currentTab;
-    private Dictionary<Tab, string> _tabsRequests;
+    private Dictionary<Tab, UniTask<List<User>>> _tabsRequests;
+
+    private UserService _userService;
+
+    [Inject]
+    private void Construct(UserService userService)
+    {
+        _userService = userService;
+    }
 
     private void Start()
     {
         _tabsRequests = new()
         {
-            {_allUsersTab, "http://localhost:8088/users"},
-            {_followingsTab, "http://localhost:8088/1/followings"},
-            {_followersTab, "http://localhost:8088/1/followers"}
+            {_allUsersTab, _userService.GetAllUsers()},
+            {_followingsTab, _userService.GetFollowings()},
+            {_followersTab, _userService.GetFollowers()}
         };
 
+        _userInfoPanel.Initialize(_userService);
         SwitchContent(_allUsersTab);
     }
 
@@ -69,10 +77,8 @@ public class UsersPanel : Panel
         _currentTab = tab;
         _currentTab.Select();
 
-        string request = _tabsRequests[tab];
-
         ClearContent();
-        _users = await GetUsersByRequest(request);
+        _users = await _tabsRequests[tab];
         ShowUsers();
     }
 
@@ -93,7 +99,7 @@ public class UsersPanel : Panel
         foreach (User user in users)
         {
             UserView view = Instantiate(_userViewPrefab, _contentRectTransform);
-            view.Initialize(user, _userInfoPanel);
+            view.Initialize(user, _userService, _userInfoPanel);
 
             _userViews.Add(view);
             _users.Add(user);
@@ -119,21 +125,6 @@ public class UsersPanel : Panel
                 users.Add(user);
             }
         }
-
-        return users;
-    }
-
-    private async UniTask<List<User>> GetUsersByRequest(string uri)
-    {
-        UnityWebRequest request = await UnityWebRequest
-            .Get(uri)
-            .SendWebRequest()
-            .WithCancellation(this.GetCancellationTokenOnDestroy());
-
-        string usersJson = request.downloadHandler.text;
-
-        Debug.Log($"{usersJson}");
-        List<User> users = JsonConvert.DeserializeObject<List<User>>(usersJson);
 
         return users;
     }
