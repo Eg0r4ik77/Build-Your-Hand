@@ -19,7 +19,7 @@ public class UserView : MonoBehaviour, IPointerClickHandler
         _nameText.text = user.Login;
         if(user.Id == 1)
         {
-            _nameText.text += "(You)";
+            _nameText.text += " (You)";
         }
 
         _ratingText.text = "100";

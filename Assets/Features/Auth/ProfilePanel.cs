@@ -1,7 +1,10 @@
 using Assets.Features;
 using Assets.Features.Auth;
+using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class ProfilePanel : Panel
@@ -19,6 +22,8 @@ public class ProfilePanel : Panel
     {
         base.Enable();
 
+        SetLoginPlaceholder();
+
         _changeLoginButton.onClick.AddListener(TryChangeLogin);
         _changePasswordButton.onClick.AddListener(TryChangePassword);
 
@@ -35,20 +40,38 @@ public class ProfilePanel : Panel
         _achievementsPanel.ClearContent();
     }
 
-    private void TryChangeLogin()
+    private async void TryChangeLogin()
     {
         string login = _login.text;
-        Debug.Log("Запрос на изменение логина");
+        UnityWebRequest request = await UnityWebRequest
+            .Put($"http://localhost:8088/1/update-login/{login}", new byte[] {})
+            .SendWebRequest()
+            .WithCancellation(this.GetCancellationTokenOnDestroy());
+
+        SetLoginPlaceholder();
     }
 
-    private void TryChangePassword()
+    private async void TryChangePassword()
     {
         string newPassword = _newPassword.text;
         string repeatedPassword = _repeatPassword.text;
 
         if (newPassword.Equals(repeatedPassword))
         {
-            Debug.Log("Запрос на изменение пароля");
+            UnityWebRequest request = await UnityWebRequest
+                .Put($"http://localhost:8088/1/update-password/{newPassword}", new byte[] { })
+                .SendWebRequest()
+                .WithCancellation(this.GetCancellationTokenOnDestroy());
         }
+        else
+        {
+            Debug.Log("Пароли не совпадают");
+        }
+    }
+
+    private void SetLoginPlaceholder()
+    {
+        // get user login
+        ((TMP_Text)_login.placeholder).text = "Login";
     }
 }
