@@ -94,6 +94,12 @@ public class UsersPanel : Panel
 
     private void ShowUsers()
     {
+        if (_users == null)
+        {
+            Debug.Log("No users");
+            return;
+        }
+
         List<User> users = new(_users);
 
         foreach (User user in users)

@@ -2,8 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
@@ -11,20 +9,9 @@ using Zenject;
 
 namespace Assets.Features.Auth
 {
-    public class UserService : MonoBehaviour, IInitializable
+    public class UserService : MonoBehaviour
     {
         public User CurrentUser { get; set; }
-
-        public void Initialize()
-        {
-            GetCurrentUser();
-        }
-
-        private async void GetCurrentUser()
-        {
-            var allUsers = await GetAllUsers();
-            CurrentUser = allUsers[0];
-        }
 
         public int Rating(User user)
         {

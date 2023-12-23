@@ -32,6 +32,7 @@ namespace Assets.Features.Auth
         public async void ShowAchievements(User user)
         {
             List<Achievement> achievements = await _userService.GetAchievements(user);
+
             ShowAchievements(achievements);
         }
 
@@ -43,6 +44,12 @@ namespace Assets.Features.Auth
 
         private void ShowAchievements(List<Achievement> achievements)
         {
+            if (achievements == null)
+            {
+                Debug.Log("No achievements");
+                return;
+            }
+
             foreach (Achievement achievement in achievements)
             {
                 AchievementView view = Instantiate(_achievementViewPrefab, _rectTransform);
