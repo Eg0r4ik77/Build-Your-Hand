@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,7 +36,7 @@ namespace Assets.Features.Auth
             base.Enable();
 
             _nameText.text = _user.Login;
-            _ratingText.text = _userService.Rating(_user).ToString();
+            SetRatingText(_user);
 
             SwitchFollowingState();
             _achievementsPanel.ShowAchievements(_user);
@@ -74,6 +75,13 @@ namespace Assets.Features.Auth
             _switchSubscriptionText.text = _isFollowing
                 ? "Unsubscribe"
                 : "Subscribe";
+        }
+
+        public async void SetRatingText(User user)
+        {
+            int rating = await _userService.GetRating(user);
+            await UniTask.SwitchToMainThread();
+            _ratingText.text = rating.ToString();
         }
     }
 }

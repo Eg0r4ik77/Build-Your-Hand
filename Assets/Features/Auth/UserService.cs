@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using ModestTree;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,6 @@ namespace Assets.Features.Auth
     public class UserService : MonoBehaviour
     {
         public User CurrentUser { get; set; }
-
-        public int Rating(User user)
-        {
-            
-
-            return 0;
-        }
 
         public async UniTask<List<User>> GetAllUsers()
             => await GetUsers("http://localhost:8088/users");
@@ -65,6 +59,22 @@ namespace Assets.Features.Auth
                 .Delete($"http://localhost:8088/{CurrentUser.Id}/unsubscribe/{userId}")
                 .SendWebRequest()
                 .WithCancellation(this.GetCancellationTokenOnDestroy());
+        }
+
+        public async UniTask<int> GetRating(User user)
+        {
+            UnityWebRequest request = await UnityWebRequest
+                .Get($"http://localhost:8088/{user.Id}/rating")
+                .SendWebRequest()
+                .WithCancellation(this.GetCancellationTokenOnDestroy());
+
+            string json = request.downloadHandler.text;
+
+            int rating = json.IsEmpty()
+                ? 0
+                : int.Parse(json);
+
+            return rating;
         }
 
         private async UniTask<List<T>> GetListByRequest<T>(string uri)

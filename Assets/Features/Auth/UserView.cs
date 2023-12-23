@@ -1,4 +1,5 @@
 using Assets.Features.Auth;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,12 +29,19 @@ public class UserView : MonoBehaviour, IPointerClickHandler
             _nameText.text += " (You)";
         }
 
-        _ratingText.text = _userService.Rating(user).ToString();
+        SetRatingText(user);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         _userInfoPanel.SetUser(_user);
         _userInfoPanel.Open();
+    }
+
+    public async void SetRatingText(User user)
+    {
+        int rating = await _userService.GetRating(user);
+        await UniTask.SwitchToMainThread();
+        _ratingText.text = rating.ToString();
     }
 }
