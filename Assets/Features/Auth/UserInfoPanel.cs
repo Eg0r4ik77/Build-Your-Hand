@@ -72,6 +72,8 @@ namespace Assets.Features.Auth
 
             _isFollowing = followings.Exists(following => following.Id == _user.Id);
 
+            await UniTask.SwitchToMainThread();
+
             _switchSubscriptionText.text = _isFollowing
                 ? "Unsubscribe"
                 : "Subscribe";

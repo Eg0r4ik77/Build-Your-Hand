@@ -26,7 +26,7 @@ namespace Assets.Features.Auth
 
         protected override void Enable()
         {
-            base.Disable();
+            base.Enable();
 
             _signUpButton.onClick.AddListener(TrySignUp);
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -32,6 +33,8 @@ namespace Assets.Features.Auth
         public async void ShowAchievements(User user)
         {
             List<Achievement> achievements = await _userService.GetAchievements(user);
+
+            await UniTask.SwitchToMainThread();
 
             ShowAchievements(achievements);
         }
