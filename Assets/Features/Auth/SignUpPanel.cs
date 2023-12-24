@@ -29,6 +29,10 @@ namespace Assets.Features.Auth
             base.Enable();
 
             _signUpButton.onClick.AddListener(TrySignUp);
+
+            _login.text = string.Empty;
+            _password.text = string.Empty;
+            _repeatedPassword.text = string.Empty;
         }
 
         protected override void Disable()

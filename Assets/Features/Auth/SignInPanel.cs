@@ -29,6 +29,9 @@ public class SignInPanel : MonoBehaviour
     {
         _signInButton.onClick.AddListener(TrySignIn);
         _signUpButton.onClick.AddListener(OpenSignUpPanel);
+
+        _login.text = string.Empty;
+        _password.text = string.Empty;
     }
 
     private void OnDisable()

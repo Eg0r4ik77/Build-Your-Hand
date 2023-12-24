@@ -6,7 +6,7 @@ namespace Assets.Features.Auth
 {
     public class AuthorizationMenu : MonoBehaviour
     {
-        [SerializeField] private GameObject _menu;
+        [SerializeField] private MainMenu _mainMenu;
 
         [SerializeField] private SignUpPanel _signUpPanel;
         [SerializeField] private SignInPanel _signInPanel;
@@ -19,16 +19,18 @@ namespace Assets.Features.Auth
             _userService = userService;
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             _signUpPanel.SignedUp += Authorize;
             _signInPanel.SignedIn += Authorize;
+            _mainMenu.SignedOut += SignOut;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _signUpPanel.SignedUp -= Authorize;
             _signInPanel.SignedIn -= Authorize;
+            _mainMenu.SignedOut -= SignOut;
         }
 
         private void Authorize(User user)
@@ -36,8 +38,15 @@ namespace Assets.Features.Auth
             _userService.CurrentUser = user;
             
             _signUpPanel.gameObject.SetActive(false);
-            _menu.SetActive(true);
+            _mainMenu.gameObject.SetActive(true);
             gameObject.SetActive(false);
+        }
+
+        private void SignOut()
+        {
+            _mainMenu.gameObject.SetActive(false);
+            _userService.CurrentUser = null;
+            gameObject.SetActive(true);
         }
     }
 }
