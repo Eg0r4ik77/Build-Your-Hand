@@ -1112,7 +1112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca32a87e5df5438c34291323ad011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menu: {fileID: 0}
+  _mainMenu: {fileID: 0}
   _signUpPanel: {fileID: 1024652077801664378}
   _signInPanel: {fileID: 5831782758373993988}
 --- !u!1 &6138130069146347391
@@ -2009,7 +2009,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3962027122401530933, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_text
-      value: 
+      value: Password
       objectReference: {fileID: 0}
     - target: {fileID: 3962027122474397778, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_Pivot.x
@@ -2094,6 +2094,14 @@ PrefabInstance:
     - target: {fileID: 3962027122474397778, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3962027122474397779, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3962027122474397779, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
+      propertyPath: m_ContentType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3962027122474398125, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_Name
@@ -2255,7 +2263,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3962027122401530933, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_text
-      value: 
+      value: Password
       objectReference: {fileID: 0}
     - target: {fileID: 3962027122474397778, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_Pivot.x
@@ -2340,6 +2348,14 @@ PrefabInstance:
     - target: {fileID: 3962027122474397778, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3962027122474397779, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3962027122474397779, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
+      propertyPath: m_ContentType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3962027122474398125, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_Name
@@ -2493,7 +2509,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3962027122401530933, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_text
-      value: 
+      value: Password
       objectReference: {fileID: 0}
     - target: {fileID: 3962027122474397778, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_Pivot.x
@@ -2578,6 +2594,14 @@ PrefabInstance:
     - target: {fileID: 3962027122474397778, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3962027122474397779, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3962027122474397779, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
+      propertyPath: m_ContentType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3962027122474398125, guid: 24b1cf95cf681c74a8ead0047de2ff9e, type: 3}
       propertyPath: m_Name

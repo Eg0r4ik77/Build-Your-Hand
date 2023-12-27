@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Skills;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace Economy
         [SerializeField] private List<int> _purchaseValues;
 
         private ResourceSpawner _spawner;
+
+        public event Action Destroyed;
 
         public void SetSpawner(ResourceSpawner spawner)
         {
@@ -25,6 +28,7 @@ namespace Economy
         {
             yield return SpawnResources();
             Destroy(gameObject);
+            Destroyed?.Invoke();
         }
         
         private IEnumerator SpawnResources()

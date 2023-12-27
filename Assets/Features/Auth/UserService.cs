@@ -3,6 +3,7 @@ using ModestTree;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
@@ -14,16 +15,16 @@ namespace Assets.Features.Auth
     {
         public User CurrentUser { get; set; }
 
-        public async UniTask<List<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
             => await GetUsers("http://localhost:8088/users");
 
-        public async UniTask<List<User>> GetFollowings()
+        public async Task<List<User>> GetFollowings()
             => await GetUsers($"http://localhost:8088/{CurrentUser.Id}/followings");
 
-        public async UniTask<List<User>> GetFollowers()
+        public async Task<List<User>> GetFollowers()
             => await GetUsers($"http://localhost:8088/{CurrentUser.Id}/followers");
 
-        public async UniTask<List<User>> GetUsers(string uri)
+        public async Task<List<User>> GetUsers(string uri)
             => await GetListByRequest<User>(uri);
 
         public async UniTask<List<Achievement>> GetAchievements(User user)

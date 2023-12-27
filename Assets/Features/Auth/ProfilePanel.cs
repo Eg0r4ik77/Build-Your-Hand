@@ -39,6 +39,8 @@ public class ProfilePanel : Panel
         _changePasswordButton.onClick.AddListener(TryUpdatePassword);
 
         _achievementsPanel.ShowCurrentUserAchievements();
+
+        _login.text = _userService.CurrentUser.Login;
     }
 
     protected override void Disable()

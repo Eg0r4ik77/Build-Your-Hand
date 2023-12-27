@@ -2,7 +2,9 @@ using Assets.Features.Auth;
 using Cysharp.Threading.Tasks;
 using ModestTree;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -23,7 +25,7 @@ public class UsersPanel : Panel
     private List<UserView> _userViews = new();
 
     private Tab _currentTab;
-    private Dictionary<Tab, UniTask<List<User>>> _tabsRequests;
+    private Dictionary<Tab, Task<List<User>>> _tabsRequests;
 
     private UserService _userService;
 
@@ -63,8 +65,7 @@ public class UsersPanel : Panel
         base.Disable();
 
         _searchInputField.onValueChanged.RemoveListener(SearchForUser);
-
-
+        
         foreach (Tab tab in new List<Tab> { _allUsersTab, _followingsTab, _followersTab })
         {
             tab.Clicked -= SwitchContent;
@@ -82,13 +83,14 @@ public class UsersPanel : Panel
         ShowUsers();
     }
 
-    private void SearchForUser(string template)
+    private async void SearchForUser(string template)
     {
         if(template.IsEmpty()) 
             return;
 
         ClearContent();
-        _users = GetUserByTemplate(template);
+        _users = await _tabsRequests[_currentTab];
+        _users = GetUsersByTemplate(template);
         ShowUsers();
     }
 
@@ -102,6 +104,10 @@ public class UsersPanel : Panel
 
         List<User> users = new(_users);
 
+        users = users
+            .OrderBy(user => user.Id)
+            .ToList();
+        
         foreach (User user in users)
         {
             UserView view = Instantiate(_userViewPrefab, _contentRectTransform);
@@ -119,7 +125,7 @@ public class UsersPanel : Panel
         _users = new();
     }
 
-    private List<User> GetUserByTemplate(string template)
+    private List<User> GetUsersByTemplate(string template)
     {
         string regex = "(?i).*" + template + ".*";
         List<User> users = new List<User>();
